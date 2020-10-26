@@ -1,0 +1,45 @@
+{
+    "place": {
+        "id": 1,
+        "title": "Simple",
+        "category": "Restaurant",
+        "schedule": [
+            {
+                "monday": ["12:00", "00:00"]
+            },
+            {
+                "tuesday": ["12:00", "00:00"]
+            },
+            {
+                "wednesday": ["12:00", "00:00"]
+            },
+            {
+                "thursday": ["12:00", "00:00"]
+            },
+            {
+                "friday": ["12:00", "00:00"]
+            },
+            {
+                "saturday": ["12:00", "00:00"]
+            },
+            {
+                "sunday": ["12:00", "00:00"]
+            }
+        ],
+        "rating": 4.8,
+        "reviews": 215,
+        "cuisine": "Fusion cuisine",
+        "coordinates": [53.897679, 27.547332],
+        "address": {
+            "country": "Belarus",
+            "city": "Minsk",
+            "street": "st. Sverdlova, 2"
+        },
+        "phone": "+375 29 185-50-50",
+        "photos": [,],
+        "description": "",
+        "menu": ,
+        "additionaly": ,
+        "reviews":[]
+    }
+}

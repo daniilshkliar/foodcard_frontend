@@ -1,0 +1,39 @@
+.slide {z-index: 10;}
+.go-next{z-index: 11;}
+
+.slider {
+	width: 100%;
+}
+
+.slide {
+	position: relative;
+	width: 100%;
+	display: flex;
+	user-select: none;
+}
+
+.slide img {
+	width: 100%;
+}
+
+.go-back {
+	position: absolute;
+	left: 0;
+	width: 35%;
+	height: 100%;
+}
+
+.go-back:hover {
+	background-image: linear-gradient(to right, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+}
+
+.go-next {
+	position: absolute;
+	right: 0;
+	width: 35%;
+	height: 100%;
+}
+
+.go-next:hover {
+	background-image: linear-gradient(to left, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+}
