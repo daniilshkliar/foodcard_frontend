@@ -1,0 +1,110 @@
+.main {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    height: calc(100vh - 70px);
+	display: flex;
+	flex-direction: column;
+    overflow: auto;
+}
+
+.place-photos {
+    width: 100%;
+    height: 60vh;
+    padding: 3px;
+    display: flex;
+}
+
+.place-photo-container-0 {
+    width: 39%;
+    height: 100%;
+    padding: 0 3px;
+}
+
+.place-photo-container-1 {
+    width: 17%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.place-photo-container-2 {
+    width: 14%;
+    height: 100%;
+    padding: 0 0 0 3px;
+}
+
+.place-photo-container-3 {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.place-photo-container-4 {
+    width: 100%;
+    height: 70%;
+    padding: 0 0 3px;
+}
+
+.place-photo-container-5 {
+    width: 100%;
+    height: 30%;
+    display: flex;
+}
+
+.place-photo-container-0 div,
+.place-photo-container-2 div,
+.place-photo-container-4 div,
+.place-photo-container-5 div {
+    width: 100%;
+    height: 100%;
+}
+
+.place-photo-container-1 div:nth-child(1) {
+    width: 100%;
+    height: 50%;
+    padding: 0 0 3px 0;
+}
+
+.place-photo-container-1 div:nth-child(2) {
+    width: 100%;
+    height: 50%;
+}
+
+.place-photo-container-5 div:nth-child(1) {
+    width: 50%;
+    height: 100%;
+    padding: 0 3px 0 0;
+}
+
+.place-photo-container-5 div:nth-child(2) {
+    width: 50%;
+    height: 100%;
+}
+
+.place-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+    user-select: none;
+}
+
+.place-photo:hover {
+    opacity: 0.94;
+}
+
+
+
+
+.place-window {
+    width: 60%;
+    margin: 20px auto;
+    padding: 10px;
+	box-shadow: 0 0 5px 0 #c3c3c3;
+}
+
+.place-desription {
+    width: 70%;
+}

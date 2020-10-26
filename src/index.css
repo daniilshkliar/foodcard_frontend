@@ -67,15 +67,10 @@ a {
 	cursor: pointer;
 	outline: none;
 	user-select: none;
-	transition: all 0.1s linear;
 }
 
 .button:hover {
 	background-color: #eaeaea;
-}
-
-.button:active {
-	transform: translateY(-3px);
 }
 
 .active-button {
@@ -141,7 +136,6 @@ input[type=text]  {
 	font-size: 15px;
 	color: #8e8e8e;
 	outline: none;
-	transition: all 0.15s linear;
 }
 
 input[type=text]:focus, input[type=text]:hover {
@@ -158,11 +152,6 @@ input[type=text]:focus, input[type=text]:hover {
 	align-items: center;
 	cursor: pointer;
 	user-select: none;
-	transition: all 0.15s linear;
-}
-
-.searchbutton:active {
-	transform: translateX(-3px);
 }
 
 .searchbutton img {

@@ -101,7 +101,7 @@ export default function Gallery() {
                         />
                         <motion.div
                             className="filter-window"
-                            transition={{ duration: 0.5 }}
+                            transition={{ duration: 0.4 }}
                             initial={{ left: "-500px" }}
                             animate={{ left: "0" }}
                             exit={{ left: "-500px" }}
@@ -152,7 +152,7 @@ export default function Gallery() {
                     </div>
                 }
             </AnimatePresence>
-        	<div className="left-scope">
+            <div className="left-scope">
                 <YMaps>
                     <Map className="main-map" state={{ center: coordinates, zoom: 13 }}>
                         <ZoomControl options={{ size: 'small', position: { bottom: 50, right: 15 }}} />
@@ -178,13 +178,13 @@ export default function Gallery() {
                             />)}
                     </Map>
                 </YMaps>
-        	</div>
-        	<div
+            </div>
+            <div
                 className="right-scope" 
                 ref={scrollRef}
                 onScroll={() => setElevator(scrollRef.current.scrollTop>=800)}
             >
-        		{isElevatorActive && 
+                {isElevatorActive && 
                     <div className="elevator" onClick={() => scrollRef.current.scrollTo(0, 0)}>
                         <img src={ArrowUpIcon} alt="Arrow up icon" draggable="false" />
                     </div>
@@ -218,7 +218,7 @@ export default function Gallery() {
                             onClick={() => history.push("/place/" + place.id + "/")}
                         >
                             <div className="gallery-card-photo">
-                                <img src={`data:image/jpeg;base64,${place.photo}`} alt={"A photo of " + place.title} draggable="false" />
+                                <img src={place.photo} alt={"A photo of " + place.title} draggable="false" />
                             </div>
                             <div className="gallery-card-title">
                                 {place.title}
@@ -253,7 +253,7 @@ export default function Gallery() {
                         </div>
                     ))}
                 </div>
-        	</div>
+            </div>
         </div>
     );
 }
