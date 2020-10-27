@@ -5,6 +5,9 @@ import axios from 'axios';
 
 import '../place.css'
 
+import ArrowDownIcon from '../icons/arrow_down_icon.svg';
+import ArrowUpIcon from '../icons/arrow_up_icon.svg';
+
 import place from '../place.json';
 
 
@@ -12,6 +15,8 @@ export default function Place() {
 
     const history = useHistory();
     const params = useParams();
+    const [isDescriptionExpand, setDescriptionExpand] = useState(false);
+
 
     return (
         <div className="app">
@@ -39,8 +44,19 @@ export default function Place() {
                     </div>
                 </div>
                 <div className="place-window">
-                    <div className="place-desription">
+                    <div className="place-title">
+                        {place.place.title}
+                    </div>
+                    <div className="place-description-container">
+                        <div className={"place-description" + (isDescriptionExpand ? " expanded" : "")}>
                             {place.place.description}
+                        </div>
+                        <div className="invert expand-arrow clickable" onClick={() => setDescriptionExpand(!isDescriptionExpand)}>
+                            {isDescriptionExpand ?
+                            <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
+                            : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
