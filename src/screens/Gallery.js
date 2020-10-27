@@ -172,7 +172,7 @@ export default function Gallery() {
                                         '<div class="balloon">' +
                                             '<a href="/place/' + place.id + '/">' +
                                             '<div class="balloon-box"><div class="balloon-row">' + place.category + '</div></div>' +
-                                            '<img class="balloon-photo" src="data:image/jpeg;base64,' + place.photo + '" alt="A photo of ' + place.title + '" draggable="false" /></a>' +
+                                            '<img class="balloon-photo" src="' + place.photo + '" alt="Photo of ' + place.category + ' ' + place.title + '" draggable="false" /></a>' +
                                         '</div>'
                                 }}
                             />)}
