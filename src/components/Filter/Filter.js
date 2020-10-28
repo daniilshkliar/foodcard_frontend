@@ -338,7 +338,7 @@ export default function Filter({
             </div>
             <div className="filter-box">
                 <div className="filter-header clickable" onClick={() => setAdditionallyActive(!isAdditionallyActive)}>
-                    Additionally
+                    Additional
                     <div className="invert arrow">
                         {isAdditionallyActive ?
                         <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />

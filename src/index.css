@@ -208,6 +208,7 @@ input[type=text]:focus, input[type=text]:hover {
 	font-family: 'Staatliches';
 	font-size: 24px;
 	color: #3e3e3e;
+	letter-spacing: 1px;
 	text-align: center;
 	word-wrap: break-word;
 }
@@ -261,6 +262,7 @@ input[type=text]:focus, input[type=text]:hover {
 
 .balloon-header {
 	padding-left: 5px;
+	font-size: 17px;
 }
 
 .balloon-box {
@@ -269,7 +271,7 @@ input[type=text]:focus, input[type=text]:hover {
 
 .balloon-row {
 	padding-left: 5px;
-	font-size: 14px;
+	font-size: 15px;
 	color: #8e8e8e;
 }
 

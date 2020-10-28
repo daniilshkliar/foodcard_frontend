@@ -4,7 +4,7 @@
 			"id": 1,
 			"title": "Simple",
 			"category": "Restaurant",
-			"schedule": ["12:00", "00:00"],
+			"schedule": ["12:00", "02:00"],
 			"rating": 4.8,
 			"reviews": 215,
 			"cuisine": "Fusion cuisine",

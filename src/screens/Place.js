@@ -7,6 +7,9 @@ import '../place.css'
 
 import ArrowDownIcon from '../icons/arrow_down_icon.svg';
 import ArrowUpIcon from '../icons/arrow_up_icon.svg';
+import WebsiteIcon from '../icons/website_icon.svg';
+import InstagramIcon from '../icons/instagram_icon.svg';
+import PhoneIcon from '../icons/phone_icon.svg';
 
 import place from '../place.json';
 
@@ -46,6 +49,32 @@ export default function Place() {
                 <div className="place-window">
                     <div className="place-title">
                         {place.place.title}
+                    </div>
+                    <div className="place-gategories">
+                        {place.place.categories.map((elem, index) => (
+                            <div key={index} className="place-category">
+                                {elem}
+                                {index !== (place.place.categories.length - 1) && <div class="dot"></div>}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="place-cuisines">
+                        {place.place.cuisines.map((elem, index) => (
+                            <div key={index} className="place-cuisine">
+                                {elem}
+                                {index !== (place.place.cuisines.length - 1) && <div class="dot"></div>}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="place-dashboard">
+                        <div className="button place-reservation">Reserve</div>
+                        <div className="button place-menu">Menu</div>
+                        <div className="icon-link"><a href={place.place.website} target="_blank"><img className="website-icon" src={WebsiteIcon} alt="Website icon" /></a></div>
+                        <div className="icon-link"><a href={place.place.instagram} target="_blank"><img className="instagram-icon" src={InstagramIcon} alt="Instagram icon" /></a></div>
+                        <div className="button place-phone invert" onClick={() => window.open("tel:+" + place.place.phone.replace(/[^0-9]/g, ""), "_self")}>
+                            <img className="phone-icon" src={PhoneIcon} alt="Phone icon" />
+                            {place.place.phone}
+                        </div>
                     </div>
                     <div className="place-description-container">
                         <div className={"place-description" + (isDescriptionExpand ? " expanded" : "")}>

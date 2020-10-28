@@ -9,8 +9,9 @@
 }
 
 .place-photos {
-    width: 100%;
+    width: 90%;
     height: 60vh;
+    margin: auto;
     padding: 1px;
     display: flex;
 }
@@ -96,12 +97,13 @@
 }
 
 .place-window {
-    position: relative;
-    left: 10%;
-    width: 60%;
-    margin: 20px;
+    width: 90%;
+    margin: auto;
     padding: 10px;
-	box-shadow: 0 0 5px 0 #c3c3c3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .place-title {
@@ -113,13 +115,14 @@
 }
 
 .place-description-container {
-    width: 70%;
+    width: 50%;
     margin: 10px 20px;
 }
 
 .place-description {
     width: 100%;
     height: 132px;
+    color: #3e3e3e;
     overflow: hidden;
 }
 
@@ -140,5 +143,73 @@
 
 .expand-arrow img {
     width: 14px;
+}
+
+.icon-link {
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    border-radius: 20px;
+    border: 1px solid #eaeaea;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+}
+
+.icon-link:hover {
+    background-color: #eaeaea;
+}
+
+.icon-link a {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.website-icon {
+    width: 28px;
+    display: block;
+}
+
+.instagram-icon {
+    width: 28px;
+    display: block;
+}
+
+.phone-icon {
+    width: 20px;
+    margin-right: 7px;
+    display: block;
+}
+
+.place-gategories {
+    margin: 5px 5px;
+    font-size: 17px;
+    color: #8e8e8e;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.place-cuisines {
+    margin: 0 5px 5px;
+    color: #8e8e8e;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.place-dashboard {
+    margin: 5px 5px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.place-category,
+.place-cuisine {
+    display: flex;
 }
 
