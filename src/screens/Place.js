@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import Header from '../components/Header/Header';
+import BeautyStars from 'beauty-stars';
 import axios from 'axios';
 
 import '../place.css'
@@ -50,7 +51,7 @@ export default function Place() {
                     <div className="place-title">
                         {place.place.title}
                     </div>
-                    <div className="place-gategories">
+                    <div className="place-categories">
                         {place.place.categories.map((elem, index) => (
                             <div key={index} className="place-category">
                                 {elem}
@@ -85,6 +86,98 @@ export default function Place() {
                             <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
                             : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
                             }
+                        </div>
+                    </div>
+                    <div className="place-general-review">
+                        <div className="place-general-review-row">
+                            <div className="place-general-review-overal-rounded">
+                                {place.place.general_review.overall}
+                            </div>
+                            <BeautyStars
+                                value={place.place.general_review.overall_rounded}
+                                size="20px"
+                                gap="4px"
+                                inactiveColor="#DADADA"
+                                activeColor="#ED6E2D"
+                            />
+                            <div className="place-general-review-overall-amount">
+                                ({place.place.general_review.amount} reviews)
+                            </div>
+                        </div>
+                        <div className="place-general-review-row">
+                            <div className="place-general-review-column">
+                                <div className="place-general-review-column-header">
+                                    Food
+                                </div>
+                                <div className="place-general-review-column-body">
+                                    {place.place.general_review.food}
+                                </div>
+                            </div>
+                            <div className="place-general-review-column">
+                                <div className="place-general-review-column-header">
+                                    Service
+                                </div>
+                                <div className="place-general-review-column-body">
+                                    {place.place.general_review.service}
+                                </div>
+                            </div>
+                            <div className="place-general-review-column">
+                                <div className="place-general-review-column-header">
+                                    Ambience
+                                </div>
+                                <div className="place-general-review-column-body">
+                                    {place.place.general_review.ambience}
+                                </div>
+                            </div>
+                            <div className="place-general-review-column">
+                                <div className="place-general-review-column-header">
+                                    Noise
+                                </div>
+                                <div className="place-general-review-column-body">
+                                    {place.place.general_review.noise}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="place-general-review-chart">
+                            {place.place.general_review.distribution.map((elem, index) => (
+                                <div key={index} className="place-general-review-chart-line">
+                                    <div className="place-general-review-chart-line-label">{index + 1}</div>
+                                    <div className="place-general-review-chart-line-value">
+                                        <div
+                                            className="place-general-review-chart-line-progress"
+                                            style={{ width: (elem*100)/place.place.general_review.amount + "%" }}
+                                        >
+                                    </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="place-operation-hours">
+                        <div className="place-header">
+                            Hours of operation
+                        </div>
+                        <div className="place-body">
+                            {place.place.operation_hours.map((elem, index) => (
+                                <div key={index} className="place-operation-hours-row">
+                                    <div className="place-weekday">
+                                        {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][index]}
+                                    </div>
+                                    <div>{elem[0] + " - " + elem[1]}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="place-additional">
+                        <div className="place-header">
+                            Additional
+                        </div>
+                        <div className="place-body">
+                            {place.place.additional.map((elem, index) => (
+                                <div key={index}>
+                                    {elem}
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>

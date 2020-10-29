@@ -5,15 +5,15 @@
         "categories": ["Restaurant", "Gastro pub", "Bar"],
         "cuisines": ["Fusion cuisine", "European cuisine", "Belarussian cuisine"],
         "rating": 4.8,
-        "schedule": {
-            "monday": ["12:00", "00:00"],
-            "tuesday": ["12:00", "00:00"],
-            "wednesday": ["12:00", "00:00"],
-            "thursday": ["12:00", "00:00"],
-            "friday": ["12:00", "00:00"],
-            "saturday": ["12:00", "00:00"],
-            "sunday": ["12:00", "00:00"]
-        },
+        "operation_hours": [
+            ["12:00", "00:00"],
+            ["12:00", "00:00"],
+            ["12:00", "00:00"],
+            ["12:00", "00:00"],
+            ["12:00", "00:00"],
+            ["12:00", "00:00"],
+            ["12:00", "00:00"]
+        ],
         "coordinates": [53.897679, 27.547332],
         "address": {
             "country": "Belarus",
@@ -35,13 +35,14 @@
         "website": "http://simple.by/",
         "additional": ["Wi-Fi", "Live music", "Dj-sets"],
         "general_review": {
-            "overall": 4.3,
+            "overall_rounded": 4,
+            "overall": 4.2,
             "food": 4.2,
             "service": 4.8,
             "ambience": 3.9,
             "noise": "quiet",
             "amount": 215,
-            "distribution": [0, 2, 10, 77, 126]
+            "distribution": [215, 2, 10, 77, 126]
         },
         "reviews": [
             {

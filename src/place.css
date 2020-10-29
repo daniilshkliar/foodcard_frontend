@@ -101,9 +101,9 @@
     margin: auto;
     padding: 10px;
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .place-title {
@@ -115,8 +115,9 @@
 }
 
 .place-description-container {
-    width: 50%;
-    margin: 10px 20px;
+    width: 60%;
+    min-width: 450px;
+    padding: 10px 50px;
 }
 
 .place-description {
@@ -185,22 +186,27 @@
     display: block;
 }
 
-.place-gategories {
+.place-categories {
+    width: 100%;
     margin: 5px 5px;
     font-size: 17px;
     color: #8e8e8e;
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
 }
 
 .place-cuisines {
+    width: 100%;
     margin: 0 5px 5px;
     color: #8e8e8e;
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
 }
 
 .place-dashboard {
+    width: 100%;
     margin: 5px 5px;
     display: flex;
     flex-wrap: wrap;
@@ -213,3 +219,118 @@
     display: flex;
 }
 
+.place-row {
+    display: flex;
+}
+
+.place-general-review {
+    width: 40%;
+    min-width: 360px;
+    padding: 10px 30px;
+    align-self: flex-start;
+    user-select: none;
+}
+
+.place-general-review-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.place-general-review-overal-rounded {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ED6E2D;
+    margin-right: 10px;
+}
+
+.place-general-review-overall-amount {
+    color: #3e3e3e;
+    margin-left: 10px;
+}
+
+.place-general-review-column {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.place-general-review-column-header {
+    font-size: 17px;
+    color: #3e3e3e;
+    border-bottom: 1px solid #3e3e3e;
+}
+
+.place-general-review-column-body {
+    font-size: 16px;
+    color: #ED6E2D;
+}
+
+.place-general-review-chart {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.place-general-review-chart-line {
+    display: flex;
+    align-items: center;
+}
+
+.place-general-review-chart-line-label {
+    color: #3e3e3e;
+    margin-right: 10px;
+}
+
+.place-general-review-chart-line-value {
+    width: 100%;
+    height: 14px;
+}
+
+.place-general-review-chart-line-progress {
+    height: 100%;
+    background-color: #ED6E2D;
+}
+
+.place-additional {
+    width: 17%;
+    min-width: 170px;
+    margin: 24px 10px 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.place-header {
+    margin: 0 0 10px;
+    font-size: 17px;
+    color: #3e3e3e;
+    border-bottom: 1px solid #3e3e3e;
+}
+
+.place-body {
+    color: #8e8e8e;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.place-operation-hours {
+    width: 17%;
+    min-width: 170px;
+    margin: 24px 10px 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.place-operation-hours-row {
+    height: max-content;
+    display: flex;
+}
+
+.place-weekday {
+    width: 20%;
+    margin-right: 15px;
+    text-align: end;
+}

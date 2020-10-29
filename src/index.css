@@ -29,20 +29,24 @@ a {
 .right-scope {z-index: 1;}
 .elevator {z-index: 10;}
 
-.left-scope {
+.wrapper {
 	position: absolute;
 	top: 70px;
-	width: 45%;
+	width: 100%;
 	height: calc(100vh - 70px);
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.left-scope {
+	width: 45%;
+	height: 100%;
 	overflow: hidden;
 }
 
 .right-scope {
-	position: absolute;
-	top: 70px;
-	right: 0;
 	width: 55%;
-	height: calc(100vh - 70px);
+	height: 100%;
 	background-color: #ffffff;
 	overflow-y: auto;
 	overflow-x: hidden;
