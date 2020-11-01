@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import Header from '../components/Header/Header';
 import BeautyStars from 'beauty-stars';
+import { YMaps, Map, Placemark, ZoomControl } from 'react-yandex-maps';
 import axios from 'axios';
 
 import '../place.css'
@@ -14,13 +15,20 @@ import PhoneIcon from '../icons/phone_icon.svg';
 
 import place from '../place.json';
 
+function rndColor() {
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
 
 export default function Place() {
 
     const history = useHistory();
     const params = useParams();
     const [isDescriptionExpand, setDescriptionExpand] = useState(false);
-
 
     return (
         <div className="app">
@@ -51,6 +59,10 @@ export default function Place() {
                     <div className="place-title">
                         {place.place.title}
                     </div>
+                    <div className="place-row">
+                        <div className="button active-button">Reserve</div>
+                        <div className={"icon-link favorite" + (place.place.is_favorite ? " active-button" : "")}>&#x2765;</div>
+                    </div>
                     <div className="place-categories">
                         {place.place.categories.map((elem, index) => (
                             <div key={index} className="place-category">
@@ -68,11 +80,10 @@ export default function Place() {
                         ))}
                     </div>
                     <div className="place-dashboard">
-                        <div className="button place-reservation">Reserve</div>
-                        <div className="button place-menu">Menu</div>
+                        <div className="button">Menu</div>
                         <div className="icon-link"><a href={place.place.website} target="_blank"><img className="website-icon" src={WebsiteIcon} alt="Website icon" /></a></div>
                         <div className="icon-link"><a href={place.place.instagram} target="_blank"><img className="instagram-icon" src={InstagramIcon} alt="Instagram icon" /></a></div>
-                        <div className="button place-phone invert" onClick={() => window.open("tel:+" + place.place.phone.replace(/[^0-9]/g, ""), "_self")}>
+                        <div className="button invert" onClick={() => window.open("tel:+" + place.place.phone.replace(/[^0-9]/g, ""), "_self")}>
                             <img className="phone-icon" src={PhoneIcon} alt="Phone icon" />
                             {place.place.phone}
                         </div>
@@ -87,9 +98,64 @@ export default function Place() {
                             : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
                             }
                         </div>
+                        <div className="place-reviews">
+                            {place.place.reviews.map((review, index) => (
+                                <div key={review.id} className="place-review">
+                                    <div className="review-user">
+                                        <div
+                                            className="review-avatar"
+                                            style={{ backgroundColor: rndColor() }}
+                                        >
+                                            {review.username.charAt(0).toUpperCase()}
+                                        </div>
+                                        <div className="review-username">{review.username}</div>
+                                        <div className="review-city">{review.city}</div>
+                                    </div>
+                                    <div className="review-date">{review.date}</div>
+                                    <div className="review-rating">
+                                        <BeautyStars
+                                            value={review.overall}
+                                            size="15px"
+                                            gap="3px"
+                                            inactiveColor="#DADADA"
+                                            activeColor="#ED6E2D"
+                                        />
+                                    </div>
+                                    <div className="review-notes">
+                                        <div className="place-row">
+                                            <div className="place-general-review-column">
+                                                <div className="place-header review">
+                                                    Food
+                                                </div>
+                                                <div className="place-general-review-column-body review">
+                                                    {review.food}
+                                                </div>
+                                            </div>
+                                            <div className="place-general-review-column">
+                                                <div className="place-header review">
+                                                    Service
+                                                </div>
+                                                <div className="place-general-review-column-body review">
+                                                    {review.service}
+                                                </div>
+                                            </div>
+                                            <div className="place-general-review-column">
+                                                <div className="place-header review">
+                                                    Ambience
+                                                </div>
+                                                <div className="place-general-review-column-body review">
+                                                    {review.ambience}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="review-text">{review.review}</div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                     <div className="place-general-review">
-                        <div className="place-general-review-row">
+                        <div className="place-row">
                             <div className="place-general-review-overal-rounded">
                                 {place.place.general_review.overall}
                             </div>
@@ -104,9 +170,9 @@ export default function Place() {
                                 ({place.place.general_review.amount} reviews)
                             </div>
                         </div>
-                        <div className="place-general-review-row">
+                        <div className="place-row">
                             <div className="place-general-review-column">
-                                <div className="place-general-review-column-header">
+                                <div className="place-header">
                                     Food
                                 </div>
                                 <div className="place-general-review-column-body">
@@ -114,7 +180,7 @@ export default function Place() {
                                 </div>
                             </div>
                             <div className="place-general-review-column">
-                                <div className="place-general-review-column-header">
+                                <div className="place-header">
                                     Service
                                 </div>
                                 <div className="place-general-review-column-body">
@@ -122,7 +188,7 @@ export default function Place() {
                                 </div>
                             </div>
                             <div className="place-general-review-column">
-                                <div className="place-general-review-column-header">
+                                <div className="place-header">
                                     Ambience
                                 </div>
                                 <div className="place-general-review-column-body">
@@ -130,7 +196,7 @@ export default function Place() {
                                 </div>
                             </div>
                             <div className="place-general-review-column">
-                                <div className="place-general-review-column-header">
+                                <div className="place-header">
                                     Noise
                                 </div>
                                 <div className="place-general-review-column-body">
@@ -152,32 +218,53 @@ export default function Place() {
                                 </div>
                             ))}
                         </div>
-                    </div>
-                    <div className="place-operation-hours">
-                        <div className="place-header">
-                            Hours of operation
-                        </div>
-                        <div className="place-body">
-                            {place.place.operation_hours.map((elem, index) => (
-                                <div key={index} className="place-operation-hours-row">
-                                    <div className="place-weekday">
-                                        {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][index]}
+                        <div className="place-additional">
+                            <div className="place-header">
+                                Additional
+                            </div>
+                            <div className="place-body">
+                                {place.place.additional.map((elem, index) => (
+                                    <div key={index}>
+                                        {elem}
                                     </div>
-                                    <div>{elem[0] + " - " + elem[1]}</div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                    <div className="place-additional">
-                        <div className="place-header">
-                            Additional
+                        <div className="place-operation-hours">
+                            <div className="place-header">
+                                Hours of operation
+                            </div>
+                            <div className="place-body">
+                                {place.place.operation_hours.map((elem, index) => (
+                                    <div key={index} className="place-operation-hours-row">
+                                        <div className="place-weekday">
+                                            {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][index]}
+                                        </div>
+                                        <div>{elem[0] + " - " + elem[1]}</div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                        <div className="place-body">
-                            {place.place.additional.map((elem, index) => (
-                                <div key={index}>
-                                    {elem}
+                        <div className="place-address">
+                            <div className="place-header">
+                                Address
+                            </div>
+                            <div className="place-body">
+                                <div>
+                                    {place.place.address.country + ", " + place.place.address.city + ", " + place.place.address.street}
                                 </div>
-                            ))}
+                                <div className="place-map">
+                                    <YMaps>
+                                        <Map className="main-map" state={{ center: place.place.coordinates, zoom: 12 }}>
+                                            <ZoomControl options={{ size: 'small', position: { bottom: 30, right: 10 }}} />
+                                            <Placemark
+                                                geometry={place.place.coordinates}
+                                                options={{ iconColor: 'red' }}
+                                            />
+                                        </Map>
+                                    </YMaps>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

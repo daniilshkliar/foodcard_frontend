@@ -5,6 +5,7 @@
         "categories": ["Restaurant", "Gastro pub", "Bar"],
         "cuisines": ["Fusion cuisine", "European cuisine", "Belarussian cuisine"],
         "rating": 4.8,
+        "is_favorite": false,
         "operation_hours": [
             ["12:00", "00:00"],
             ["12:00", "00:00"],
@@ -40,7 +41,7 @@
             "food": 4.2,
             "service": 4.8,
             "ambience": 3.9,
-            "noise": "quiet",
+            "noise": "medium",
             "amount": 215,
             "distribution": [215, 2, 10, 77, 126]
         },

@@ -37,24 +37,6 @@
 	display: none;
 }
 
-.filter-close {
-	position: absolute;
-	top: 5px;
-	right: 5px;
-	width: 25px;
-	height: 25px;
-	cursor: pointer;
-	transition: all 0.25s;
-}
-
-.filter-close img {
-	width: 100%;
-}
-
-.filter-close:hover {
-	transform: rotate(90deg);
-}
-
 .filter-box {
 	width: 100%;
 	height: fit-content;
@@ -103,7 +85,7 @@
 }
 
 .half-width .filter-body {
-	margin-top: 3px;
+	margin: 3px 0 0 0;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -130,7 +112,7 @@
 }
 
 .margin-top {
-	margin-top: 10px;
+	margin: 10px 0 0 0;
 }
 
 .margin-right {

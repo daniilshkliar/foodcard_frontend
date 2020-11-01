@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect, createRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { YMaps, Map, Placemark, ZoomControl } from 'react-yandex-maps';
 import BeautyStars from 'beauty-stars';
@@ -13,9 +13,26 @@ import ArrowUpIcon from '../icons/arrow_up_icon.svg';
 
 import places from '../places.json';
 
+function useWindowSize() {
+    const [size, setSize] = useState([0, 0]);
+    
+    useLayoutEffect(() => {
+
+        function updateSize() {
+            setSize([window.innerWidth, window.innerHeight]);
+        }
+
+        window.addEventListener('resize', updateSize);
+        updateSize();
+
+        return () => window.removeEventListener('resize', updateSize);
+    }, []);
+    return size;
+}
 
 export default function Gallery() {
 
+    const [width, height] = useWindowSize();
     const history = useHistory();
     const [coordinates, setCoordinates] = useState([53.907058, 27.557018]);
     const [searchQuery, setSearchQuery] = useState("");
@@ -37,9 +54,12 @@ export default function Gallery() {
     const [country, setCountry] = useState("");
     const [city, setCity] = useState("");
     const [isElevatorActive, setElevator] = useState(false);
-    const scrollRef = React.createRef();
+    const scrollRef = createRef();
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [isMapOpen, setMapOpen] = useState(false);
+    const minWidth = 730;
+
     const sourceCoutries = [
         {
             country: "Belarus",
@@ -153,109 +173,128 @@ export default function Gallery() {
                 }
             </AnimatePresence>
             <div className="wrapper">
-                <div className="left-scope">
-                    <YMaps>
-                        <Map className="main-map" state={{ center: coordinates, zoom: 13 }}>
-                            <ZoomControl options={{ size: 'small', position: { bottom: 50, right: 15 }}} />
-                            {places.places.map((place, index) =>
-                                <Placemark 
-                                    key={index}
-                                    geometry={place.coordinates}
-                                    options={{ 
-                                        iconColor: (hoveredCard === place.id ? 'red' : 'black')
-                                    }}
-                                    modules={['geoObject.addon.balloon']}
-                                    properties={{
-                                        balloonContentHeader:
-                                            '<div class="balloon-header"><a href="/place/' + place.id + '/">' + place.title + '</a></div>'
-                                        ,
-                                        balloonContentBody:
-                                            '<div class="balloon">' +
-                                                '<a href="/place/' + place.id + '/">' +
-                                                '<div class="balloon-box"><div class="balloon-row">' + place.category + '</div></div>' +
-                                                '<img class="balloon-photo" src="' + place.photo + '" alt="Photo of ' + place.category + ' ' + place.title + '" draggable="false" /></a>' +
-                                            '</div>'
-                                    }}
-                                />
-                            )}
-                        </Map>
-                    </YMaps>
-                </div>
-                <div
-                    className="right-scope" 
-                    ref={scrollRef}
-                    onScroll={() => setElevator(scrollRef.current.scrollTop>=800)}
-                >
-                    {isElevatorActive && 
-                        <div className="elevator" onClick={() => scrollRef.current.scrollTo(0, 0)}>
-                            <img src={ArrowUpIcon} alt="Arrow up icon" draggable="false" />
-                        </div>
-                    }
-                    <div className="options-panel">
-                        <div className="searchbar">
-                            <input 
-                                type="text" 
-                                id="query"
-                                name="query" 
-                                value={searchQuery}
-                                placeholder="Search"
-                                onChange={(e) => setSearchQuery(e.target.value)} />        
-                            <div className="searchbutton active-button" onClick={() => {console.log(searchQuery)}}>
-                                <img src={SearchIcon} alt="Search icon" draggable="false" />
-                            </div>
-                        </div>
-                        <div className="filterbutton">
-                            <div className="button active-button" onClick={() => setFilter(!isFilterActive)}>
-                                Filter
-                            </div>
-                        </div>
-                    </div>
-                    <div className="gallery">
-                        {places.places.map((place, index) => (
-                            <div 
-                                key={index}
-                                className="gallery-card"
-                                onMouseEnter={() => setHoveredCard(place.id)}
-                                onMouseLeave={() => setHoveredCard(-1)}
-                                onClick={() => history.push("/place/" + place.id + "/")}
+                {((width >= minWidth) || (width < minWidth && isMapOpen)) &&
+                    <div className="left-scope">
+                        <YMaps>
+                            <Map className="main-map" state={{ center: coordinates, zoom: 13 }}>
+                                <ZoomControl options={{ size: 'small', position: { bottom: 50, right: 15 }}} />
+                                {places.places.map((place, index) =>
+                                    <Placemark 
+                                        key={index}
+                                        geometry={place.coordinates}
+                                        options={{ 
+                                            iconColor: (hoveredCard === place.id ? 'red' : 'black')
+                                        }}
+                                        modules={['geoObject.addon.balloon']}
+                                        properties={{
+                                            balloonContentHeader:
+                                                '<div class="balloon-header"><a href="/place/' + place.id + '/">' + place.title + '</a></div>'
+                                            ,
+                                            balloonContentBody:
+                                                '<div class="balloon">' +
+                                                    '<a href="/place/' + place.id + '/">' +
+                                                    '<div class="balloon-box"><div class="balloon-row">' + place.category + '</div></div>' +
+                                                    '<img class="balloon-photo" src="' + place.photo + '" alt="Photo of ' + place.category + ' ' + place.title + '" draggable="false" /></a>' +
+                                                '</div>'
+                                        }}
+                                    />
+                                )}
+                            </Map>
+                        </YMaps>
+                        {isMapOpen &&
+                            <div
+                                className="map-close"
+                                onClick={() => setMapOpen(!isMapOpen)}
                             >
-                                <div className="gallery-card-photo">
-                                    <img src={place.photo} alt={"A photo of " + place.title} draggable="false" />
+                                <img src={CloseIcon} alt="Close icon" draggable="false" />
+                            </div>
+                        }
+                    </div>
+                }
+                {!isMapOpen &&
+                    <div
+                        className="right-scope" 
+                        ref={scrollRef}
+                        onScroll={() => setElevator(scrollRef.current.scrollTop >= 800)}
+                    >
+                        {isElevatorActive && 
+                            <div className="elevator" onClick={() => scrollRef.current.scrollTo(0, 0)}>
+                                <img src={ArrowUpIcon} alt="Arrow up icon" draggable="false" />
+                            </div>
+                        }
+                        <div className="options-panel">
+                            {width < minWidth && 
+                                <div className="show-map">
+                                    <div className="button active-button" onClick={() => setMapOpen(!isMapOpen)}>
+                                        Map
+                                    </div>
                                 </div>
-                                <div className="gallery-card-title">
-                                    {place.title}
-                                </div>
-                                <div className="gallery-card-category">
-                                    <div>{place.category}</div>
-                                    <div class="dot"></div>
-                                    <div>Until {place.schedule[1]}</div>
-                                </div>
-                                <div className="gallery-card-rating">
-                                    {place.rating===null ?
-                                        "No rating"
-                                        :
-                                        <BeautyStars
-                                            value={place.rating}
-                                            size="20px"
-                                            gap="4px"
-                                            inactiveColor="#DADADA"
-                                            activeColor="#ED6E2D"
-                                        />
-                                    }
-                                </div>
-                                <div className="gallery-card-reviews">
-                                    {place.reviews} reviews
-                                </div>
-                                <div className="gallery-card-cuisine">
-                                    {place.cuisine}
-                                </div>
-                                <div className="gallery-card-address">
-                                    {place.address.city + ", " + place.address.street}
+                            }
+                            <div className="searchbar">
+                                <input 
+                                    type="text" 
+                                    id="query"
+                                    name="query" 
+                                    value={searchQuery}
+                                    placeholder="Search"
+                                    onChange={(e) => setSearchQuery(e.target.value)} />        
+                                <div className="searchbutton active-button" onClick={() => {console.log(searchQuery)}}>
+                                    <img src={SearchIcon} alt="Search icon" draggable="false" />
                                 </div>
                             </div>
-                        ))}
+                            <div className="filterbutton">
+                                <div className="button active-button" onClick={() => setFilter(!isFilterActive)}>
+                                    Filter
+                                </div>
+                            </div>
+                        </div>
+                        <div className="gallery">
+                            {places.places.map((place, index) => (
+                                <div 
+                                    key={index}
+                                    className="gallery-card"
+                                    onMouseEnter={() => setHoveredCard(place.id)}
+                                    onMouseLeave={() => setHoveredCard(-1)}
+                                    onClick={() => history.push("/place/" + place.id + "/")}
+                                >
+                                    <div className="gallery-card-photo">
+                                        <img src={place.photo} alt={"A photo of " + place.title} draggable="false" />
+                                    </div>
+                                    <div className="gallery-card-title">
+                                        {place.title}
+                                    </div>
+                                    <div className="gallery-card-category">
+                                        <div>{place.category}</div>
+                                        <div class="dot"></div>
+                                        <div>Until {place.schedule[1]}</div>
+                                    </div>
+                                    <div className="gallery-card-rating">
+                                        {place.rating===null ?
+                                            "No rating"
+                                            :
+                                            <BeautyStars
+                                                value={place.rating}
+                                                size="20px"
+                                                gap="4px"
+                                                inactiveColor="#DADADA"
+                                                activeColor="#ED6E2D"
+                                            />
+                                        }
+                                    </div>
+                                    <div className="gallery-card-reviews">
+                                        {place.reviews} reviews
+                                    </div>
+                                    <div className="gallery-card-cuisine">
+                                        {place.cuisine}
+                                    </div>
+                                    <div className="gallery-card-address">
+                                        {place.address.city + ", " + place.address.street}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                }  
             </div>
         </div>
     );

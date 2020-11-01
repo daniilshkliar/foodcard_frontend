@@ -10,7 +10,7 @@
 
 .place-photos {
     width: 90%;
-    height: 60vh;
+    height: 63vh;
     margin: auto;
     padding: 1px;
     display: flex;
@@ -18,38 +18,32 @@
 
 .place-photo-container-0 {
     width: 39%;
-    height: 100%;
     padding: 0 1px;
 }
 
 .place-photo-container-1 {
     width: 17%;
-    height: 100%;
     display: flex;
     flex-direction: column;
 }
 
 .place-photo-container-2 {
     width: 14%;
-    height: 100%;
     padding: 0 0 0 1px;
 }
 
 .place-photo-container-3 {
     width: 30%;
-    height: 100%;
     display: flex;
     flex-direction: column;
 }
 
 .place-photo-container-4 {
-    width: 100%;
     height: 70%;
     padding: 0 0 1px;
 }
 
 .place-photo-container-5 {
-    width: 100%;
     height: 30%;
     display: flex;
 }
@@ -58,30 +52,20 @@
 .place-photo-container-2 div,
 .place-photo-container-4 div,
 .place-photo-container-5 div {
-    width: 100%;
     height: 100%;
 }
 
 .place-photo-container-1 div:nth-child(1) {
-    width: 100%;
     height: 50%;
     padding: 0 0 1px 0;
 }
 
 .place-photo-container-1 div:nth-child(2) {
-    width: 100%;
     height: 50%;
 }
 
 .place-photo-container-5 div:nth-child(1) {
-    width: 50%;
-    height: 100%;
     padding: 0 1px 0 0;
-}
-
-.place-photo-container-5 div:nth-child(2) {
-    width: 50%;
-    height: 100%;
 }
 
 .place-photo {
@@ -101,23 +85,32 @@
     margin: auto;
     padding: 10px;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     align-items: flex-start;
+    flex-wrap: wrap;
 }
 
 .place-title {
     width: 100%;
 	font-family: 'Staatliches';
 	font-size: 40px;
-	color: #3e3e3e;
+    color: #3e3e3e;
+    display: flex;
+    justify-content: center;
 	text-align: center;
 }
 
 .place-description-container {
     width: 60%;
     min-width: 450px;
-    padding: 10px 50px;
+    padding: 30px 50px 0;
+    order: 2;
+}
+
+.favorite {
+    font-size: 36px;
+    transform: rotate(90deg);
+    cursor: pointer;
 }
 
 .place-description {
@@ -182,7 +175,7 @@
 
 .phone-icon {
     width: 20px;
-    margin-right: 7px;
+    margin: 0 7px 0 0;
     display: block;
 }
 
@@ -209,9 +202,9 @@
     width: 100%;
     margin: 5px 5px;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .place-category,
@@ -220,46 +213,38 @@
 }
 
 .place-row {
+    margin: 0 0 10px 0;
     display: flex;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .place-general-review {
     width: 40%;
     min-width: 360px;
-    padding: 10px 30px;
+    padding: 30px;
     align-self: flex-start;
     user-select: none;
 }
 
-.place-general-review-row {
-    display: flex;
-    flex-wrap: wrap;
-}
-
 .place-general-review-overal-rounded {
+    margin: 0 10px 0 0;
     font-size: 18px;
     font-weight: bold;
     color: #ED6E2D;
-    margin-right: 10px;
 }
 
 .place-general-review-overall-amount {
+    margin: 0 0 0 10px;
     color: #3e3e3e;
-    margin-left: 10px;
 }
 
 .place-general-review-column {
-    margin: 10px;
+    margin: 0 20px 0 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-.place-general-review-column-header {
-    font-size: 17px;
-    color: #3e3e3e;
-    border-bottom: 1px solid #3e3e3e;
 }
 
 .place-general-review-column-body {
@@ -280,8 +265,8 @@
 }
 
 .place-general-review-chart-line-label {
+    margin: 0 10px 0 0;
     color: #3e3e3e;
-    margin-right: 10px;
 }
 
 .place-general-review-chart-line-value {
@@ -294,19 +279,15 @@
     background-color: #ED6E2D;
 }
 
-.place-additional {
-    width: 17%;
-    min-width: 170px;
-    margin: 24px 10px 10px;
-    display: flex;
-    flex-direction: column;
-}
-
 .place-header {
     margin: 0 0 10px;
+    border-bottom: 1px solid #3e3e3e;
     font-size: 17px;
     color: #3e3e3e;
-    border-bottom: 1px solid #3e3e3e;
+}
+
+.place-general-review-column .place-header {
+    margin: 0;
 }
 
 .place-body {
@@ -316,21 +297,115 @@
     flex-wrap: wrap;
 }
 
+.place-additional {
+    width: 100%;
+    margin: 30px 0 0 0;
+    display: flex;
+    flex-direction: column;
+}
+
 .place-operation-hours {
-    width: 17%;
-    min-width: 170px;
-    margin: 24px 10px 10px;
+    width: 100%;
+    margin: 30px 0 0 0;
     display: flex;
     flex-direction: column;
 }
 
 .place-operation-hours-row {
-    height: max-content;
+    height: 24px;
     display: flex;
 }
 
 .place-weekday {
-    width: 20%;
-    margin-right: 15px;
-    text-align: end;
+    width: 10%;
+    margin: 0 10px 0 0;
+}
+
+.place-address {
+    width: 100%;
+    margin: 30px 0 0 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.place-map {
+    width: 100%;
+    height: 200px;
+    margin: 10px 0 0 0;
+    border: 1px solid #eaeaea;
+    align-self: center;
+}
+
+.review {
+    font-size: 16px;
+}
+
+.review-avatar {
+    width: 20px;
+    height: 20px;
+}
+
+
+
+@media screen and (max-width: 650px) {
+
+    .place-photos {
+        margin: auto;
+        flex-direction: column;
+    }
+
+    .place-photo-container-0 {
+        width: 90%;
+        height: 40%;
+        margin: 0 auto;
+        padding: 0 0;
+    }
+    
+    .place-photo-container-1 {
+        width: 90%;
+        height: 20%;
+        margin: 0 auto;
+        flex-direction: row;
+    }
+    
+    .place-photo-container-2 {
+        width: 90%;
+        height: 15%;
+        margin: 0 auto;
+        padding: 1px 0 1px 0;
+    }
+    
+    .place-photo-container-3 {
+        width: 90%;
+        height: 25%;
+        margin: 0 auto;
+        flex-direction: row;
+        padding: 1px 0 0 0;
+    }
+    
+    .place-photo-container-4 {
+        width: 50%;
+        height: 100%;
+        padding: 0 1px 0 0;
+    }
+    
+    .place-photo-container-5 {
+        width: 50%;
+        height: 100%;
+    }
+        
+    .place-photo-container-1 div:nth-child(1) {
+        width: 40%;
+        height: 100%;
+        padding: 0 1px 0 0;
+    }
+    
+    .place-photo-container-1 div:nth-child(2) {
+        width: 60%;
+        height: 100%;
+    }
+    
+    .place-photo-container-5 div:nth-child(1) {
+        padding: 0 1px 0 0;
+    }
 }

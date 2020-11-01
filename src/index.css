@@ -42,12 +42,15 @@ a {
 	width: 45%;
 	height: 100%;
 	overflow: hidden;
+	flex-grow: 1;
 }
 
 .right-scope {
 	width: 55%;
+	min-width: 400px;
 	height: 100%;
 	background-color: #ffffff;
+	flex-grow: 1;
 	overflow-y: auto;
 	overflow-x: hidden;
 }
@@ -102,18 +105,6 @@ a {
 	background-size: cover;
 }
 
-.fade2 {background: linear-gradient(to right bottom, #ce1a3b, #400b4f); color: #ffffff; border: none;}
-.fade3 {background-image: linear-gradient(to right top, #22c1c3, #fdbb2d); color: #ffffff; border: none;}
-.fade4 {background-image: linear-gradient(to right bottom, #ED240A, #FDEC02); color: #ffffff; border: none;}
-.fade5 {background-image: linear-gradient(to right bottom, #C250BE, #F66B56); color: #ffffff; border: none;}
-.fade6 {background-image: linear-gradient(to right bottom, #BE349D, #04BE9E); color: #ffffff; border: none;}
-.fade7 {background-image: linear-gradient(to right bottom, #5C055E, #02E0C8); color: #ffffff; border: none;}
-.fade8 {background-image: linear-gradient(to right bottom, #DAE639, #A30D3E); color: #ffffff; border: none;}
-.fade9 {background-image: linear-gradient(to right bottom, #FCFE00, #E000FC); color: #ffffff; border: none;}
-.fade10 {background-image: linear-gradient(to right bottom, #B51500, #FFB521); color: #ffffff; border: none;}
-.fade11 {background-image: linear-gradient(to right bottom, #FFEC5E, #FF6800); color: #ffffff; border: none;}
-.fade12 {background-image: linear-gradient(to right bottom, #22C1C3, #FDBB2D); color: #ffffff; border: none;}
-
 .options-panel {
 	width: 100%;
 	display: flex;
@@ -147,8 +138,7 @@ input[type=text]:focus, input[type=text]:hover {
 }
 
 .searchbutton {
-	padding-left: 5px;
-	padding-right: 5px;
+	padding: 0 5px 0 5px;
 	border-top-right-radius: 15px;
 	border-bottom-right-radius: 15px;
 	display: flex;
@@ -163,13 +153,30 @@ input[type=text]:focus, input[type=text]:hover {
 }
 
 .filterbutton {
-	width: 10%;
-	min-width: 85px;
-	margin: 25px 10px 0;
+	width: fit-content;
+	margin: 25px 0 0;
 }
 
 .filterbutton .button {
 	color: #ffffff;
+}
+
+.filter-close {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	width: 25px;
+	height: 25px;
+	cursor: pointer;
+	transition: all 0.25s;
+}
+
+.filter-close img {
+	width: 100%;
+}
+
+.filter-close:hover {
+	transform: rotate(90deg);
 }
 
 .gallery {
@@ -265,7 +272,7 @@ input[type=text]:focus, input[type=text]:hover {
 }
 
 .balloon-header {
-	padding-left: 5px;
+	padding: 0 0 0 5px;
 	font-size: 17px;
 }
 
@@ -274,7 +281,7 @@ input[type=text]:focus, input[type=text]:hover {
 }
 
 .balloon-row {
-	padding-left: 5px;
+	padding: 0 0 0 5px;
 	font-size: 15px;
 	color: #8e8e8e;
 }
@@ -314,4 +321,36 @@ input[type=text]:focus, input[type=text]:hover {
 
 .elevator:active {
 	transform: translateY(-3px);
+}
+
+.show-map {
+	width: fit-content;
+	margin: 25px 0 0;
+}
+
+.show-map .button {
+	color: #ffffff;
+}
+
+.map-close {
+	position: absolute;
+	top: 10px;	
+	right: 10px;
+	width: 35px;
+	height: 35px;
+	border-radius: 15px;
+	background-color: #eaeaeaa1;
+	cursor: pointer;
+	transition: all 0.25s;
+	user-select: none;
+	display: flex;
+	justify-content: center;
+}
+
+.map-close img {
+	width: 80%;
+}
+
+.map-close:hover {
+	transform: rotate(90deg);
 }
