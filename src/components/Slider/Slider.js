@@ -1,41 +1,56 @@
-import React, { Component } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import './slider.css';
 
+import CloseIcon from '../../icons/close_icon.svg';
+import ArrowUpIcon from '../../icons/arrow_up_icon.svg';
 
-export default class Slider extends Component {
+export default function Slider({
+	elements,
+	sliderIndex,
+	setSliderIndex
+	}) {
 
-	constructor(props) {
-		this.state = {
-			index: 0
-		};
-	}
+	const sliderRef = useRef(null);
+	const length = elements.length;
 
-	goNext() {
-		let { index } = this.state;
-		let length = this.props.elements.length;
 
-		this.setState({ index: ((index === length - 1) ? 0 : (index + 1)) });
-	}
+	useEffect(() => {
+        sliderRef.current.focus();
+	}, []);
+	
 
-	goBack() {
-		let { index } = this.state;
-		let length = this.props.elements.length;
-
-		this.setState({ index: ((index === 0) ? (length - 1) : (index - 1)) });
-	}
-
-	render() {
-		let { index } = this.state;
-
-		return (
-	        <div className="slider">
-                <div className="slide">
-                	<div className="go-back" onClick={() => this.goBack()} />
-                	<img src={`data:image/jpeg;base64,${this.props.elements[index]}`} draggable="false" />
-                	<div className="go-next" onClick={() => this.goNext()} />
-                </div>
-	        </div>
-	    );
-	}
+	return (
+		<div
+			tabIndex="0"
+			ref={sliderRef}
+			className="slider"
+			onKeyDown={e => {
+				switch(e.key) {
+					case 'Escape': setSliderIndex(-1); break;
+					case 'ArrowLeft': setSliderIndex(((sliderIndex === 0) ? (length - 1) : (sliderIndex - 1))); break;
+					case 'ArrowRight': setSliderIndex((sliderIndex === length - 1) ? 0 : (sliderIndex + 1)); break;
+				}
+			}}
+		>
+			<div className="slide">
+				<div className="images-counter">
+					{sliderIndex + 1} / {length}
+				</div>
+				<div
+					className="slider-close"
+					onClick={() => setSliderIndex(-1)}
+				>
+					<img src={CloseIcon} alt="Close icon" draggable="false" />
+				</div>
+				<div className="go-back" onClick={() => setSliderIndex(((sliderIndex === 0) ? (length - 1) : (sliderIndex - 1)))}>
+					<img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
+				</div>
+				<img src={elements[sliderIndex]} draggable="false" />
+				<div className="go-next" onClick={() => setSliderIndex((sliderIndex === length - 1) ? 0 : (sliderIndex + 1))}>
+					<img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
+				</div>
+			</div>
+		</div>
+	)
 }

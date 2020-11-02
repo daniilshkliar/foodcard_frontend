@@ -1,57 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import Header from '../components/Header/Header';
 import BeautyStars from 'beauty-stars';
 import { YMaps, Map, Placemark, ZoomControl } from 'react-yandex-maps';
+import ShowMoreText from 'react-show-more-text';
 import axios from 'axios';
+import Header from '../components/Header/Header';
+import Slider from '../components/Slider/Slider';
 
 import '../place.css'
 
-import ArrowDownIcon from '../icons/arrow_down_icon.svg';
-import ArrowUpIcon from '../icons/arrow_up_icon.svg';
 import WebsiteIcon from '../icons/website_icon.svg';
 import InstagramIcon from '../icons/instagram_icon.svg';
 import PhoneIcon from '../icons/phone_icon.svg';
 
 import place from '../place.json';
 
-function rndColor() {
-    let letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}
 
 export default function Place() {
 
     const history = useHistory();
     const params = useParams();
-    const [isDescriptionExpand, setDescriptionExpand] = useState(false);
+    const [isEditDescription, setEditDescription] = useState(false);
+    const [sliderIndex, setSliderIndex] = useState(-1);
+
 
     return (
         <div className="app">
+            {sliderIndex!==-1 &&
+                <Slider elements={place.place.photos} sliderIndex={sliderIndex} setSliderIndex={setSliderIndex} />
+            }
             <Header isClickable={true} />
             <div className="main">
                 <div className="place-photos">
                     <div className="place-photo-container-1">
-                        <div><img src={place.place.photos[0]} alt="Photo" draggable="false" className="place-photo" /></div>
-                        <div><img src={place.place.photos[1]} alt="Photo" draggable="false" className="place-photo" /></div>
+                        <div onClick={() => setSliderIndex(0)}><img src={place.place.photos[0]} alt="Photo" draggable="false" className="place-photo" /></div>
+                        <div onClick={() => setSliderIndex(1)}><img src={place.place.photos[1]} alt="Photo" draggable="false" className="place-photo" /></div>
                     </div>
                     <div className="place-photo-container-2">
-                        <div><img src={place.place.photos[2]} alt="Photo" draggable="false" className="place-photo" /></div>
+                        <div onClick={() => setSliderIndex(2)}><img src={place.place.photos[2]} alt="Photo" draggable="false" className="place-photo" /></div>
                     </div>
                     <div className="place-photo-container-0">
-                        <div><img src={place.place.photos[3]} alt="Photo" draggable="false" className="place-photo" /></div>
+                        <div onClick={() => setSliderIndex(3)}><img src={place.place.photos[3]} alt="Photo" draggable="false" className="place-photo" /></div>
                     </div>
                     <div className="place-photo-container-3">
                         <div className="place-photo-container-4">
-                            <div><img src={place.place.photos[4]} alt="Photo" draggable="false" className="place-photo" /></div>
+                            <div onClick={() => setSliderIndex(4)}><img src={place.place.photos[4]} alt="Photo" draggable="false" className="place-photo" /></div>
                         </div>
                         <div className="place-photo-container-5">
-                            <div><img src={place.place.photos[5]} alt="Photo" draggable="false" className="place-photo" /></div>
-                            <div><img src={place.place.photos[6]} alt="Photo" draggable="false" className="place-photo" /></div>
+                            <div onClick={() => setSliderIndex(5)}><img src={place.place.photos[5]} alt="Photo" draggable="false" className="place-photo" /></div>
+                            <div onClick={() => setSliderIndex(6)}><img src={place.place.photos[6]} alt="Photo" draggable="false" className="place-photo" /></div>
                         </div>
                     </div>
                 </div>
@@ -61,7 +58,7 @@ export default function Place() {
                     </div>
                     <div className="place-row">
                         <div className="button active-button">Reserve</div>
-                        <div className={"icon-link favorite" + (place.place.is_favorite ? " active-button" : "")}>&#x2765;</div>
+                        <div className={"icon-link favorite" + (place.place.is_favorite ? " active-button" : "")}>♡</div>
                     </div>
                     <div className="place-categories">
                         {place.place.categories.map((elem, index) => (
@@ -89,67 +86,79 @@ export default function Place() {
                         </div>
                     </div>
                     <div className="place-description-container">
-                        <div className={"place-description" + (isDescriptionExpand ? " expanded" : "")}>
-                            {place.place.description}
+                        <div className="place-header">
+                            <div>Description</div>
+                            <div className="edit-symbol" onClick={() => setEditDescription(!isEditDescription)}>✎</div>
                         </div>
-                        <div className="invert expand-arrow clickable" onClick={() => setDescriptionExpand(!isDescriptionExpand)}>
-                            {isDescriptionExpand ?
-                            <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
-                            : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
-                            }
+                        <div className="place-description">
+                            <ShowMoreText
+                                lines={6}
+                                anchorClass='show-more'
+                            >
+                                {place.place.description}
+                            </ShowMoreText>
                         </div>
                         <div className="place-reviews">
+                            <div className="place-header">
+                                Reviews
+                            </div>
                             {place.place.reviews.map((review, index) => (
                                 <div key={review.id} className="place-review">
                                     <div className="review-user">
-                                        <div
-                                            className="review-avatar"
-                                            style={{ backgroundColor: rndColor() }}
-                                        >
+                                        <div className={"review-avatar color" + review.id.toString().slice(-1)}>
                                             {review.username.charAt(0).toUpperCase()}
                                         </div>
                                         <div className="review-username">{review.username}</div>
                                         <div className="review-city">{review.city}</div>
+                                        <div className="review-rating">
+                                            <BeautyStars
+                                                value={review.overall}
+                                                size="15px"
+                                                gap="3px"
+                                                inactiveColor="#DADADA"
+                                                activeColor="#ED6E2D"
+                                            />
+                                        </div>
                                     </div>
-                                    <div className="review-date">{review.date}</div>
-                                    <div className="review-rating">
-                                        <BeautyStars
-                                            value={review.overall}
-                                            size="15px"
-                                            gap="3px"
-                                            inactiveColor="#DADADA"
-                                            activeColor="#ED6E2D"
-                                        />
-                                    </div>
-                                    <div className="review-notes">
-                                        <div className="place-row">
-                                            <div className="place-general-review-column">
-                                                <div className="place-header review">
-                                                    Food
+                                    <div className="place-review-column">
+                                        <div className="review-date">{review.date}</div>
+                                        <div className="review-notes">
+                                            <div className="place-row">
+                                                <div className="place-general-review-column">
+                                                    <div className="place-header review">
+                                                        Food
+                                                    </div>
+                                                    <div className="place-general-review-column-body review">
+                                                        {review.food}
+                                                    </div>
                                                 </div>
-                                                <div className="place-general-review-column-body review">
-                                                    {review.food}
+                                                <div className="place-general-review-column">
+                                                    <div className="place-header review">
+                                                        Service
+                                                    </div>
+                                                    <div className="place-general-review-column-body review">
+                                                        {review.service}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className="place-general-review-column">
-                                                <div className="place-header review">
-                                                    Service
-                                                </div>
-                                                <div className="place-general-review-column-body review">
-                                                    {review.service}
-                                                </div>
-                                            </div>
-                                            <div className="place-general-review-column">
-                                                <div className="place-header review">
-                                                    Ambience
-                                                </div>
-                                                <div className="place-general-review-column-body review">
-                                                    {review.ambience}
+                                                <div className="place-general-review-column">
+                                                    <div className="place-header review">
+                                                        Ambience
+                                                    </div>
+                                                    <div className="place-general-review-column-body review">
+                                                        {review.ambience}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div className="review-text">
+                                            <ShowMoreText
+                                                lines={2}
+                                                anchorClass='show-more'
+                                            >
+                                                {review.review}
+                                            </ShowMoreText>
+                                        </div>
                                     </div>
-                                    <div className="review-text">{review.review}</div>
                                 </div>
                             ))}
                         </div>
@@ -240,6 +249,7 @@ export default function Place() {
                                         <div className="place-weekday">
                                             {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][index]}
                                         </div>
+                                        {}
                                         <div>{elem[0] + " - " + elem[1]}</div>
                                     </div>
                                 ))}
