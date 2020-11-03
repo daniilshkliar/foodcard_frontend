@@ -1,29 +1,47 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+import './editForms.css';
+
+import CloseIcon from '../../icons/close_icon.svg';
+
 
 export default function EditDescription({ 
-
+	setEditDescription,
+	editedDescription,
+	setEditedDescription,
+	setDescription
  }) {
 
-
-    const fetchCountryCoordinates = async (country) => {
-
-        const data = await axios(
-            "https://geocode-maps.yandex.ru/1.x/?apikey=d08fc50d-a7e6-4f37-bc51-1eb5df129e9d&format=json&geocode=" + country
-        );
-        setCoordinates([...data.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ').map(el => parseInt(el)).reverse()]);
-    };
-
+	const saveInfo = () => {
+		//request => response is OK =>
+		setDescription(editedDescription);
+		setEditDescription(false);
+	}
 
 	return (
-		<div className="header fade1">
-			{isClickable ?
-				<div className="clickable logo-place" onClick={() => history.push("/")}>FOODCARD</div>
-			: 	<div className="logo-place">FOODCARD</div>}
-			<div className="icons">
-				<img src={AccountIcon} className="account-icon" alt="Account icon" draggable="false" />
-				<img src={MenuIcon} className="menu-icon" alt="Menu icon" draggable="false" />
+		<div className="edit-form-background">
+			<div className="edit-form-description">
+				<div
+					className="filter-close"
+					onClick={() => setEditDescription(false)}
+				>
+					<img src={CloseIcon} alt="Close icon" draggable="false" />
+				</div>
+				<div className="edit-form-title">Edit description</div>
+				<textarea
+					id="description"
+					name="description"
+					maxlength="1000"
+					placeholder="Enter description here..."
+					required
+					value={editedDescription}
+					onChange={(e) => setEditedDescription(e.target.value)}
+				/>
+				<div className="row">
+					<div className="cancel" onClick={() => setEditDescription(false)}>Cancel</div>
+					<div className="save" onClick={() => saveInfo()}>Save</div>
+				</div>
 			</div>
 		</div>
 	);

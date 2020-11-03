@@ -6,6 +6,7 @@ import ShowMoreText from 'react-show-more-text';
 import axios from 'axios';
 import Header from '../components/Header/Header';
 import Slider from '../components/Slider/Slider';
+import EditDescription from '../components/EditForms/EditDescription'
 
 import '../place.css'
 
@@ -20,14 +21,26 @@ export default function Place() {
 
     const history = useHistory();
     const params = useParams();
-    const [isEditDescription, setEditDescription] = useState(false);
     const [sliderIndex, setSliderIndex] = useState(-1);
+    const [isAdmin, setAdmin] = useState(true);
+
+    const [description, setDescription] = useState(place.place.description);
+    const [isEditDescription, setEditDescription] = useState(false);
+    const [editedDescription, setEditedDescription] = useState(description);
 
 
     return (
         <div className="app">
             {sliderIndex!==-1 &&
                 <Slider elements={place.place.photos} sliderIndex={sliderIndex} setSliderIndex={setSliderIndex} />
+            }
+            {isAdmin && isEditDescription &&
+                <EditDescription
+                    setEditDescription={setEditDescription}
+                    editedDescription={editedDescription}
+                    setEditedDescription={setEditedDescription}
+                    setDescription={setDescription}
+                />
             }
             <Header isClickable={true} />
             <div className="main">
@@ -58,7 +71,7 @@ export default function Place() {
                     </div>
                     <div className="place-row">
                         <div className="button active-button">Reserve</div>
-                        <div className={"icon-link favorite" + (place.place.is_favorite ? " active-button" : "")}>♡</div>
+                        <div className={"favorite" + (place.place.is_favorite ? " active-button" : "")}>❥</div>
                     </div>
                     <div className="place-categories">
                         {place.place.categories.map((elem, index) => (
@@ -88,14 +101,16 @@ export default function Place() {
                     <div className="place-description-container">
                         <div className="place-header">
                             <div>Description</div>
-                            <div className="edit-symbol" onClick={() => setEditDescription(!isEditDescription)}>✎</div>
+                            {isAdmin &&
+                                <div className="edit-symbol" onClick={() => setEditDescription(!isEditDescription)}>✎</div>
+                            }
                         </div>
                         <div className="place-description">
                             <ShowMoreText
                                 lines={6}
                                 anchorClass='show-more'
                             >
-                                {place.place.description}
+                                {description}
                             </ShowMoreText>
                         </div>
                         <div className="place-reviews">

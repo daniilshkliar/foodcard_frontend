@@ -237,7 +237,8 @@ export default function Gallery() {
                                     name="query" 
                                     value={searchQuery}
                                     placeholder="Search"
-                                    onChange={(e) => setSearchQuery(e.target.value)} />        
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />        
                                 <div className="searchbutton active-button" onClick={() => {console.log(searchQuery)}}>
                                     <img src={SearchIcon} alt="Search icon" draggable="false" />
                                 </div>

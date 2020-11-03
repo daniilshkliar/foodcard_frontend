@@ -108,14 +108,25 @@
 }
 
 .favorite {
-    font-size: 36px;
+    width: 30px;
+    height: 40px;
+    margin: 0 10px;
+    border-radius: 20px;
+    border: 1px solid #eaeaea;
     color: #6b6b6b;
+    font-size: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
+    user-select: none;
+    transform: rotate(90deg);
 }
 
 .place-description {
     width: 100%;
     color: #3e3e3e;
+    word-wrap: break-word;
 }
 
 .show-more {
@@ -344,8 +355,10 @@
 
 .place-review {
     width: 100%;
-    margin: 0 0 40px 0;
+    margin: 10px 0 10px 0;
+    padding: 0 0 20px 0;
     display: flex;
+    border-bottom: 1px solid #eaeaea;
 }
 
 .review-user {

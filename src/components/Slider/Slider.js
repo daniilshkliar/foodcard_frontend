@@ -5,6 +5,7 @@ import './slider.css';
 import CloseIcon from '../../icons/close_icon.svg';
 import ArrowUpIcon from '../../icons/arrow_up_icon.svg';
 
+
 export default function Slider({
 	elements,
 	sliderIndex,
