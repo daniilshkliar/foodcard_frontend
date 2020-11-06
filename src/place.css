@@ -94,9 +94,9 @@
 
 .place-title {
     width: 100%;
+    color: #3e3e3e;
 	font-family: 'Staatliches';
 	font-size: 40px;
-    color: #3e3e3e;
     display: flex;
     justify-content: center;
 	text-align: center;

@@ -102,25 +102,25 @@ export default function Filter({
     ];
 
 
-    function handleCategoriesChange(element) {
+    const handleCategoriesChange = (element) => {
         categories.includes(element) ?
             setCategories([...categories.filter(elem => elem !== element)])
         :   setCategories([...categories, element]);                       
     }
 
-    function handleCuisineChange(element) {
+    const handleCuisineChange = (element) => {
         cuisine.includes(element) ?
             setCuisine([...cuisine.filter(elem => elem !== element)])
         :   setCuisine([...cuisine, element]);                       
     }
 
-    function handleAdditionallyChange(element) {
+    const handleAdditionallyChange = (element) => {
         additionally.includes(element) ?
             setAdditionally([...additionally.filter(elem => elem !== element)])
         :   setAdditionally([...additionally, element]);                       
     }
 
-    function handleInMenuChange(element) {
+    const handleInMenuChange = (element) => {
         inMenu.includes(element) ?
             setInMenu([...inMenu.filter(elem => elem !== element)])
         :   setInMenu([...inMenu, element]);                       

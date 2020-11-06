@@ -1,0 +1,93 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import isEmail from 'validator/lib/isEmail';
+// import AuthService from "../services/auth.service";
+
+
+export default function Login() {
+
+    const history = useHistory();
+    const [email, setEmail] = useState("");
+    const [isEmailValid, setEmailValid] = useState(false);
+    const [password, setPassword] = useState("");
+    const [isPasswordValid, setPasswordValid] = useState(false);
+    const [message, setMessage] = useState("");
+    const [isLoading, setLoading] = useState(false);
+
+
+    const handleLogin = async () => {
+        setLoading(true);
+        setMessage("");
+    
+        try {
+            const response = await axios.post(
+            "http://127.0.0.1:8000/login/",
+            {
+                    email: email,
+                    password: password
+                }
+            );
+            
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('user', JSON.stringify(response.data.user));
+        } catch (error) {
+            console.error(error.response);
+            setMessage(error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const emailValidator = (value) => {
+        setEmail(value);
+        setEmailValid(isEmail(value));
+    }
+
+    const passwordValidator = (value) => {
+        setPassword(value);
+        setPasswordValid(value.length > 5);
+    }
+
+
+    return (
+        <div className="auth">
+            <div className="login-container">
+                <div className="auth-title">
+                    Login
+                </div>
+                <div className="login-element">
+                    <div className="form-element-title">
+                        Email
+                    </div>
+                    <input
+                        type="email"
+                        name="email"
+                        className={isEmailValid ? "input-text" : "input-text invalid"}
+                        value={email}
+                        onChange={(e) => emailValidator(e.target.value)}
+                    />
+                </div>
+                <div className="login-element">
+                    <div className="form-element-title">
+                        Password
+                    </div>
+                    <input
+                        type="password"
+                        name="password"
+                        className={isPasswordValid ? "input-text" : "input-text invalid"}
+                        value={password}
+                        onChange={(e) => passwordValidator(e.target.value)}
+                    />
+                </div>
+                <div className="form-buttons">
+                    <div className="button" onClick={() => history.push("/signup/")}>Sign up</div>
+                    {isEmailValid && isPasswordValid ?
+                        <div className="button active-button" onClick={() => handleLogin()}>Login</div>
+                    :   <div className="button inactive">Login</div>
+                    }
+                </div>
+            </div>
+        </div>
+    )
+}
