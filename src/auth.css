@@ -24,17 +24,12 @@
     font-size: 44px;
     letter-spacing: 1px;
     text-align: center;
+    user-select: none;
 }
 
 .login-element {
     width: 70%;
     margin: 20px auto;
-    font-size: 18px;
-}
-
-.signup-element {
-    width: 90%;
-    margin: 20px auto 0;
     font-size: 18px;
 }
 
@@ -52,12 +47,19 @@
 
 .form-row {
     display: flex;
+    margin: 20px 40px 0;
 }
 
-.form-column {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
+.form-row div:nth-child(2) {
+    margin: 0 0 0 20px;
+}
+
+.signup-element {
+    font-size: 18px;
+}
+
+.full-width {
+    width: 100%;
 }
 
 .input-text {
@@ -76,11 +78,29 @@
 }
 
 .invalid {
-    border: 1px solid #ED6E2D;
+    border: 1px solid #ffe6f4;
+    background-color: #ffe6f4;
+}
+
+.invalid:hover,
+.invalid:focus {
+    border: 1px solid #fdeff7;
+    background-color: #fdeff7;    
 }
 
 .inactive {
     background-color: #eaeaea;
     color: #ccc;
     cursor: default;
+}
+
+.auth-error {
+    position: absolute;
+    top: 30px;
+    width: max-content;
+    padding: 10px;
+    border-radius: 30px;
+    border: 1px solid #ED6E2D;
+    color: #ED6E2D;
+    align-self: center;
 }

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
-// import AuthService from "../services/auth.service";
+import Spinner from '../components/LoaderSpinner/Spinner';
+import axios from "axios";
 
 
 export default function Login() {
@@ -19,21 +19,19 @@ export default function Login() {
     const handleLogin = async () => {
         setLoading(true);
         setMessage("");
-    
+
         try {
             const response = await axios.post(
-            "http://127.0.0.1:8000/login/",
-            {
-                    email: email,
+                "http://127.0.0.1:8000/api/token/", {
+                    username: email,
                     password: password
                 }
             );
-            
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
-        } catch (error) {
-            console.error(error.response);
-            setMessage(error);
+    
+            localStorage.setItem('access', response.data.access);
+            localStorage.setItem('refresh', response.data.refresh);
+        } catch(error) {
+            setMessage(error.response.data.detail);
         } finally {
             setLoading(false);
         }
@@ -52,6 +50,12 @@ export default function Login() {
 
     return (
         <div className="auth">
+            {isLoading && <Spinner />}
+            {message !== "" &&
+                <div className="auth-error">
+                    {message}
+                </div>
+            }
             <div className="login-container">
                 <div className="auth-title">
                     Login
@@ -63,7 +67,7 @@ export default function Login() {
                     <input
                         type="email"
                         name="email"
-                        className={isEmailValid ? "input-text" : "input-text invalid"}
+                        className={isEmailValid || email.length===0 ? "input-text" : "input-text invalid"}
                         value={email}
                         onChange={(e) => emailValidator(e.target.value)}
                     />
@@ -75,7 +79,7 @@ export default function Login() {
                     <input
                         type="password"
                         name="password"
-                        className={isPasswordValid ? "input-text" : "input-text invalid"}
+                        className={isPasswordValid || password.length===0 ? "input-text" : "input-text invalid"}
                         value={password}
                         onChange={(e) => passwordValidator(e.target.value)}
                     />

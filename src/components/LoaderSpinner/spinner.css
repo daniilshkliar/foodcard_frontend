@@ -1,0 +1,54 @@
+.loading-background {
+    z-index: 100000;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #ffffffaa;
+    overflow: hidden;
+}
+
+@keyframes loading-animation-o {
+    0%      {opacity: 1; transform: translate(0 0);}
+    49.99%  {opacity: 1; transform: translate(40px,0);}
+    50%     {opacity: 0; transform: translate(40px,0);}
+    100%    {opacity: 0; transform: translate(0,0);}
+}
+
+@keyframes loading-animation {
+    0%      {transform: translate(0,0);}
+    50%     {transform: translate(40px,0);}
+    100%    {transform: translate(0,0);}
+}
+
+.loading-animation {
+    position: relative;
+    top: calc(20% - 35px);
+    left: calc(50% - 35px);
+    transform: translateZ(0) scale(1);
+    backface-visibility: hidden;
+}
+
+.loading-animation div {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.loading-animation div:nth-child(1) {
+    background: #ED6E2D;
+    animation: loading-animation 0.7s linear infinite;
+    animation-delay: -0.35s;
+}
+
+.loading-animation div:nth-child(2) {
+    background: #791740;
+    animation: loading-animation 0.7s linear infinite;
+    animation-delay: 0s;
+}
+
+.loading-animation div:nth-child(3) {
+    background: #ED6E2D;
+    animation: loading-animation-o 0.7s linear infinite;
+    animation-delay: -0.35s;
+}
