@@ -80,9 +80,8 @@ export default function Gallery() {
 
 
     useEffect(() => {
-
+        
         const fetchData = async (lat, long) => {
-
             const data = await axios(
                 "https://geocode-maps.yandex.ru/1.x/?apikey=d08fc50d-a7e6-4f37-bc51-1eb5df129e9d&format=json&geocode=" + long + "," + lat + "&lang=en-US"
             );

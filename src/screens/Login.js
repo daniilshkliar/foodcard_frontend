@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import axios from "axios";
 import { useHistory } from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
 import Spinner from '../components/LoaderSpinner/Spinner';
-import axios from "axios";
 
 
 export default function Login() {
@@ -12,13 +12,13 @@ export default function Login() {
     const [isEmailValid, setEmailValid] = useState(false);
     const [password, setPassword] = useState("");
     const [isPasswordValid, setPasswordValid] = useState(false);
-    const [message, setMessage] = useState("");
+    const [messages, setMessages] = useState({});
     const [isLoading, setLoading] = useState(false);
 
 
     const handleLogin = async () => {
         setLoading(true);
-        setMessage("");
+        setMessages({});
 
         try {
             const response = await axios.post(
@@ -30,8 +30,13 @@ export default function Login() {
     
             localStorage.setItem('access', response.data.access);
             localStorage.setItem('refresh', response.data.refresh);
+
+            history.push("/");
         } catch(error) {
-            setMessage(error.response.data.detail);
+            setMessages(
+                (error.response && error.response.data) ||
+                error.message ||
+                error.toString());
         } finally {
             setLoading(false);
         }
@@ -51,9 +56,9 @@ export default function Login() {
     return (
         <div className="auth">
             {isLoading && <Spinner />}
-            {message !== "" &&
+            {messages.detail &&
                 <div className="auth-error">
-                    {message}
+                    {messages.detail}
                 </div>
             }
             <div className="login-container">

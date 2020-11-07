@@ -46,8 +46,8 @@
 }
 
 .form-row {
-    display: flex;
     margin: 20px 40px 0;
+    display: flex;
 }
 
 .form-row div:nth-child(2) {

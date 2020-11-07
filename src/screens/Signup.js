@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { isEmail, isAlpha } from 'validator';
 import Spinner from '../components/LoaderSpinner/Spinner';
-// import AuthService from "../services/auth.service";
 
 
 export default function Signup() {
@@ -19,26 +18,36 @@ export default function Signup() {
     const [isPassword1Valid, setPassword1Valid] = useState(false);
     const [password2, setPassword2] = useState("");
     const [isPassword2Valid, setPassword2Valid] = useState(false);
-    const [message, setMessage] = useState("");
+    const [messages, setMessages] = useState({});
     const [isLoading, setLoading] = useState(false);
 
 
     const handleSignup = async () => {
         setLoading(true);
-        setMessage("");
-    
+        setMessages({});
+        
         try {
             const response = await axios.post(
                 "http://127.0.0.1:8000/api/signup/", {
-                    username: email,
-                    password: password
+                    email: email,
+                    first_name: firstName,
+                    last_name: lastName,
+                    password1: password1,
+                    password2: password2
                 }
             );
             
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
+            localStorage.setItem('access', response.data.token.access);
+            localStorage.setItem('refresh', response.data.token.refresh);
+
+            history.push("/");
         } catch (error) {
-            console.error(error.response.status);
+            setMessages(
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString());
         } finally {
             setLoading(false);
         }
@@ -69,12 +78,18 @@ export default function Signup() {
         setLastNameValid(isAlpha(value) && value.length > 0);
     }
 
+    
     return (
         <div className="auth">
             {isLoading && <Spinner />}
-            {message !== "" &&
+            {messages.non_field_errors &&
                 <div className="auth-error">
-                    {message}
+                    {messages.non_field_errors.map((message) => (<div>{message}</div>))}
+                </div>
+            }
+            {messages.HTTP_500 &&
+                <div className="auth-error">
+                    {messages.HTTP_500}
                 </div>
             }
             <div className="signup-container">
