@@ -19,9 +19,9 @@
     width: 100%;
     height: 64px;
     border-bottom: 1px solid #3e3e3e;
-    color: #3e3e3e;
     font-family: 'Staatliches';
     font-size: 44px;
+    color: #3e3e3e;
     letter-spacing: 1px;
     text-align: center;
     user-select: none;
@@ -95,6 +95,7 @@
 }
 
 .auth-error {
+    z-index: 110000;
     position: absolute;
     top: 30px;
     width: max-content;
@@ -103,4 +104,25 @@
     border: 1px solid #ED6E2D;
     color: #ED6E2D;
     align-self: center;
+}
+
+.auth-logo {
+    width: 100%;
+    margin: 0 0 5px;
+    font-family: 'Staatliches';
+    font-size: 22px;
+    color: #791740;
+    letter-spacing: 1px;
+    text-align: center;
+    user-select: none;
+}
+
+.confirmation {
+    margin: 20px 0;
+    color: #8e8e8e;
+    text-align: center;
+}
+
+.center-align {
+    margin: 30px auto;
 }

@@ -22,7 +22,7 @@
 
 .loading-animation {
     position: relative;
-    top: calc(20% - 35px);
+    top: calc(50% - 35px);
     left: calc(50% - 35px);
     transform: translateZ(0) scale(1);
     backface-visibility: hidden;

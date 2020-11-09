@@ -20,6 +20,7 @@ export default function Signup() {
     const [isPassword2Valid, setPassword2Valid] = useState(false);
     const [messages, setMessages] = useState({});
     const [isLoading, setLoading] = useState(false);
+    const [confirmation, setConfirmation] = useState(false);
 
 
     const handleSignup = async () => {
@@ -27,26 +28,21 @@ export default function Signup() {
         setMessages({});
         
         try {
-            const response = await axios.post(
-                "http://127.0.0.1:8000/api/signup/", {
-                    email: email,
-                    first_name: firstName,
-                    last_name: lastName,
-                    password1: password1,
-                    password2: password2
-                }
-            );
+            const response = await axios.post("http://127.0.0.1:8000/api/signup/", {
+                email: email,
+                first_name: firstName,
+                last_name: lastName,
+                password1: password1,
+                password2: password2
+            });
             
-            localStorage.setItem('access', response.data.token.access);
-            localStorage.setItem('refresh', response.data.token.refresh);
-
-            history.push("/");
+            setConfirmation(true);
         } catch (error) {
             setMessages(
                 (error.response &&
                     error.response.data &&
                     error.response.data.message) ||
-                error.message ||
+                error.response ||
                 error.toString());
         } finally {
             setLoading(false);
@@ -87,88 +83,103 @@ export default function Signup() {
                     {messages.non_field_errors.map((message) => (<div>{message}</div>))}
                 </div>
             }
-            {messages.HTTP_500 &&
+            {messages.status===500 &&
                 <div className="auth-error">
-                    {messages.HTTP_500}
+                    {messages.statusText}
                 </div>
             }
             <div className="signup-container">
+                <div className="auth-logo">
+                    Foodcard
+                </div>
                 <div className="auth-title">
                     Sign up
                 </div>
-                <div className="form-row">
-                    <div className="signup-element full-width">
-                        <div className="form-element-title">
-                            Email
+                {confirmation && 
+                    <div>
+                        <div className="confirmation">
+                            Please confirm your email address to complete the registration.
                         </div>
-                        <input
-                            type="email"
-                            name="email"
-                            className={isEmailValid || email.length===0 ? "input-text" : "input-text invalid"}
-                            value={email}
-                            onChange={(e) => emailValidator(e.target.value)}
-                        />
+                        <div className="button center-align" onClick={() => history.push("/")}>Got it</div>
                     </div>
-                </div>
-                <div className="form-row">
-                    <div className="signup-element">
-                        <div className="form-element-title">
-                            First name
+                }
+                {!confirmation && 
+                    <div>
+                        <div className="form-row">
+                            <div className="signup-element full-width">
+                                <div className="form-element-title">
+                                    Email
+                                </div>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    className={isEmailValid || email.length===0 ? "input-text" : "input-text invalid"}
+                                    value={email}
+                                    onChange={(e) => emailValidator(e.target.value)}
+                                />
+                            </div>
                         </div>
-                        <input
-                            type="text"
-                            name="firstName"
-                            className={isFirstNameValid || firstName.length===0 ? "input-text" : "input-text invalid"}
-                            value={firstName}
-                            onChange={(e) => firstNameValidator(e.target.value)}
-                        />
-                    </div>
-                    <div className="signup-element">
-                        <div className="form-element-title">
-                            Last name
+                        <div className="form-row">
+                            <div className="signup-element">
+                                <div className="form-element-title">
+                                    First name
+                                </div>
+                                <input
+                                    type="text"
+                                    name="firstName"
+                                    className={isFirstNameValid || firstName.length===0 ? "input-text" : "input-text invalid"}
+                                    value={firstName}
+                                    onChange={(e) => firstNameValidator(e.target.value)}
+                                />
+                            </div>
+                            <div className="signup-element">
+                                <div className="form-element-title">
+                                    Last name
+                                </div>
+                                <input
+                                    type="text"
+                                    name="lastName"
+                                    className={isLastNameValid || lastName.length===0 ? "input-text" : "input-text invalid"}
+                                    value={lastName}
+                                    onChange={(e) => lastNameValidator(e.target.value)}
+                                />
+                            </div>
                         </div>
-                        <input
-                            type="text"
-                            name="lastName"
-                            className={isLastNameValid || lastName.length===0 ? "input-text" : "input-text invalid"}
-                            value={lastName}
-                            onChange={(e) => lastNameValidator(e.target.value)}
-                        />
-                    </div>
-                </div>
-                <div className="form-row">
-                    <div className="signup-element">
-                        <div className="form-element-title">
-                            Password
+                        <div className="form-row">
+                            <div className="signup-element">
+                                <div className="form-element-title">
+                                    Password
+                                </div>
+                                <input
+                                    type="password"
+                                    name="password1"
+                                    className={isPassword1Valid || password1.length===0 ? "input-text" : "input-text invalid"}
+                                    value={password1}
+                                    onChange={(e) => password1Validator(e.target.value)}
+                                />
+                            </div>
+                            <div className="signup-element">
+                                <div className="form-element-title">
+                                    Confirm password
+                                </div>
+                                <input
+                                    type="password"
+                                    name="password2"
+                                    className={isPassword2Valid || password2.length===0 ? "input-text" : "input-text invalid"}
+                                    value={password2}
+                                    onChange={(e) => password2Validator(e.target.value)}
+                                />
+                            </div>
                         </div>
-                        <input
-                            type="password"
-                            name="password1"
-                            className={isPassword1Valid || password1.length===0 ? "input-text" : "input-text invalid"}
-                            value={password1}
-                            onChange={(e) => password1Validator(e.target.value)}
-                        />
-                    </div>
-                    <div className="signup-element">
-                        <div className="form-element-title">
-                            Confirm password
+                        <div className="form-buttons">
+                            <div className="button" onClick={() => history.push("/login/")}>Login</div>
+                            {isEmailValid && isPassword1Valid && isPassword2Valid && isFirstNameValid && isLastNameValid ?
+                                <div className="button active-button" onClick={() => handleSignup()}>Sign up</div>
+                            :   <div className="button inactive">Sign up</div>
+                            }
                         </div>
-                        <input
-                            type="password"
-                            name="password2"
-                            className={isPassword2Valid || password2.length===0 ? "input-text" : "input-text invalid"}
-                            value={password2}
-                            onChange={(e) => password2Validator(e.target.value)}
-                        />
                     </div>
-                </div>
-                <div className="form-buttons">
-                    <div className="button" onClick={() => history.push("/login/")}>Login</div>
-                    {isEmailValid && isPassword1Valid && isPassword2Valid && isFirstNameValid && isLastNameValid ?
-                        <div className="button active-button" onClick={() => handleSignup()}>Sign up</div>
-                    :   <div className="button inactive">Sign up</div>
-                    }
-                </div>
+                }
             </div>
         </div>
     )

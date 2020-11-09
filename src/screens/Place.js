@@ -20,7 +20,7 @@ import place from '../place.json';
 export default function Place() {
 
     const history = useHistory();
-    const params = useParams();
+    const { id } = useParams();
     const [sliderIndex, setSliderIndex] = useState(-1);
     const [isAdmin, setAdmin] = useState(true);
 

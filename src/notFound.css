@@ -1,0 +1,27 @@
+.not-found-status-code {
+    z-index: 110000;
+    position: absolute;
+    top: 22%;
+    width: 100%;
+    font-family: 'Staatliches';
+    font-size: 128px;
+    letter-spacing: 3px;
+    color: #3e3e3e;
+    text-shadow: -3px 3px 0px #ED6E2D, -6px 6px 0px #791740;
+    text-align: center;
+    user-select: none;
+}
+
+.not-found-status {
+    z-index: 110000;
+    position: absolute;
+    top: 51%;
+    width: 100%;
+    font-family: 'Staatliches';
+    font-size: 48px;
+    letter-spacing: 3px;
+    color: #3e3e3e;
+    text-shadow: -1px 1px 0px #ED6E2D, -2px 2px 0px #791740;
+    text-align: center;
+    user-select: none;
+}

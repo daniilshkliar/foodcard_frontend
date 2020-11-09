@@ -94,14 +94,12 @@ export default function Gallery() {
             }
         };
 
-        (() => {
-            navigator.geolocation.getCurrentPosition((position) => {
-                setCoordinates([position.coords.latitude, position.coords.longitude]);
-                fetchData(position.coords.latitude, position.coords.longitude);
-                return;
-            });
-            fetchData(53.907058, 27.557018);
-        })();
+        navigator.geolocation.getCurrentPosition((position) => {
+            setCoordinates([position.coords.latitude, position.coords.longitude]);
+            fetchData(position.coords.latitude, position.coords.longitude);
+            return;
+        });
+        fetchData(53.907058, 27.557018);
     }, []);
 
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
@@ -30,12 +30,11 @@ export default function Login() {
     
             localStorage.setItem('access', response.data.access);
             localStorage.setItem('refresh', response.data.refresh);
-
             history.push("/");
         } catch(error) {
             setMessages(
                 (error.response && error.response.data) ||
-                error.message ||
+                error.response ||
                 error.toString());
         } finally {
             setLoading(false);
@@ -62,6 +61,9 @@ export default function Login() {
                 </div>
             }
             <div className="login-container">
+                <div className="auth-logo">
+                    Foodcard
+                </div>
                 <div className="auth-title">
                     Login
                 </div>
