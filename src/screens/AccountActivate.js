@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Spinner from '../components/LoaderSpinner/Spinner';
+import axiosApiInstance from '../services/TokenWrap';
 
 
 export default function AccountActivate() {
@@ -16,9 +17,9 @@ export default function AccountActivate() {
             setMessages("");
 
             try {
-                const response = await axios.get("http://127.0.0.1:8000/api/activate/" + uid + "/" + token + "/");
+                const response = await axios.get("/api/activate/" + uid + "/" + token + "/", { withCredentials: true });
+                axiosApiInstance.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.access;
                 localStorage.setItem('access', response.data.access);
-                localStorage.setItem('refresh', response.data.refresh);
                 history.push("/");
             } catch(error) {
                 switch(error.response.status) {

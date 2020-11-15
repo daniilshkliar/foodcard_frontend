@@ -3,6 +3,7 @@ import axios from "axios";
 import { useHistory } from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
 import Spinner from '../components/LoaderSpinner/Spinner';
+import axiosApiInstance from '../services/TokenWrap';
 
 
 export default function Login() {
@@ -21,21 +22,21 @@ export default function Login() {
         setMessages({});
 
         try {
-            const response = await axios.post(
-                "http://127.0.0.1:8000/api/token/", {
-                    username: email,
+            const response = await axios.post("/api/login/", {
+                    email: email,
                     password: password
-                }
+                },
+                { withCredentials: true }
             );
-    
+            axiosApiInstance.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.access;
             localStorage.setItem('access', response.data.access);
-            localStorage.setItem('refresh', response.data.refresh);
             history.push("/");
         } catch(error) {
             setMessages(
                 (error.response && error.response.data) ||
                 error.response ||
-                error.toString());
+                error.toString()
+            );
         } finally {
             setLoading(false);
         }

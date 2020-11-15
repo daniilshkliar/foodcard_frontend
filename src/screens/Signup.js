@@ -28,7 +28,7 @@ export default function Signup() {
         setMessages({});
         
         try {
-            const response = await axios.post("http://127.0.0.1:8000/api/signup/", {
+            await axios.post("/api/signup/", {
                 email: email,
                 first_name: firstName,
                 last_name: lastName,
@@ -43,7 +43,8 @@ export default function Signup() {
                     error.response.data &&
                     error.response.data.message) ||
                 error.response ||
-                error.toString());
+                error.toString()
+            );
         } finally {
             setLoading(false);
         }

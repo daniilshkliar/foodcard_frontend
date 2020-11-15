@@ -16,8 +16,8 @@ export default function Home() {
         setLoading(true);
 
         const fetchData = async () => {
-            const data = await axiosApiInstance.get("http://127.0.0.1:8000/api/isit/", {});
-            setMessages(data.data.response);
+            const response = await axiosApiInstance.get("/api/isit/", { withCredentials: true });
+            setMessages(response.data.response);
         };
 
         fetchData();

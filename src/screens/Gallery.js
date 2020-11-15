@@ -120,7 +120,7 @@ export default function Gallery() {
                             className="filter-window"
                             transition={{ duration: 0.4 }}
                             initial={{ left: "-500px" }}
-                            animate={{ left: "0" }}
+                            animate={{ left: "0px" }}
                             exit={{ left: "-500px" }}
                         >
                             <Filter

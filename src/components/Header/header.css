@@ -1,4 +1,6 @@
-.header {z-index: 10;}
+.header {z-index: 300000;}
+.account-background{z-index: 99;}
+.account-window{z-index: 100;}
 
 .header {
 	width: 100%;
@@ -21,7 +23,7 @@
 .icons {
 	position: absolute;
 	right: 0;
-	width: 100px;
+	width: auto;
 	height: 50px;
 	margin: 10px 20px;
 }
@@ -40,4 +42,26 @@
 
 .menu-icon:hover {
 	transform: rotate(90deg);
+}
+
+.account-background {
+	position: fixed;
+	top: 70px;
+	left: 0;
+	height: calc(100% - 70px);
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	overflow: hidden;
+}
+
+.account-window {
+	position: fixed;
+	top: 70px;
+	right: 0;
+	width: 300px;
+	height: calc(100% - 70px);
+	padding: 20px;
+	background-color: #ffffff;
+	display: flex;
+	flex-direction: column;
 }

@@ -16,7 +16,7 @@ import './auth.css';
 
 
 const history = createBrowserHistory();
-const isAuthenticated = localStorage.getItem('access') && localStorage.getItem('refresh');
+const isAuthenticated = localStorage.getItem('access');
 
 						
 ReactDOM.render(
