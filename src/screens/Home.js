@@ -12,17 +12,17 @@ export default function Home() {
     const [isLoading, setLoading] = useState(false);
 
 
-    useEffect(() => {
-        setLoading(true);
+    // useEffect(() => {
+    //     setLoading(true);
 
-        const fetchData = async () => {
-            const response = await axiosApiInstance.get("/api/isit/", { withCredentials: true });
-            setMessages(response.data.response);
-        };
+    //     const fetchData = async () => {
+    //         const response = await axiosApiInstance.get("/api/isit/", { withCredentials: true });
+    //         setMessages(response.data.response);
+    //     };
 
-        fetchData();
-        setLoading(false);
-    }, []);
+    //     fetchData();
+    //     setLoading(false);
+    // }, []);
 
 
     return (

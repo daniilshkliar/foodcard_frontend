@@ -11,6 +11,7 @@ export default function AccountActivate() {
     const { uid, token } = useParams();
     const [messages, setMessages] = useState("");
 
+    
     useEffect(() => {
 
         const handleActivation = async () => {
@@ -32,6 +33,7 @@ export default function AccountActivate() {
         
         handleActivation();
     }, []);
+
 
     return (
         <div className="auth">
