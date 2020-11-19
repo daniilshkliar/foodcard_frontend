@@ -18,13 +18,14 @@ export default function AccountActivate() {
             setMessages("");
 
             try {
-                const response = await axios.get("/api/activate/" + uid + "/" + token + "/", { withCredentials: true });
+                const response = await axios.get("/authentication/activate/" + uid + "/" + token + "/", { withCredentials: true });
                 axiosApiInstance.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.access;
                 localStorage.setItem('access', response.data.access);
                 history.push("/");
             } catch(error) {
                 switch(error.response.status) {
-                    case 400: history.push("/notfound"); break;
+                    case 400: history.push("/notfound/"); break;
+                    case 404: history.push("/notfound/"); break;
                     case 500: setMessages(error.response.statusText); break;
                     default: ;
                 }

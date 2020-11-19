@@ -22,7 +22,7 @@ export default function Login() {
         setMessages({});
 
         try {
-            const response = await axios.post("/api/login/", {
+            const response = await axios.post("/authentication/login/", {
                     email: email,
                     password: password
                 },
@@ -33,7 +33,9 @@ export default function Login() {
             history.push("/");
         } catch(error) {
             setMessages(
-                (error.response && error.response.data) ||
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
                 error.response ||
                 error.toString()
             );
@@ -56,9 +58,14 @@ export default function Login() {
     return (
         <div className="auth">
             {isLoading && <Spinner />}
-            {messages.detail &&
+            {messages.non_field_errors &&
                 <div className="auth-error">
-                    {messages.detail}
+                    {messages.non_field_errors[0]}
+                </div>
+            }
+            {messages.status===500 &&
+                <div className="auth-error">
+                    {messages.statusText}
                 </div>
             }
             <div className="login-container">

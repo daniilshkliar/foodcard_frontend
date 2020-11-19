@@ -28,7 +28,7 @@ export default function Signup() {
         setMessages({});
         
         try {
-            await axios.post("/api/signup/", {
+            await axios.post("/authentication/signup/", {
                 email: email,
                 first_name: firstName,
                 last_name: lastName,
@@ -81,7 +81,7 @@ export default function Signup() {
             {isLoading && <Spinner />}
             {messages.non_field_errors &&
                 <div className="auth-error">
-                    {messages.non_field_errors.map((message) => (<div>{message}</div>))}
+                    {messages.non_field_errors[0]}
                 </div>
             }
             {messages.status===500 &&
