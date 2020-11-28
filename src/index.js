@@ -23,7 +23,7 @@ ReactDOM.render(
 	<Router history={history}>
 		<Switch>
 			<Route exact path="/">
-				<Home isAuthenticated={isAuthenticated} />
+				<Home />
 			</Route>
 			{isAuthenticated ? 
 				<Redirect from="/login" to="/" /> 
@@ -43,10 +43,10 @@ ReactDOM.render(
 				</Route>
 			}
 			<Route exact path="/gallery">
-				<Gallery isAuthenticated={isAuthenticated} />
+				<Gallery />
 			</Route>
 			<Route exact path="/place/:id">
-				<Place isAuthenticated={isAuthenticated} />
+				<Place />
 			</Route>
 			<Route exact path="/notfound">
 				<NotFound />

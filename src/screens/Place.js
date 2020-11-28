@@ -120,7 +120,7 @@ export default function Place() {
                             {place.place.reviews.map((review, index) => (
                                 <div key={review.id} className="place-review">
                                     <div className="review-user">
-                                        <div className={"review-avatar color" + review.id.toString().slice(-1)}>
+                                        <div className={"avatar color" + review.id.toString().slice(-1)}>
                                             {review.username.charAt(0).toUpperCase()}
                                         </div>
                                         <div className="review-username">{review.username}</div>
