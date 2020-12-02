@@ -80,20 +80,6 @@ export default function Gallery() {
 
 
     useEffect(() => {
-        
-        const fetchData = async (lat, long) => {
-            const data = await axios(
-                "https://geocode-maps.yandex.ru/1.x/?apikey=d08fc50d-a7e6-4f37-bc51-1eb5df129e9d&format=json&geocode=" + long + "," + lat + "&lang=en-US"
-            );
-            let country = data.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.CountryName;
-            let city = data.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName;
-            
-            if (sourceCoutries.find(element => element.country===country && element.city.includes(city))) {
-                setCountry(country);
-                setCity(city);
-            }
-        };
-
         navigator.geolocation.getCurrentPosition((position) => {
             setCoordinates([position.coords.latitude, position.coords.longitude]);
             fetchData(position.coords.latitude, position.coords.longitude);
@@ -101,6 +87,19 @@ export default function Gallery() {
         });
         fetchData(53.907058, 27.557018);
     }, []);
+
+    const fetchData = async (lat, long) => {
+        const data = await axios(
+            "https://geocode-maps.yandex.ru/1.x/?apikey=d08fc50d-a7e6-4f37-bc51-1eb5df129e9d&format=json&geocode=" + long + "," + lat + "&lang=en-US"
+        );
+        let country = data.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.CountryName;
+        let city = data.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName;
+        
+        if (sourceCoutries.find(element => element.country===country && element.city.includes(city))) {
+            setCountry(country);
+            setCity(city);
+        }
+    }
 
 
     return (

@@ -64,4 +64,9 @@
 	background-color: #ffffff;
 	display: flex;
 	flex-direction: column;
+	overflow-y: auto;
+}
+
+.account-window::-webkit-scrollbar {
+	display: none;
 }

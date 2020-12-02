@@ -45,7 +45,7 @@ ReactDOM.render(
 			<Route exact path="/gallery">
 				<Gallery />
 			</Route>
-			<Route exact path="/place/:id">
+			<Route exact path="/place/:city/:title">
 				<Place />
 			</Route>
 			<Route exact path="/notfound">

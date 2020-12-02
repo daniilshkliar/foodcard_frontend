@@ -20,39 +20,38 @@ export default function AccountBar({ setAuthenticated, setAccountBarActive }) {
 
 
     useEffect(() => {
-
-        const fetchFavorites = async () => {
-            const response = await axiosApiInstance.get("/core/get_favorites/", { withCredentials: true });
-            setFavorites(response.data);
-        }
-
-        const fetchData = async () => {
-            setMessages({});
-            setLoading(true);
-
-            try {
-                const response = await axiosApiInstance.get("/authentication/get_user/", { withCredentials: true });
-                setID(response.data.id);
-                setSuperuser(response.data.is_superuser);
-                setEmail(response.data.email);
-                setFirstName(response.data.first_name);
-                setLastName(response.data.last_name);
-                fetchFavorites();
-            } catch(error) {
-                setMessages(
-                    (error.response &&
-                        error.response.data &&
-                        error.response.data.message) ||
-                    error.response ||
-                    error.toString()
-                );
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchData();
 	}, []);
+
+    const fetchFavorites = async () => {
+        const response = await axiosApiInstance.get("/core/get_favorites/", { withCredentials: true });
+        setFavorites(response.data);
+    }
+
+    const fetchData = async () => {
+        setMessages({});
+        setLoading(true);
+
+        try {
+            fetchFavorites();
+            const response = await axiosApiInstance.get("/authentication/get_user/", { withCredentials: true });
+            setID(response.data.id);
+            setSuperuser(response.data.is_superuser);
+            setEmail(response.data.email);
+            setFirstName(response.data.first_name);
+            setLastName(response.data.last_name);
+        } catch(error) {
+            setMessages(
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.response ||
+                error.toString()
+            );
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const logout = () => {
         localStorage.removeItem('access');
@@ -93,7 +92,9 @@ export default function AccountBar({ setAuthenticated, setAccountBarActive }) {
                                     <div className="fav-button-panel">
                                         {favorites.map((elem, index) => (
                                             <div key={index} className="">
-                                                <div className="button active-button" onClick={() => history.push("/place/elem/")}>{elem}</div>
+                                                <div className="button" onClick={() => history.push("/place/" + elem.city + "/" + elem.title + "/")}>
+                                                    {elem.title}
+                                                </div>
                                             </div>
                                         ))}
                                     </div>
