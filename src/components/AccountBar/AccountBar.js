@@ -5,11 +5,15 @@ import axiosApiInstance from '../../services/TokenWrap';
 
 import './accountBar.css';
 
+import ArrowDownIcon from '../../icons/arrow_down_icon.svg';
+import ArrowUpIcon from '../../icons/arrow_up_icon.svg';
+
 
 export default function AccountBar({ setAuthenticated, setAccountBarActive }) {
 
     const history = useHistory();
     const [isLoading, setLoading] = useState(false);
+    const [isFavoriteLoading, setFavoriteLoading] = useState(false);
     const [id, setID] = useState(null);
     const [isSuperuser, setSuperuser] = useState(false);
     const [email, setEmail] = useState("");
@@ -17,6 +21,7 @@ export default function AccountBar({ setAuthenticated, setAccountBarActive }) {
     const [lastName, setLastName] = useState("");
     const [favorites, setFavorites] = useState([]);
     const [messages, setMessages] = useState({});
+    const [isFavoriteActive, setFavoriteActive] = useState(false);
 
 
     useEffect(() => {
@@ -24,8 +29,10 @@ export default function AccountBar({ setAuthenticated, setAccountBarActive }) {
 	}, []);
 
     const fetchFavorites = async () => {
+        setFavoriteLoading(true);
         const response = await axiosApiInstance.get("/core/get_favorites/", { withCredentials: true });
         setFavorites(response.data);
+        setFavoriteLoading(false);
     }
 
     const fetchData = async () => {
@@ -33,8 +40,8 @@ export default function AccountBar({ setAuthenticated, setAccountBarActive }) {
         setLoading(true);
 
         try {
-            fetchFavorites();
             const response = await axiosApiInstance.get("/authentication/get_user/", { withCredentials: true });
+            fetchFavorites();
             setID(response.data.id);
             setSuperuser(response.data.is_superuser);
             setEmail(response.data.email);
@@ -84,22 +91,36 @@ export default function AccountBar({ setAuthenticated, setAccountBarActive }) {
                             <div className="account-row">{email}</div>
                             <div className="account-row">{firstName}</div>
                             <div className="account-row">{lastName}</div>
-                            {favorites.length > 0 &&
-                                <div className="account-scope">
-                                    <div className="account-scope-header">
-                                        Favorites
-                                    </div>
-                                    <div className="fav-button-panel">
-                                        {favorites.map((elem, index) => (
-                                            <div key={index} className="">
-                                                <div className="button" onClick={() => history.push("/place/" + elem.city + "/" + elem.title + "/")}>
-                                                    {elem.title}
-                                                </div>
-                                            </div>
-                                        ))}
+                            <div className="account-scope">
+                                <div className="account-scope-header clickable" onClick={() => setFavoriteActive(!isFavoriteActive)}>
+                                    Favorites
+                                    <div className="invert arrow">
+                                        {isFavoriteActive ?
+                                        <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
+                                        : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
+                                        }
                                     </div>
                                 </div>
-                            }
+                                {isFavoriteActive &&
+                                    <div className="fav-button-panel">
+                                        {isFavoriteLoading ?
+                                            <Spinner small={true} />
+                                        : (favorites.length > 0 ?
+                                                (favorites.map((elem, index) => (
+                                                    <div key={index} className="">
+                                                        <div className="button orange-button" onClick={() => history.push("/place/" + elem.place.address.city + "/" + elem.place.title + "/")}>
+                                                            {elem.place.title}
+                                                        </div>
+                                                    </div>
+                                                )))
+                                            :   <div className="tip">
+                                                    You have no favorite places
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                }
+                            </div>
                             {isSuperuser &&
                                 <div className="account-scope">
                                     <div className="button active-button" onClick={() => history.push("/control_panel/")}>Control panel</div>

@@ -60,7 +60,6 @@
 	right: 0;
 	width: 300px;
 	height: calc(100% - 70px);
-	padding: 20px;
 	background-color: #ffffff;
 	display: flex;
 	flex-direction: column;

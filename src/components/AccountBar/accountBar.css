@@ -1,4 +1,5 @@
 .account-bar {
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,8 +22,13 @@
 }
 
 .account-scope-header {
+    width: 100%;
     margin: 0 0 5px 0;
-    color: #8e8e8e;
+    color: #3e3e3e;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
 }
 
 .fav-button-panel {

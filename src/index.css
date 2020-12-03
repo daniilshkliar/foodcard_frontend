@@ -90,6 +90,12 @@ a {
 	opacity: 0.9;
 }
 
+.orange-button:hover {
+	border-color: #F47D24;
+	background-color: #F47D24;
+	color: #ffffff;
+}
+
 .clickable {
 	cursor: pointer;
 	transition: all 0.1s;
@@ -357,4 +363,9 @@ input[type=text]:focus, input[type=text]:hover {
 
 .map-close:hover {
 	transform: rotate(90deg);
+}
+
+.tip {
+	color: #8e8e8e;
+	font-size: 14px;
 }

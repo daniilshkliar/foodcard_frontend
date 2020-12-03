@@ -52,3 +52,60 @@
     animation: loading-animation-o 0.7s linear infinite;
     animation-delay: -0.35s;
 }
+
+
+
+.small-loading-background {
+    z-index: 100000;
+    position: relative;
+    width: 100%;
+    height: 20px;
+    background: #ffffffaa;
+    overflow: hidden;
+}
+
+@keyframes small-loading-animation-o {
+    0%      {opacity: 1; transform: translate(0 0);}
+    49.99%  {opacity: 1; transform: translate(15px,0);}
+    50%     {opacity: 0; transform: translate(15px,0);}
+    100%    {opacity: 0; transform: translate(0,0);}
+}
+
+@keyframes small-loading-animation {
+    0%      {transform: translate(0,0);}
+    50%     {transform: translate(15px,0);}
+    100%    {transform: translate(0,0);}
+}
+
+.small-loading-animation {
+    position: relative;
+    top: calc(50% - 5px);
+    left: calc(50% - 12.5px);
+    transform: translateZ(0) scale(1);
+    backface-visibility: hidden;
+}
+
+.small-loading-animation div {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.small-loading-animation div:nth-child(1) {
+    background: #ED6E2D;
+    animation: small-loading-animation 0.7s linear infinite;
+    animation-delay: -0.35s;
+}
+
+.small-loading-animation div:nth-child(2) {
+    background: #791740;
+    animation: small-loading-animation 0.7s linear infinite;
+    animation-delay: 0s;
+}
+
+.small-loading-animation div:nth-child(3) {
+    background: #ED6E2D;
+    animation: small-loading-animation-o 0.7s linear infinite;
+    animation-delay: -0.35s;
+}
