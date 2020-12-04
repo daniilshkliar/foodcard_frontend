@@ -22,10 +22,12 @@ export default function AccountBar({ setAuthenticated, setAccountBarActive }) {
     const [favorites, setFavorites] = useState([]);
     const [messages, setMessages] = useState({});
     const [isFavoriteActive, setFavoriteActive] = useState(false);
+    const [isAuthenticated, setAuthenticated] = useState(localStorage.getItem('access'));
 
 
     useEffect(() => {
         fetchData();
+        fetchFavorites();
 	}, []);
 
     const fetchFavorites = async () => {
@@ -41,7 +43,6 @@ export default function AccountBar({ setAuthenticated, setAccountBarActive }) {
 
         try {
             const response = await axiosApiInstance.get("/authentication/get_user/", { withCredentials: true });
-            fetchFavorites();
             setID(response.data.id);
             setSuperuser(response.data.is_superuser);
             setEmail(response.data.email);
@@ -83,11 +84,12 @@ export default function AccountBar({ setAuthenticated, setAccountBarActive }) {
                             </div>
                         </div>
                     :   <div className="account-bar">
-                            {id &&
+                        {isAuthenticated ?
+                        (   (id &&
                                 <div className={"user-avatar color" + id.toString().slice(-1)}>
                                     {firstName.charAt(0).toUpperCase()}
                                 </div>
-                            }
+                            )
                             <div className="account-row">{email}</div>
                             <div className="account-row">{firstName}</div>
                             <div className="account-row">{lastName}</div>
@@ -123,7 +125,7 @@ export default function AccountBar({ setAuthenticated, setAccountBarActive }) {
                             </div>
                             {isSuperuser &&
                                 <div className="account-scope">
-                                    <div className="button active-button" onClick={() => history.push("/control_panel/")}>Control panel</div>
+                                    <div className="button active-button" onClick={() => history.push("/controlpanel/")}>Control panel</div>
                                 </div>
                             }
                             <div className="account-scope">
@@ -131,6 +133,7 @@ export default function AccountBar({ setAuthenticated, setAccountBarActive }) {
                                 <div className="button" onClick={() => logout()}>Log out</div>
                             </div>
                         </div>
+                        :   
                     }
                 </div>
             }

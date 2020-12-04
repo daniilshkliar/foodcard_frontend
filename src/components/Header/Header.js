@@ -12,7 +12,6 @@ export default function Header({ isClickable }) {
 
     const history = useHistory();
     const [isAccountBarActive, setAccountBarActive] = useState(false);
-    const [isAuthenticated, setAuthenticated] = useState(localStorage.getItem('access'));
 
 	return (
         <div>
@@ -22,20 +21,12 @@ export default function Header({ isClickable }) {
 					: 	<div className="logo-place">FOODCARD</div>
                 }
 				<div className="icons">
-					{isAuthenticated ?
-                        <img
-                            src={AccountIcon}
-                            className="account-icon"
-                            alt="Account icon"
-                            draggable="false"
-                            onClick={() => setAccountBarActive(!isAccountBarActive)}/>
-                    :   <img
-                            src={AccountIcon}
-                            className="account-icon"
-                            alt="Account icon"
-                            draggable="false"
-                            onClick={() => history.push("/login/")}/>
-                    }
+                    <img
+                        src={AccountIcon}
+                        className="account-icon"
+                        alt="Account icon"
+                        draggable="false"
+                        onClick={() => setAccountBarActive(!isAccountBarActive)}/>
 				</div>
             </div>
             <AnimatePresence>
@@ -55,7 +46,7 @@ export default function Header({ isClickable }) {
                             animate={{ right: "0px" }}
                             exit={{ right: "-300px" }}
                         >
-                            <AccountBar setAuthenticated={setAuthenticated} setAccountBarActive={setAccountBarActive} />
+                            <AccountBar />
                         </motion.div>
                     </div>
                 }

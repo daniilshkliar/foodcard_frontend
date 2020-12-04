@@ -9,6 +9,7 @@ import Place from './screens/Place';
 import Login from './screens/Login';
 import Signup from './screens/Signup';
 import AccountActivate from './screens/AccountActivate';
+import ControlPanel from './screens/ControlPanel';
 import NotFound from './screens/NotFound';
 
 import './index.css';
@@ -40,6 +41,11 @@ ReactDOM.render(
 			{!isAuthenticated &&
 				<Route exact path="/activate/:uid/:token">
 					<AccountActivate />
+				</Route>
+			}
+			{isAuthenticated && //isSuperUser or Manager
+				<Route exact path="/controlpanel">
+					<ControlPanel />
 				</Route>
 			}
 			<Route exact path="/gallery">
