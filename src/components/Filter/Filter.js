@@ -3,8 +3,6 @@ import axios from 'axios';
 
 import './filter.css';
 
-import DescendingIcon from '../../icons/descending_icon.svg';
-import AscendingIcon from '../../icons/ascending_icon.svg';
 import ArrowDownIcon from '../../icons/arrow_down_icon.svg';
 import ArrowUpIcon from '../../icons/arrow_up_icon.svg';
 
@@ -12,8 +10,6 @@ import ArrowUpIcon from '../../icons/arrow_up_icon.svg';
 export default function Filter({
     setSortMode,
     sortMode,
-    setSortDirection,
-    sortDirection,
     setOpen,
     open,
     setMinRating,
@@ -127,21 +123,18 @@ export default function Filter({
     }
 
     const fetchCountryCoordinates = async (country) => {
-
         const data = await axios(
             "https://geocode-maps.yandex.ru/1.x/?apikey=d08fc50d-a7e6-4f37-bc51-1eb5df129e9d&format=json&geocode=" + country
         );
         setCoordinates([...data.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ').map(el => parseInt(el)).reverse()]);
-    };
+    }
 
     const fetchCityCoordinates = async (country, city) => {
-        
         const data = await axios(
             "https://geocode-maps.yandex.ru/1.x/?apikey=d08fc50d-a7e6-4f37-bc51-1eb5df129e9d&format=json&geocode=" + country + "+" + city
         );
         setCoordinates([...data.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ').map(el => parseFloat(el)).reverse()]);
-    };
-
+    }
 
     return (
         <div className="filter">
@@ -152,28 +145,18 @@ export default function Filter({
                 <div className="filter-header">
                     Sort by
                 </div>
-                <div className="filter-body">   
-                    <div className="sort-direction">
-                        <div className={"button filter-element" + (sortDirection ? " active-button icon-selected" : "")}
-                            onClick={() => setSortDirection(true)}>
-                            <img src={DescendingIcon} alt={"Descending icon"} draggable="false" />
-                        </div>
-                        <div className={"button filter-element" + (!sortDirection ? " active-button icon-selected" : "")}
-                            onClick={() => setSortDirection(false)}>
-                            <img src={AscendingIcon} alt={"Ascending icon"} draggable="false" />
-                        </div>
-                    </div>
+                <div className="filter-body">
                     <div className={"button filter-element" + (sortMode===1 ? " active-button" : "")}
                         onClick={() => setSortMode(1)}>
-                        Rating
+                        Most rated
                     </div>
                     <div className={"button filter-element" + (sortMode===2 ? " active-button" : "")}
                         onClick={() => setSortMode(2)}>
-                        Popularity
+                        Most popular
                     </div>
                     <div className={"button filter-element" + (sortMode===3 ? " active-button" : "")}
                         onClick={() => setSortMode(3)}>
-                        Distance
+                        Nearest
                     </div>
                 </div>
             </div>
@@ -357,5 +340,5 @@ export default function Filter({
                 </div>}
             </div>
         </div>
-    );
+    )
 }

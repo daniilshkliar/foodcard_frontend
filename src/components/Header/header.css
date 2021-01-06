@@ -36,7 +36,7 @@
 	transition: all 0.3s linear;
 }
 
-.account-icon:hover {
+.account-icon:hover, .account-icon:focus {
 	transform: scale(1.2);
 }
 

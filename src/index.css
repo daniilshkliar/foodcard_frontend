@@ -75,7 +75,7 @@ a {
 	user-select: none;
 }
 
-.button:hover {
+.button:hover, .button:focus {
 	background-color: #eaeaea;
 }
 
@@ -85,7 +85,7 @@ a {
 	color: #ffffff;
 }
 
-.active-button:hover {
+.active-button:hover, .active-button:focus {
 	background-color: #791740;
 	opacity: 0.9;
 }
@@ -368,4 +368,5 @@ input[type=text]:focus, input[type=text]:hover {
 .tip {
 	color: #8e8e8e;
 	font-size: 14px;
+	text-align: center;
 }

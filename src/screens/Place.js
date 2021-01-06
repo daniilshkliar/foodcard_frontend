@@ -70,7 +70,7 @@ export default function Place() {
                         {place.place.title}
                     </div>
                     <div className="place-row">
-                        <div className="button active-button">Reserve</div>
+                        <div className="button active-button" onClick={() => history.push("/reservation/")}>Reserve</div>
                         <div className={"favorite" + (place.place.is_favorite ? " active-button" : "")}>❥</div>
                     </div>
                     <div className="place-categories">

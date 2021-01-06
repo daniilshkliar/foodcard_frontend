@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useLayoutEffect, createRef } from 'react';
 import { useHistory } from 'react-router-dom';
-import { YMaps, Map, Placemark, ZoomControl } from 'react-yandex-maps';
-import BeautyStars from 'beauty-stars';
-import { motion, AnimatePresence } from "framer-motion";
 import axios from 'axios';
+import { YMaps, Map, Placemark, ZoomControl } from 'react-yandex-maps';
+import { motion, AnimatePresence } from 'framer-motion';
+import BeautyStars from 'beauty-stars';
+
 import Header from '../components/Header/Header';
 import Filter from '../components/Filter/Filter';
 
@@ -13,11 +14,11 @@ import ArrowUpIcon from '../icons/arrow_up_icon.svg';
 
 import places from '../places.json';
 
+
 function useWindowSize() {
     const [size, setSize] = useState([0, 0]);
     
     useLayoutEffect(() => {
-
         function updateSize() {
             setSize([window.innerWidth, window.innerHeight]);
         }
@@ -31,14 +32,12 @@ function useWindowSize() {
 }
 
 export default function Gallery() {
-
     const [width, height] = useWindowSize();
     const history = useHistory();
     const [coordinates, setCoordinates] = useState([53.907058, 27.557018]);
     const [searchQuery, setSearchQuery] = useState("");
     const [hoveredCard, setHoveredCard] = useState(-1);
     const [isFilterActive, setFilter] = useState(false);
-    const [sortDirection, setSortDirection] = useState(true);
     const [sortMode, setSortMode] = useState(2);
     const [open, setOpen] = useState(0);
     const [minRating, setMinRating] = useState(false);
@@ -78,20 +77,18 @@ export default function Gallery() {
         }
     ];
 
-
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((position) => {
             setCoordinates([position.coords.latitude, position.coords.longitude]);
             fetchData(position.coords.latitude, position.coords.longitude);
             return;
         });
+
         fetchData(53.907058, 27.557018);
     }, []);
 
     const fetchData = async (lat, long) => {
-        const data = await axios(
-            "https://geocode-maps.yandex.ru/1.x/?apikey=d08fc50d-a7e6-4f37-bc51-1eb5df129e9d&format=json&geocode=" + long + "," + lat + "&lang=en-US"
-        );
+        const data = await axios("https://geocode-maps.yandex.ru/1.x/?apikey=d08fc50d-a7e6-4f37-bc51-1eb5df129e9d&format=json&geocode=" + long + "," + lat + "&lang=en-US");
         let country = data.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.CountryName;
         let city = data.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName;
         
@@ -100,7 +97,6 @@ export default function Gallery() {
             setCity(city);
         }
     }
-
 
     return (
         <div className="app">
@@ -125,8 +121,6 @@ export default function Gallery() {
                             <Filter
                                 setFilter={setFilter}
                                 isFilterActive={isFilterActive}
-                                setSortDirection={setSortDirection}
-                                sortDirection={sortDirection}
                                 setSortMode={setSortMode}
                                 sortMode={sortMode}
                                 setOpen={setOpen}
@@ -184,11 +178,11 @@ export default function Gallery() {
                                         modules={['geoObject.addon.balloon']}
                                         properties={{
                                             balloonContentHeader:
-                                                '<div class="balloon-header"><a href="/place/' + place.id + '/">' + place.title + '</a></div>'
+                                                '<div class="balloon-header"><a href="/place/' + city + '/'+ place.title + '/">' + place.title + '</a></div>'
                                             ,
                                             balloonContentBody:
                                                 '<div class="balloon">' +
-                                                    '<a href="/place/' + place.id + '/">' +
+                                                    '<a href="/place/' + city + '/'+ place.title + '/">' +
                                                     '<div class="balloon-box"><div class="balloon-row">' + place.category + '</div></div>' +
                                                     '<img class="balloon-photo" src="' + place.photo + '" alt="Photo of ' + place.category + ' ' + place.title + '" draggable="false" /></a>' +
                                                 '</div>'
@@ -252,7 +246,7 @@ export default function Gallery() {
                                     className="gallery-card"
                                     onMouseEnter={() => setHoveredCard(place.id)}
                                     onMouseLeave={() => setHoveredCard(-1)}
-                                    onClick={() => history.push("/place/" + place.id + "/")}
+                                    onClick={() => history.push("/place/" + place.address.city + "/" + place.title + "/")}
                                 >
                                     <div className="gallery-card-photo">
                                         <img src={place.photo} alt={"A photo of " + place.title} draggable="false" />
@@ -268,8 +262,7 @@ export default function Gallery() {
                                     <div className="gallery-card-rating">
                                         {place.rating===null ?
                                             "No rating"
-                                            :
-                                            <BeautyStars
+                                        :   <BeautyStars
                                                 value={place.rating}
                                                 size="20px"
                                                 gap="4px"
@@ -294,5 +287,5 @@ export default function Gallery() {
                 }  
             </div>
         </div>
-    );
+    )
 }

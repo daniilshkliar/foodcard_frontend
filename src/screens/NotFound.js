@@ -1,4 +1,5 @@
 import React from 'react';
+
 import Spinner from '../components/LoaderSpinner/Spinner';
 
 import '../notFound.css';
@@ -15,5 +16,5 @@ export default function NotFound() {
                 Page not found
             </div>
         </div>
-    );
+    )
 }
