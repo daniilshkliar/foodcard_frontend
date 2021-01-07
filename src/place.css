@@ -144,10 +144,12 @@
     justify-content: center;
     align-items: center;
     user-select: none;
+	transition: all 0.2s linear;
 }
 
-.icon-link:hover {
-    background-color: #eaeaea;
+.icon-link:hover, .icon-link:focus, .icon-link a:focus {
+    transform: scale(1.1);
+	outline: none;
 }
 
 .icon-link a {
@@ -156,6 +158,8 @@
     border-radius: 20px;
     display: flex;
     justify-content: center;
+    outline: none;
+	transition: all 0.2s linear;
 }
 
 .website-icon {

@@ -9,7 +9,6 @@ import AccountIcon from '../../icons/account_icon.svg';
 
 
 export default function Header({ isClickable }) {
-
     const history = useHistory();
     const [isAccountBarActive, setAccountBarActive] = useState(false);
 
@@ -17,16 +16,19 @@ export default function Header({ isClickable }) {
         <div>
 			<div className="header fade1">
 				{isClickable ?
-					<div className="clickable logo-place" onClick={() => history.push("/")}>FOODCARD</div>
+					    <div className="clickable logo-place" onClick={() => history.push("/")}>FOODCARD</div>
 					: 	<div className="logo-place">FOODCARD</div>
                 }
 				<div className="icons">
                     <img
+                        tabindex="0"
                         src={AccountIcon}
                         className="account-icon"
                         alt="Account icon"
                         draggable="false"
-                        onClick={() => setAccountBarActive(!isAccountBarActive)}/>
+                        onClick={() => setAccountBarActive(!isAccountBarActive)}
+                        onKeyDown={(e) => e.key === 'Enter' && setAccountBarActive(!isAccountBarActive)}
+                    />
 				</div>
             </div>
             <AnimatePresence>

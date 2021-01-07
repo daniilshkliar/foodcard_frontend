@@ -38,6 +38,7 @@
 
 .account-icon:hover, .account-icon:focus {
 	transform: scale(1.2);
+	outline: none;
 }
 
 .menu-icon:hover {
