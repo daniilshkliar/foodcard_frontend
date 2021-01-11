@@ -9,7 +9,7 @@ import Spinner from '../components/LoaderSpinner/Spinner';
 import Header from '../components/Header/Header';
 import Slider from '../components/Slider/Slider';
 
-import '../place.css'
+import '../place.css';
 
 import WebsiteIcon from '../icons/website_icon.svg';
 import InstagramIcon from '../icons/instagram_icon.svg';
@@ -20,19 +20,23 @@ export default function Place() {
     const history = useHistory();
     const { city, title } = useParams();
     const [sliderIndex, setSliderIndex] = useState(-1);
-    const [description, setDescription] = useState("");
-    const [categories, setCategories] = useState([]);
     const [isFavorite, setFavorite] = useState(false);
-    const [photos, setPhotos] = useState([]);
+
+    const [placeTitle, setTitle] = useState("");
+    const [categories, setCategories] = useState([]);
     const [cuisines, setCuisines] = useState([]);
-    const [website, setWebsite] = useState("");
-    const [instagram, setInstagram] = useState("");
+    const [additionalServices, setAdditionalServices] = useState([]);
+    const [description, setDescription] = useState("");
     const [phone, setPhone] = useState("");
-    const [generalReview, setGeneralReview] = useState({});
-    const [reviews, setReviews] = useState([]);
-    const [additional, setAdditional] = useState([]);
-    const [address, setAddress] = useState({});
+    const [instagram, setInstagram] = useState("");
+    const [website, setWebsite] = useState("");
     const [operationHours, setOperationHours] = useState([]);
+    const [address, setAddress] = useState({"coordinates": {}});
+    const [generalReview, setGeneralReview] = useState({});
+    const [photos, setPhotos] = useState([]);
+    const [reviews, setReviews] = useState([]);
+    const [roundedRating, setRoundedRating] = useState(null);
+
     const [messages, setMessages] = useState({});
     const [isLoading, setLoading] = useState(false);
 
@@ -46,7 +50,18 @@ export default function Place() {
 
         await axios.get("/core/place/get/" + city + "/" + title + "/"
         ).then((response) => {
-            
+            setTitle(response.data.title);
+            setCategories(response.data.categories);
+            setCuisines(response.data.cuisines);
+            setAdditionalServices(response.data.additional_services);
+            setDescription(response.data.description);
+            setPhone(response.data.phone);
+            setInstagram(response.data.instagram);
+            setWebsite(response.data.website);
+            setOperationHours(response.data.operation_hours);
+            setAddress(response.data.address);
+            setGeneralReview(response.data.general_review);
+            setPhotos(response.data.photos);
         }).catch((error) => {
             setMessages(
                 (error.response &&
@@ -65,52 +80,66 @@ export default function Place() {
             {isLoading ?
                 <Spinner />
             :   <div className="app">
-                    {sliderIndex!==-1 &&
+                    {sliderIndex!==-1 && photos.length > 0 &&
                         <Slider elements={photos} sliderIndex={sliderIndex} setSliderIndex={setSliderIndex} />
                     }
                     <Header isClickable={true} />
                     <div className="main">
                         <div className="place-photos">
                             <div className="place-photo-container-1">
-                                <div onClick={() => setSliderIndex(0)}><img src={photos[0]} alt="Photo" draggable="false" className="place-photo" /></div>
-                                <div onClick={() => setSliderIndex(1)}><img src={photos[1]} alt="Photo" draggable="false" className="place-photo" /></div>
+                                <div className="color0" onClick={() => setSliderIndex(0)}>
+                                    {photos[0] && <img src={photos[0]} alt="Photo" draggable="false" className="place-photo" />}
+                                </div>
+                                <div className="color1" onClick={() => setSliderIndex(1)}>
+                                    {photos[1] && <img src={photos[1]} alt="Photo" draggable="false" className="place-photo" />}
+                                </div>
                             </div>
                             <div className="place-photo-container-2">
-                                <div onClick={() => setSliderIndex(2)}><img src={photos[2]} alt="Photo" draggable="false" className="place-photo" /></div>
+                                <div className="color2" onClick={() => setSliderIndex(2)}>
+                                    {photos[2] && <img src={photos[2]} alt="Photo" draggable="false" className="place-photo" />}
+                                </div>
                             </div>
                             <div className="place-photo-container-0">
-                                <div onClick={() => setSliderIndex(3)}><img src={photos[3]} alt="Photo" draggable="false" className="place-photo" /></div>
+                                <div className="color3" onClick={() => setSliderIndex(3)}>
+                                    {photos[3] && <img src={photos[3]} alt="Photo" draggable="false" className="place-photo" />}
+                                </div>
                             </div>
                             <div className="place-photo-container-3">
                                 <div className="place-photo-container-4">
-                                    <div onClick={() => setSliderIndex(4)}><img src={photos[4]} alt="Photo" draggable="false" className="place-photo" /></div>
+                                    <div className="color4" onClick={() => setSliderIndex(4)}>
+                                        {photos[4] && <img src={photos[4]} alt="Photo" draggable="false" className="place-photo" />}
+                                    </div>
                                 </div>
                                 <div className="place-photo-container-5">
-                                    <div onClick={() => setSliderIndex(5)}><img src={photos[5]} alt="Photo" draggable="false" className="place-photo" /></div>
-                                    <div onClick={() => setSliderIndex(6)}><img src={photos[6]} alt="Photo" draggable="false" className="place-photo" /></div>
+                                    <div className="color5" onClick={() => setSliderIndex(5)}>
+                                        {photos[5] && <img src={photos[5]} alt="Photo" draggable="false" className="place-photo" />}
+                                    </div>
+                                    <div className="color6" onClick={() => setSliderIndex(6)}>
+                                        {photos[6] && <img src={photos[6]} alt="Photo" draggable="false" className="place-photo" />}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div className="place-window">
                             <div className="place-title">
-                                {title}
+                                {placeTitle}
                             </div>
                             <div className="place-row">
                                 <div className="button active-button" onClick={() => history.push("/reservation/")}>Reserve</div>
                                 <div className={"favorite" + (isFavorite ? " active-button" : "")}>❥</div>
                             </div>
                             <div className="place-categories">
-                                {categories.map((elem, index) => (
+                                {categories && categories.map((elem, index) => (
                                     <div key={index} className="place-category">
-                                        {elem}
+                                        {elem.title}
                                         {index !== (categories.length - 1) && <div class="dot"></div>}
                                     </div>
                                 ))}
                             </div>
                             <div className="place-cuisines">
-                                {cuisines.map((elem, index) => (
+                                {cuisines && cuisines.map((elem, index) => (
                                     <div key={index} className="place-cuisine">
-                                        {elem}
+                                        {elem.title}
                                         {index !== (cuisines.length - 1) && <div class="dot"></div>}
                                     </div>
                                 ))}
@@ -140,7 +169,7 @@ export default function Place() {
                                     <div className="place-header">
                                         Reviews
                                     </div>
-                                    {reviews.map((review, index) => (
+                                    {reviews && reviews.map((review, index) => (
                                         <div key={review.id} className="place-review">
                                             <div className="review-user">
                                                 <div className={"user-avatar color" + review.id.toString().slice(-1)}>
@@ -204,10 +233,10 @@ export default function Place() {
                             <div className="place-general-review">
                                 <div className="place-row">
                                     <div className="place-general-review-overal-rounded">
-                                        {generalReview.overall}
+                                        {roundedRating}
                                     </div>
                                     <BeautyStars
-                                        value={generalReview.overall_rounded}
+                                        value={generalReview.rating}
                                         size="20px"
                                         gap="4px"
                                         inactiveColor="#DADADA"
@@ -217,62 +246,66 @@ export default function Place() {
                                         ({generalReview.amount} reviews)
                                     </div>
                                 </div>
-                                <div className="place-row">
-                                    <div className="place-general-review-column">
-                                        <div className="place-header">
-                                            Food
-                                        </div>
-                                        <div className="place-general-review-column-body">
-                                            {generalReview.food}
-                                        </div>
-                                    </div>
-                                    <div className="place-general-review-column">
-                                        <div className="place-header">
-                                            Service
-                                        </div>
-                                        <div className="place-general-review-column-body">
-                                            {generalReview.service}
-                                        </div>
-                                    </div>
-                                    <div className="place-general-review-column">
-                                        <div className="place-header">
-                                            Ambience
-                                        </div>
-                                        <div className="place-general-review-column-body">
-                                            {generalReview.ambience}
-                                        </div>
-                                    </div>
-                                    <div className="place-general-review-column">
-                                        <div className="place-header">
-                                            Noise
-                                        </div>
-                                        <div className="place-general-review-column-body">
-                                            {generalReview.noise}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="place-general-review-chart">
-                                    {generalReview.distribution.map((elem, index) => (
-                                        <div key={index} className="place-general-review-chart-line">
-                                            <div className="place-general-review-chart-line-label">{index + 1}</div>
-                                            <div className="place-general-review-chart-line-value">
-                                                <div
-                                                    className="place-general-review-chart-line-progress"
-                                                    style={{ width: (elem*100)/generalReview.amount + "%" }}
-                                                >
+                                {generalReview.amount > 0 &&
+                                    <div>
+                                        <div className="place-row">
+                                            <div className="place-general-review-column">
+                                                <div className="place-header">
+                                                    Food
+                                                </div>
+                                                <div className="place-general-review-column-body">
+                                                    {generalReview.food}
+                                                </div>
                                             </div>
+                                            <div className="place-general-review-column">
+                                                <div className="place-header">
+                                                    Service
+                                                </div>
+                                                <div className="place-general-review-column-body">
+                                                    {generalReview.service}
+                                                </div>
+                                            </div>
+                                            <div className="place-general-review-column">
+                                                <div className="place-header">
+                                                    Ambience
+                                                </div>
+                                                <div className="place-general-review-column-body">
+                                                    {generalReview.ambience}
+                                                </div>
+                                            </div>
+                                            <div className="place-general-review-column">
+                                                <div className="place-header">
+                                                    Noise
+                                                </div>
+                                                <div className="place-general-review-column-body">
+                                                    {generalReview.noise}
+                                                </div>
                                             </div>
                                         </div>
-                                    ))}
-                                </div>
+                                        <div className="place-general-review-chart">
+                                            {generalReview.distribution && generalReview.distribution.map((elem, index) => (
+                                                <div key={index} className="place-general-review-chart-line">
+                                                    <div className="place-general-review-chart-line-label">{index + 1}</div>
+                                                    <div className="place-general-review-chart-line-value">
+                                                        <div
+                                                            className="place-general-review-chart-line-progress"
+                                                            style={{ width: (elem*100)/generalReview.amount + "%" }}
+                                                        >
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                }
                                 <div className="place-additional">
                                     <div className="place-header">
-                                        Additional
+                                        Additional services
                                     </div>
                                     <div className="place-body">
-                                        {additional.map((elem, index) => (
+                                        {additionalServices && additionalServices.map((elem, index) => (
                                             <div key={index}>
-                                                {elem}
+                                                {elem.title}
                                             </div>
                                         ))}
                                     </div>
@@ -282,13 +315,17 @@ export default function Place() {
                                         Hours of operation
                                     </div>
                                     <div className="place-body">
-                                        {operationHours.map((elem, index) => (
+                                        {operationHours && operationHours.map((elem, index) => (
                                             <div key={index} className="place-operation-hours-row">
                                                 <div className="place-weekday">
                                                     {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][index]}
                                                 </div>
-                                                {}
-                                                <div>{elem[0] + " - " + elem[1]}</div>
+                                                {index === new Date().getDay() - 1 && <div class="orange-dot"></div>}
+                                                <div>
+                                                    {new Date(elem[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) 
+                                                    + " - " + 
+                                                    new Date(elem[1]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })}
+                                                </div>
                                             </div>
                                         ))}
                                     </div>
@@ -302,15 +339,17 @@ export default function Place() {
                                             {address.country + ", " + address.city + ", " + address.street}
                                         </div>
                                         <div className="place-map">
-                                            <YMaps>
-                                                <Map className="main-map" state={{ center: [address.coordinates.latitude, address.coordinates.longitude], zoom: 12 }}>
-                                                    <ZoomControl options={{ size: 'small', position: { bottom: 30, right: 10 }}} />
-                                                    <Placemark
-                                                        geometry={[address.coordinates.latitude, address.coordinates.longitude]}
-                                                        options={{ iconColor: 'red' }}
-                                                    />
-                                                </Map>
-                                            </YMaps>
+                                            {address.coordinates.latitude && address.coordinates.longitude &&
+                                                <YMaps>
+                                                    <Map className="main-map" state={{ center: [address.coordinates.latitude, address.coordinates.longitude], zoom: 12 }}>
+                                                        <ZoomControl options={{ size: 'small', position: { bottom: 30, right: 10 }}} />
+                                                        <Placemark
+                                                            geometry={[address.coordinates.latitude, address.coordinates.longitude]}
+                                                            options={{ iconColor: 'red' }}
+                                                        />
+                                                    </Map>
+                                                </YMaps>
+                                            }
                                         </div>
                                     </div>
                                 </div>

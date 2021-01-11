@@ -258,6 +258,7 @@ export default function Gallery() {
                                         <div>{place.category}</div>
                                         <div class="dot"></div>
                                         <div>Until {place.schedule[1]}</div>
+                                        {/* dasffdasdfsafadsfads today! */}
                                     </div>
                                     <div className="gallery-card-rating">
                                         {place.rating===null ?
@@ -275,7 +276,7 @@ export default function Gallery() {
                                         {place.reviews} reviews
                                     </div>
                                     <div className="gallery-card-cuisine">
-                                        {place.cuisine}
+                                        {place.cuisine} cuisine
                                     </div>
                                     <div className="gallery-card-address">
                                         {place.address.city + ", " + place.address.street}

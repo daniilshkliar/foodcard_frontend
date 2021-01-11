@@ -1,27 +1,5 @@
 {
     "place": {
-        "id": 1,
-        "title": "Simple",
-        "categories": ["Restaurant", "Gastro pub", "Bar"],
-        "cuisines": ["Fusion cuisine", "European cuisine", "Belarussian cuisine"],
-        "rating": 4.8,
-        "is_favorite": true,
-        "operation_hours": [
-            ["12:00", "00:00"],
-            ["12:00", "00:00"],
-            ["12:00", "00:00"],
-            ["12:00", "00:00"],
-            ["12:00", "00:00"],
-            ["12:00", "00:00"],
-            ["12:00", "00:00"]
-        ],
-        "coordinates": [53.897679, 27.547332],
-        "address": {
-            "country": "Belarus",
-            "city": "Minsk",
-            "street": "st. Sverdlova, 2"
-        },
-        "phone": "+375 (29) 185-50-50",
         "photos": [
             "https://ms1.relax.by/images/5da23058500fe4a6857e31cd0906d449/resize/w=1200,h=800,q=80,watermark=true/place_gallery_photo/27/01/7b/27017b54bc0ad37b57b9e9b2683a0064.jpg",
             "https://ms1.relax.by/images/5da23058500fe4a6857e31cd0906d449/resize/w=1200,h=800,q=80,watermark=true/place_gallery_photo/0c/4c/49/0c4c49eb1df25d1242c9cbef09d58b30.jpg",
@@ -45,20 +23,6 @@
             "https://ms1.relax.by/images/5da23058500fe4a6857e31cd0906d449/resize/w=1200,h=800,q=80,watermark=true/place_gallery_photo/65/85/8a/65858ad38402bac6e4589720be3e1104.jpg",
             "https://ms1.relax.by/images/5da23058500fe4a6857e31cd0906d449/resize/w=1200,h=800,q=80,watermark=true/place_gallery_photo/55/d7/98/55d798c919accdf5ba30c088e7dcadcc.jpg"
         ],
-        "description": "The hardest, fastness in actions and decisions, which, while not always simple, are very easy to make. “Simple” is about this, about complex simplicity, about freedom of thought and space, about smart food every day. The restaurant offers its guests its own vision of the local gastronomy of Belarusian cuisine. The understanding of the products from which the dishes are prepared is the main principle of the Simple restaurant. His team is inspired by the minimalism and aesthetics of modern Scandinavian cuisine, the warmth of native latitudes. Only the best local Belarusian products are used in cooking. The Simple restaurant is about how many good things are produced in Belarus: lamb, beef, pork, chicken, fish and much more. Moreover, the restaurant's task is to provide an opportunity to try something new. The restaurant is located in the very center of Minsk, next to the Red Church. Simple is located on the 3rd floor and has 2 private summer terraces where you can enjoy an excellent view. The place is suitable for a quiet, unhurried dinner or lunch with foreign guests - show them this Minsk and they will be pleasantly surprised. After all, if you want to show something aesthetically attractive, then Simple is exactly what you were looking for. The concept of the new Belarusian cuisine will appeal to those who are ready to try something really unusual and unusual. Simple is a love story. To food, wine, city and people in it. And also about the love of the kitchen. The chef has all modern cooking methods at his disposal. New dishes constantly appear on the menu, replacing old ones, they stick to 15-20 positions here, constantly rotating them. The names of the dishes are very simple: duck, beef, turkey and so on - you immediately understand what you will get. Connoisseurs will note for themselves the variety of the institution's wine list, which perfectly complements the cuisine. Simple has two sommeliers who will tell guests about wines from the world's best winemakers. The institution has a large wine list, many bottle positions - you can choose an excellent option for any dish to your liking.  The best roasters in the city work on coffee at Simple. By the way, there is also a sommelier who makes beer cards.   The restaurant team finds the best, breathes the Belarusian air and opens its doors every day so that you can feel the taste of your native land the way Simple does. After all, he will really surprise you. Restaurant of modern Belarusian cuisine \"Simple\". Be local, be great, be Simple!",
-        "instagram": "https://www.instagram.com/simple.minsk/",
-        "website": "http://simple.by/",
-        "additional": ["Wi-Fi", "Live music", "Dj-sets"],
-        "general_review": {
-            "overall_rounded": 4,
-            "overall": 4.2,
-            "food": 4.2,
-            "service": 4.8,
-            "ambience": 3.9,
-            "noise": "medium",
-            "amount": 215,
-            "distribution": [215, 2, 10, 77, 126]
-        },
         "reviews": [
             {
                 "id": 32,
