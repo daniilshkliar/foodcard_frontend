@@ -12,7 +12,7 @@ import SearchIcon from '../icons/search_icon.svg';
 import CloseIcon from '../icons/close_icon.svg';
 import ArrowUpIcon from '../icons/arrow_up_icon.svg';
 
-import places from '../places.json';
+import sourceCoutries from '../dict.json';
 
 
 function useWindowSize() {
@@ -34,12 +34,19 @@ function useWindowSize() {
 export default function Gallery() {
     const [width, height] = useWindowSize();
     const history = useHistory();
+
     const [coordinates, setCoordinates] = useState([53.907058, 27.557018]);
     const [searchQuery, setSearchQuery] = useState("");
     const [hoveredCard, setHoveredCard] = useState(-1);
     const [isFilterActive, setFilter] = useState(false);
+    const [places, setPlaces] = useState([]);
+    const minWidth = 730;
+    const scrollRef = createRef();
+
     const [sortMode, setSortMode] = useState(2);
     const [open, setOpen] = useState(0);
+
+
     const [minRating, setMinRating] = useState(false);
     const [nextToMe, setNextToMe] = useState(false);
     const [outdoors, setOutdoors] = useState(false);
@@ -53,29 +60,9 @@ export default function Gallery() {
     const [country, setCountry] = useState("");
     const [city, setCity] = useState("");
     const [isElevatorActive, setElevator] = useState(false);
-    const scrollRef = createRef();
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [isMapOpen, setMapOpen] = useState(false);
-    const minWidth = 730;
-
-    const sourceCoutries = [
-        {
-            country: "Belarus",
-            city: [
-                "Grodno",
-                "Minsk",
-                "Gomel"
-            ]
-        },
-        {
-            country: "Germany",
-            city: [
-                "Berlin",
-                "Bremen"
-            ]
-        }
-    ];
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((position) => {

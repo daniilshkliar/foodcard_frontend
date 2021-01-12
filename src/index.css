@@ -90,6 +90,12 @@ a {
 	opacity: 0.9;
 }
 
+.orange-button {
+	border-color: #ED6E2D;
+	background-color: #ED6E2D;
+	color: #ffffff;
+}
+
 .orange-button:hover {
 	border-color: #F47D24;
 	background-color: #F47D24;

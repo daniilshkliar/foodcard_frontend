@@ -132,3 +132,21 @@
 .arrow img {
 	width: 55%;
 }
+
+.filter-location-expanded, .filter-location-non-expanded {
+    display: flex;
+    justify-content: center;
+	align-items: center;
+}
+
+.filter-location-expanded .filter-element, .filter-location-non-expanded .filter-element {
+	width: 80%;
+}
+
+.filter-location-expanded div {
+	margin: 5px 0 0 0;
+}
+
+.filter-location-non-expanded div {
+	margin: 5px 0 10px 0;
+}

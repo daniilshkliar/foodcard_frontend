@@ -6,97 +6,35 @@ import './filter.css';
 import ArrowDownIcon from '../../icons/arrow_down_icon.svg';
 import ArrowUpIcon from '../../icons/arrow_up_icon.svg';
 
+import { countries_src, categories_src, cuisines_src, additional_src } from '../../dict.json';
+
 
 export default function Filter({
-    setSortMode,
-    sortMode,
-    setOpen,
-    open,
-    setMinRating,
-    minRating,
-    setNextToMe,
-    nextToMe,
-    setOutdoors,
-    outdoors,
-    setVip,
-    vip,
-    setParking,
-    parking,
-    setSmoking,
-    smoking,
-    setCategories,
-    categories,
-    setCuisine,
-    cuisine,
-    setAdditionally,
-    additionally,
-    setInMenu,
-    inMenu,
-    setCountry,
     country,
-    setCity,
+    setCountry,
     city,
+    setCity,
     setCoordinates,
-    sourceCoutries
+    sortMode,
+    setSortMode,
+    open,
+    setOpen,
+    categories,
+    setCategories,
+    cuisines,
+    setCuisines,
+    additionalServices,
+    setAdditionalServices,
+    inMenu,
+    setInMenu,
     }) {
 
-
-    const [isCategoryActive, setCategoryActive] = useState(false);
-    const [isCuisineActive, setCuisineActive] = useState(false);
-    const [isAdditionallyActive, setAdditionallyActive] = useState(false);
-    const [isInMenuActive, setInMenuActive] = useState(false);
     const [isCountryActive, setCountryActive] = useState(false);
     const [isCityActive, setCityActive] = useState(false);
-
-    const sourceCategories = [
-        "Bar",
-        "Restaurant",
-        "Hookah",
-        "Cafe",
-        "Coffee shop",
-        "Karaoke"
-    ];
-
-    const sourceCuisine = [
-        "Fusion",
-        "European",
-        "Asian",
-        "Italian",
-        "Fusion",
-        "European",
-        "Asian",
-        "Italian",
-        "Fusion",
-        "European",
-        "Asian",
-        "Italian",
-        "Fusion",
-        "European",
-        "Asian",
-        "Italian",
-        "Fusion",
-        "European",
-        "Asian",
-        "Italian"
-    ];
-
-    const sourceAdditionally = [
-        "Wi-Fi",
-        "Live music",
-        "Dj-sets",
-        "Playstation",
-        "Dancefloor",
-        "Karaoke"
-    ];
-
-    const sourceInMenu = [
-        "Snacks",
-        "Alcohol",
-        "Burgers",
-        "Pizza",
-        "Pies"
-    ];
-
+    const [isCategoryActive, setCategoryActive] = useState(false);
+    const [isCuisineActive, setCuisineActive] = useState(false);
+    const [isAdditionalServicesActive, setAdditionalServicesActive] = useState(false);
+    const [isInMenuActive, setInMenuActive] = useState(false);
 
     const handleCategoriesChange = (element) => {
         categories.includes(element) ?
@@ -104,16 +42,16 @@ export default function Filter({
         :   setCategories([...categories, element]);                       
     }
 
-    const handleCuisineChange = (element) => {
+    const handleCuisinesChange = (element) => {
         cuisine.includes(element) ?
-            setCuisine([...cuisine.filter(elem => elem !== element)])
-        :   setCuisine([...cuisine, element]);                       
+            setCuisines([...cuisines.filter(elem => elem !== element)])
+        :   setCuisines([...cuisines, element]);                       
     }
 
-    const handleAdditionallyChange = (element) => {
+    const handleAdditionalServicesChange = (element) => {
         additionally.includes(element) ?
-            setAdditionally([...additionally.filter(elem => elem !== element)])
-        :   setAdditionally([...additionally, element]);                       
+            setAdditionalServices([...additionalServices.filter(elem => elem !== element)])
+        :   setAdditionalServices([...additionalServices, element]);                       
     }
 
     const handleInMenuChange = (element) => {
@@ -141,6 +79,86 @@ export default function Filter({
             <div className="main-filter-header">
                 All filters
             </div>
+            <div className="filter-box half-width margin-right">
+                <div className="filter-header clickable" onClick={() => setCountryActive(!isCountryActive)}>
+                    Country
+                    <div className="invert arrow">
+                        {isCountryActive ?
+                        <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
+                        : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
+                        }
+                    </div>
+                </div>
+                <div className={isCountryActive ? "filter-location-expanded" : "filter-location-non-expanded"}>
+                    <div
+                        className="button filter-element active-button"
+                        onClick={() => {
+                            setCountryActive(!isCountryActive);
+                        }}
+                    >
+                        {country}
+                    </div>
+                </div>
+                {isCountryActive &&
+                    <div className="filter-body">
+                        {countries_src.filter(element => element.country !== country).map((element, index) =>
+                            <div 
+                                key={index} 
+                                className="button filter-element"
+                                onClick={() => {
+                                    setCountry(element.country);
+                                    country!==element.country && setCity("");
+                                    fetchCountryCoordinates(element.country);
+                                }}
+                            >
+                                {element.country}
+                            </div>
+                        )}
+                    </div>
+                }
+            </div>
+            { (country !== "") &&
+                <div className="filter-box half-width">
+                    <div className="filter-header clickable" onClick={() => setCityActive(!isCityActive)}>
+                        City
+                        <div className="invert arrow">
+                            {isCityActive ?
+                            <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
+                            : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
+                            }
+                        </div>
+                    </div>
+                    <div className={isCityActive ? "filter-location-expanded" : "filter-location-non-expanded"}>
+                        <div
+                            className="button filter-element active-button"
+                            onClick={() => {
+                                setCityActive(!isCityActive);
+                            }}
+                        >
+                            {city}
+                        </div>
+                    </div>
+                    {isCityActive &&
+                        <div className="filter-body">
+                            {countries_src
+                                .find(element => element.country===country).city
+                                .filter(element => element !== city)
+                                .map((element, index) => 
+                                    <div
+                                        key={index}
+                                        className="button filter-element"
+                                        onClick={() => {
+                                                setCity(element);
+                                                fetchCityCoordinates(country, element);
+                                            }}
+                                        >
+                                        {element}
+                                    </div>
+                            )}
+                        </div>
+                    }
+                </div>
+            }
             <div className="filter-box">
                 <div className="filter-header">
                     Sort by
@@ -156,7 +174,7 @@ export default function Filter({
                     </div>
                     <div className={"button filter-element" + (sortMode===3 ? " active-button" : "")}
                         onClick={() => setSortMode(3)}>
-                        Nearest
+                        Distance from me
                     </div>
                 </div>
             </div>
@@ -183,162 +201,94 @@ export default function Filter({
                     </div>
                 </div>
             </div>
-            <div className="filter-box">
-                <div className="filter-body margin-top">   
-                    <div className={"button filter-element" + (nextToMe ? " active-button" : "")}
-                        onClick={() => setNextToMe(!nextToMe)}>
-                        Next to me
-                    </div>
-                    <div className={"button filter-element" + (outdoors ? " active-button" : "")}
-                        onClick={() => setOutdoors(!outdoors)}>
-                        Outdoors
-                    </div>
-                    <div className={"button filter-element" + (minRating ? " active-button" : "")}
-                        onClick={() => setMinRating(!minRating)}>
-                        4+ Stars
-                    </div> 
-                    <div className={"button filter-element" + (vip ? " active-button" : "")}
-                        onClick={() => setVip(!vip)}>
-                        VIP zone
-                    </div>
-                    <div className={"button filter-element" + (parking ? " active-button" : "")}
-                        onClick={() => setParking(!parking)}>
-                        Parking
-                    </div>
-                    <div className={"button filter-element" + (smoking ? " active-button" : "")}
-                        onClick={() => setSmoking(!smoking)}>
-                        Smoking
-                    </div>
-                </div>
-            </div>
-            <div className="filter-box half-width margin-right">
-                <div className="filter-header clickable" onClick={() => setCountryActive(!isCountryActive)}>
-                    Country
-                    <div className="invert arrow">
-                        {isCountryActive ?
-                        <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
-                        : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
-                        }
-                    </div>
-                </div>
-                {isCountryActive &&
-                <div className="filter-body">
-                    {sourceCoutries.map((element, index) => 
-                        <div key={index} className={"button filter-element" + (country===element.country ? " active-button" : "")}
-                            onClick={() => {
-                                setCountry(element.country);
-                                country!==element.country && setCity("");
-                                fetchCountryCoordinates(element.country);
-                            }}>
-                            {element.country}
+            {sourceCategories &&
+                <div className="filter-box">
+                    <div className="filter-header clickable" onClick={() => setCategoryActive(!isCategoryActive)}>
+                        Category
+                        <div className="invert arrow">
+                            {isCategoryActive ?
+                            <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
+                            : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
+                            }
                         </div>
-                    )}
-                </div>}
-            </div>
-            { (country !== "") &&
-            <div className="filter-box half-width">
-                <div className="filter-header clickable" onClick={() => setCityActive(!isCityActive)}>
-                    City
-                    <div className="invert arrow">
-                        {isCityActive ?
-                        <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
-                        : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
-                        }
                     </div>
+                    {isCategoryActive &&
+                    <div className="filter-body">
+                        {sourceCategories.map((element, index) => 
+                            <div key={index} className={"button filter-element" + (categories.includes(element) ? " active-button" : "")}
+                                onClick={() => handleCategoriesChange(element)}>
+                                {element}
+                            </div>
+                        )}
+                    </div>}
                 </div>
-                {isCityActive &&
-                <div className="filter-body">
-                    {sourceCoutries.find(element => element.country===country).city.map((element, index) => 
-                        <div key={index} className={"button filter-element" + (city===element ? " active-button" : "")}
-                            onClick={() => {
-                                setCity(element);
-                                fetchCityCoordinates(country, element);
-                            }}>
-                            {element}
+            }
+            {sourceCuisine &&
+                <div className="filter-box">
+                    <div className="filter-header clickable" onClick={() => setCuisineActive(!isCuisineActive)}>
+                        Cuisine
+                        <div className="invert arrow">
+                            {isCuisineActive ?
+                            <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
+                            : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
+                            }
                         </div>
-                    )}
-                </div>}
-            </div>}
-            <div className="filter-box">
-                <div className="filter-header clickable" onClick={() => setCategoryActive(!isCategoryActive)}>
-                    Category
-                    <div className="invert arrow">
-                        {isCategoryActive ?
-                        <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
-                        : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
-                        }
                     </div>
+                    {isCuisineActive &&
+                    <div className="filter-body">
+                        {sourceCuisine.map((element, index) => 
+                            <div key={index} className={"button filter-element" + (cuisine.includes(element) ? " active-button" : "")}
+                                onClick={() => handleCuisineChange(element)}>
+                                {element}
+                            </div>
+                        )}
+                    </div>}
                 </div>
-                {isCategoryActive &&
-                <div className="filter-body">
-                    {sourceCategories.map((element, index) => 
-                        <div key={index} className={"button filter-element" + (categories.includes(element) ? " active-button" : "")}
-                            onClick={() => handleCategoriesChange(element)}>
-                            {element}
+            }
+            {sourceInMenu &&
+                <div className="filter-box">
+                    <div className="filter-header clickable" onClick={() => setInMenuActive(!isInMenuActive)}>
+                        In menu
+                        <div className="invert arrow">
+                            {isInMenuActive ?
+                            <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
+                            : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
+                            }
                         </div>
-                    )}
-                </div>}
-            </div>
-            <div className="filter-box">
-                <div className="filter-header clickable" onClick={() => setCuisineActive(!isCuisineActive)}>
-                    Cuisine
-                    <div className="invert arrow">
-                        {isCuisineActive ?
-                        <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
-                        : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
-                        }
                     </div>
+                    {isInMenuActive &&
+                    <div className="filter-body">
+                        {sourceInMenu.map((element, index) => 
+                            <div key={index} className={"button filter-element" + (inMenu.includes(element) ? " active-button" : "")}
+                                onClick={() => handleInMenuChange(element)}>
+                                {element}
+                            </div>
+                        )}
+                    </div>}
                 </div>
-                {isCuisineActive &&
-                <div className="filter-body">
-                    {sourceCuisine.map((element, index) => 
-                        <div key={index} className={"button filter-element" + (cuisine.includes(element) ? " active-button" : "")}
-                            onClick={() => handleCuisineChange(element)}>
-                            {element}
+            }
+            {sourceAdditionally &&
+                <div className="filter-box">
+                    <div className="filter-header clickable" onClick={() => setAdditionallyActive(!isAdditionallyActive)}>
+                        Additional
+                        <div className="invert arrow">
+                            {isAdditionallyActive ?
+                            <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
+                            : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
+                            }
                         </div>
-                    )}
-                </div>}
-            </div>   
-            <div className="filter-box">
-                <div className="filter-header clickable" onClick={() => setInMenuActive(!isInMenuActive)}>
-                    In menu
-                    <div className="invert arrow">
-                        {isInMenuActive ?
-                        <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
-                        : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
-                        }
                     </div>
+                    {isAdditionallyActive &&
+                    <div className="filter-body">
+                        {sourceAdditionally.map((element, index) => 
+                            <div key={index} className={"button filter-element" + (additionally.includes(element) ? " active-button" : "")}
+                                onClick={() => handleAdditionallyChange(element)}>
+                                {element}
+                            </div>
+                        )}
+                    </div>}
                 </div>
-                {isInMenuActive &&
-                <div className="filter-body">
-                    {sourceInMenu.map((element, index) => 
-                        <div key={index} className={"button filter-element" + (inMenu.includes(element) ? " active-button" : "")}
-                            onClick={() => handleInMenuChange(element)}>
-                            {element}
-                        </div>
-                    )}
-                </div>}
-            </div>
-            <div className="filter-box">
-                <div className="filter-header clickable" onClick={() => setAdditionallyActive(!isAdditionallyActive)}>
-                    Additional
-                    <div className="invert arrow">
-                        {isAdditionallyActive ?
-                        <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
-                        : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
-                        }
-                    </div>
-                </div>
-                {isAdditionallyActive &&
-                <div className="filter-body">
-                    {sourceAdditionally.map((element, index) => 
-                        <div key={index} className={"button filter-element" + (additionally.includes(element) ? " active-button" : "")}
-                            onClick={() => handleAdditionallyChange(element)}>
-                            {element}
-                        </div>
-                    )}
-                </div>}
-            </div>
+            }
         </div>
     )
 }
