@@ -1,18 +1,35 @@
 {
     "countries": [
         {
-            "country": "Belarus",
-            "city": [
-                "Grodno",
-                "Minsk",
-                "Gomel"
+            "id": "5ffe0e676aef9cc717bb7a6b",
+            "country": "Germany",
+            "cities": [
+                {
+                    "id": "5ffe0e676aef9cc717bb7a69",
+                    "city": "Berlin"
+                },
+                {
+                    "id": "5ffe0e676aef9cc717bb7a6a",
+                    "city": "Bremen"
+                }
             ]
         },
         {
-            "country": "Germany",
-            "city": [
-                "Berlin",
-                "Bremen"
+            "id": "5ffe0e706aef9cc717bb7a6c",
+            "country": "Belarus",
+            "cities": [
+                {
+                    "id": "5ffe1f6d5b7d7cfa325fda3d",
+                    "city": "Minsk"
+                },
+                {
+                    "id": "5ffe1f6d5b7d7cfa325fda3e",
+                    "city": "Grodno"
+                },
+                {
+                    "id": "5ffe1f6d5b7d7cfa325fda3f",
+                    "city": "Gomel"
+                }
             ]
         }
     ],
