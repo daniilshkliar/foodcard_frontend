@@ -5,6 +5,7 @@ import { YMaps, Map, Placemark, ZoomControl } from 'react-yandex-maps';
 import { motion, AnimatePresence } from 'framer-motion';
 import BeautyStars from 'beauty-stars';
 
+import Spinner from '../components/LoaderSpinner/Spinner';
 import Header from '../components/Header/Header';
 import Filter from '../components/Filter/Filter';
 
@@ -12,7 +13,7 @@ import SearchIcon from '../icons/search_icon.svg';
 import CloseIcon from '../icons/close_icon.svg';
 import ArrowUpIcon from '../icons/arrow_up_icon.svg';
 
-import sourceCoutries from '../dict.json';
+import dict from '../dict.json';
 
 
 function useWindowSize() {
@@ -34,55 +35,69 @@ function useWindowSize() {
 export default function Gallery() {
     const [width, height] = useWindowSize();
     const history = useHistory();
+    const scrollRef = createRef();
+    const minWidth = 730;
 
     const [coordinates, setCoordinates] = useState([53.907058, 27.557018]);
     const [searchQuery, setSearchQuery] = useState("");
     const [hoveredCard, setHoveredCard] = useState(-1);
     const [isFilterActive, setFilter] = useState(false);
+    const [isMapOpen, setMapOpen] = useState(false);
+    const [isElevatorActive, setElevator] = useState(false);
+    
     const [places, setPlaces] = useState([]);
-    const minWidth = 730;
-    const scrollRef = createRef();
-
-    const [sortMode, setSortMode] = useState(2);
-    const [open, setOpen] = useState(0);
-
-
-    const [minRating, setMinRating] = useState(false);
-    const [nextToMe, setNextToMe] = useState(false);
-    const [outdoors, setOutdoors] = useState(false);
-    const [vip, setVip] = useState(false);
-    const [parking, setParking] = useState(false);
-    const [smoking, setSmoking] = useState(false);
-    const [categories, setCategories] = useState([]);
-    const [cuisine, setCuisine] = useState([]);
-    const [additionally, setAdditionally] = useState([]);
-    const [inMenu, setInMenu] = useState([]);
     const [country, setCountry] = useState("");
     const [city, setCity] = useState("");
-    const [isElevatorActive, setElevator] = useState(false);
-    const [error, setError] = useState(null);
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [isMapOpen, setMapOpen] = useState(false);
+    const [sortMode, setSortMode] = useState(2);
+    const [open, setOpen] = useState(0);
+    const [categories, setCategories] = useState([]);
+    const [cuisines, setCuisines] = useState([]);
+    const [additionalServices, setAdditionalServices] = useState([]);
+    const [inMenu, setInMenu] = useState([]);
+
+    const [messages, setMessages] = useState({});
+    const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((position) => {
             setCoordinates([position.coords.latitude, position.coords.longitude]);
-            fetchData(position.coords.latitude, position.coords.longitude);
+            fetchLocation(position.coords.latitude, position.coords.longitude);
             return;
         });
 
-        fetchData(53.907058, 27.557018);
+        fetchLocation(53.907058, 27.557018);
+        fetchPlaces();
     }, []);
 
-    const fetchData = async (lat, long) => {
+    const fetchLocation = async (lat, long) => {
         const data = await axios("https://geocode-maps.yandex.ru/1.x/?apikey=d08fc50d-a7e6-4f37-bc51-1eb5df129e9d&format=json&geocode=" + long + "," + lat + "&lang=en-US");
         let country = data.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.CountryName;
         let city = data.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName;
         
-        if (sourceCoutries.find(element => element.country===country && element.city.includes(city))) {
+        if (dict.countries_src.find(element => element.country===country && element.cities.find(el => el.city===city))) {
             setCountry(country);
             setCity(city);
         }
+    }
+
+    const fetchPlaces = async () => {
+        setLoading(true);
+        setMessages({});
+
+        await axios.get("/core/place/get/all/"
+        ).then((response) => {
+            setPlaces(response.data);
+        }).catch((error) => {
+            setMessages(
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.response ||
+                error.toString()
+            );
+        }).finally(() => {
+            setLoading(false);
+        });
     }
 
     return (
@@ -106,38 +121,23 @@ export default function Gallery() {
                             exit={{ left: "-500px" }}
                         >
                             <Filter
-                                setFilter={setFilter}
-                                isFilterActive={isFilterActive}
-                                setSortMode={setSortMode}
-                                sortMode={sortMode}
-                                setOpen={setOpen}
-                                open={open}
-                                setMinRating={setMinRating}
-                                minRating={minRating}
-                                setNextToMe={setNextToMe}
-                                nextToMe={nextToMe}
-                                setOutdoors={setOutdoors}
-                                outdoors={outdoors}
-                                setVip={setVip}
-                                vip={vip}
-                                setParking={setParking}
-                                parking={parking}
-                                setSmoking={setSmoking}
-                                smoking={smoking}
-                                setCategories={setCategories}
-                                categories={categories}
-                                setCuisine={setCuisine}
-                                cuisine={cuisine}
-                                setAdditionally={setAdditionally}
-                                additionally={additionally}
-                                setInMenu={setInMenu}
-                                inMenu={inMenu}
-                                setCountry={setCountry}
                                 country={country}
-                                setCity={setCity}
+                                setCountry={setCountry}
                                 city={city}
+                                setCity={setCity}
                                 setCoordinates={setCoordinates}
-                                sourceCoutries={sourceCoutries}
+                                sortMode={sortMode}
+                                setSortMode={setSortMode}
+                                open={open}
+                                setOpen={setOpen}
+                                categories={categories}
+                                setCategories={setCategories}
+                                cuisines={cuisines}
+                                setCuisines={setCuisines}
+                                additionalServices={additionalServices}
+                                setAdditionalServices={setAdditionalServices}
+                                inMenu={inMenu}
+                                setInMenu={setInMenu}
                             />
                             <div
                                 className="filter-close"
@@ -155,23 +155,23 @@ export default function Gallery() {
                         <YMaps>
                             <Map className="main-map" state={{ center: coordinates, zoom: 13 }}>
                                 <ZoomControl options={{ size: 'small', position: { bottom: 50, right: 15 }}} />
-                                {places.places.map((place, index) =>
+                                {places && places.map((place, index) =>
                                     <Placemark 
                                         key={index}
-                                        geometry={place.coordinates}
+                                        geometry={[place.address.coordinates.latitude, place.address.coordinates.longitude]}
                                         options={{ 
                                             iconColor: (hoveredCard === place.id ? 'red' : 'black')
                                         }}
                                         modules={['geoObject.addon.balloon']}
                                         properties={{
                                             balloonContentHeader:
-                                                '<div class="balloon-header"><a href="/place/' + city + '/'+ place.title + '/">' + place.title + '</a></div>'
+                                                '<div class="balloon-header"><a href="/place/' + place.address.city.city + '/'+ place.title + '/">' + place.title + '</a></div>'
                                             ,
                                             balloonContentBody:
                                                 '<div class="balloon">' +
-                                                    '<a href="/place/' + city + '/'+ place.title + '/">' +
-                                                    '<div class="balloon-box"><div class="balloon-row">' + place.category + '</div></div>' +
-                                                    '<img class="balloon-photo" src="' + place.photo + '" alt="Photo of ' + place.category + ' ' + place.title + '" draggable="false" /></a>' +
+                                                    '<a href="/place/' + place.address.city.city + '/'+ place.title + '/">' +
+                                                    '<div class="balloon-box"><div class="balloon-row">' + place.categories[0].title + '</div></div>' +
+                                                    '<img class="balloon-photo" src="' + place.photos[0] + '" alt="Photo of ' + place.categories[0].title + ' ' + place.title + '" draggable="false" /></a>' +
                                                 '</div>'
                                         }}
                                     />
@@ -194,86 +194,92 @@ export default function Gallery() {
                         ref={scrollRef}
                         onScroll={() => setElevator(scrollRef.current.scrollTop >= 800)}
                     >
-                        {isElevatorActive && 
-                            <div className="elevator" onClick={() => scrollRef.current.scrollTo(0, 0)}>
-                                <img src={ArrowUpIcon} alt="Arrow up icon" draggable="false" />
+                        {isLoading ?
+                            <Spinner />
+                        :   <div>
+                                {isElevatorActive && 
+                                    <div className="elevator" onClick={() => scrollRef.current.scrollTo(0, 0)}>
+                                        <img src={ArrowUpIcon} alt="Arrow up icon" draggable="false" />
+                                    </div>
+                                }
+                                <div className="options-panel">
+                                    {width < minWidth && 
+                                        <div className="show-map">
+                                            <div className="button active-button" onClick={() => setMapOpen(!isMapOpen)}>
+                                                Map
+                                            </div>
+                                        </div>
+                                    }
+                                    <div className="searchbar">
+                                        <input 
+                                            type="text" 
+                                            id="query"
+                                            name="query" 
+                                            value={searchQuery}
+                                            placeholder="Search"
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                        />        
+                                        <div className="searchbutton active-button" onClick={() => {console.log(searchQuery)}}>
+                                            <img src={SearchIcon} alt="Search icon" draggable="false" />
+                                        </div>
+                                    </div>
+                                    <div className="filterbutton">
+                                        <div className="button active-button" onClick={() => setFilter(!isFilterActive)}>
+                                            Filter
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="gallery">
+                                    {places && places.map((place, index) => (
+                                        <div 
+                                            key={index}
+                                            className="gallery-card"
+                                            onMouseEnter={() => setHoveredCard(place.id)}
+                                            onMouseLeave={() => setHoveredCard(-1)}
+                                            onClick={() => history.push("/place/" + place.address.city.city + "/" + place.title + "/")}
+                                        >
+                                            <div className="gallery-card-photo">
+                                                <img src={place.photos[0]} alt={"A photo of " + place.title} draggable="false" />
+                                            </div>
+                                            <div className="gallery-card-title">
+                                                {place.title}
+                                            </div>
+                                            <div className="gallery-card-category">
+                                                <div>{place.categories[0].title}</div>
+                                                <div class="dot"></div>
+                                                <div>
+                                                    Until {new Date(place.operation_hours[new Date().getDay() - 1][1]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC', hour12: false })}
+                                                </div>
+                                            </div>
+                                            <div className="gallery-card-cuisine">
+                                                {place.cuisines[0].title} cuisine
+                                            </div>
+                                            <div className="gallery-card-rating">
+                                                {place.rounded_rating===null ?
+                                                    "No rating"
+                                                :   <BeautyStars
+                                                        value={place.rounded_rating}
+                                                        size="18px"
+                                                        gap="4px"
+                                                        inactiveColor="#DADADA"
+                                                        activeColor="#ED6E2D"
+                                                    />
+                                                }
+                                            </div>
+                                            <div className="gallery-card-reviews">
+                                                {place.general_review.amount} reviews
+                                            </div>
+                                            <div className="gallery-card-address">
+                                                {place.address.city.city + ", " + place.address.street}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         }
-                        <div className="options-panel">
-                            {width < minWidth && 
-                                <div className="show-map">
-                                    <div className="button active-button" onClick={() => setMapOpen(!isMapOpen)}>
-                                        Map
-                                    </div>
-                                </div>
-                            }
-                            <div className="searchbar">
-                                <input 
-                                    type="text" 
-                                    id="query"
-                                    name="query" 
-                                    value={searchQuery}
-                                    placeholder="Search"
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                />        
-                                <div className="searchbutton active-button" onClick={() => {console.log(searchQuery)}}>
-                                    <img src={SearchIcon} alt="Search icon" draggable="false" />
-                                </div>
-                            </div>
-                            <div className="filterbutton">
-                                <div className="button active-button" onClick={() => setFilter(!isFilterActive)}>
-                                    Filter
-                                </div>
-                            </div>
-                        </div>
-                        <div className="gallery">
-                            {places.places.map((place, index) => (
-                                <div 
-                                    key={index}
-                                    className="gallery-card"
-                                    onMouseEnter={() => setHoveredCard(place.id)}
-                                    onMouseLeave={() => setHoveredCard(-1)}
-                                    onClick={() => history.push("/place/" + place.address.city + "/" + place.title + "/")}
-                                >
-                                    <div className="gallery-card-photo">
-                                        <img src={place.photo} alt={"A photo of " + place.title} draggable="false" />
-                                    </div>
-                                    <div className="gallery-card-title">
-                                        {place.title}
-                                    </div>
-                                    <div className="gallery-card-category">
-                                        <div>{place.category}</div>
-                                        <div class="dot"></div>
-                                        <div>Until {place.schedule[1]}</div>
-                                        {/* dasffdasdfsafadsfads today! */}
-                                    </div>
-                                    <div className="gallery-card-rating">
-                                        {place.rating===null ?
-                                            "No rating"
-                                        :   <BeautyStars
-                                                value={place.rating}
-                                                size="20px"
-                                                gap="4px"
-                                                inactiveColor="#DADADA"
-                                                activeColor="#ED6E2D"
-                                            />
-                                        }
-                                    </div>
-                                    <div className="gallery-card-reviews">
-                                        {place.reviews} reviews
-                                    </div>
-                                    <div className="gallery-card-cuisine">
-                                        {place.cuisine} cuisine
-                                    </div>
-                                    <div className="gallery-card-address">
-                                        {place.address.city + ", " + place.address.street}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
                     </div>
-                }  
+                }
             </div>
         </div>
-    )
+    );
 }

@@ -29,7 +29,6 @@ a {
 .elevator {z-index: 10;}
 
 .wrapper {
-	position: absolute;
 	top: 70px;
 	width: 100%;
 	height: calc(100vh - 70px);
@@ -45,6 +44,7 @@ a {
 }
 
 .right-scope {
+	position: relative;
 	width: 55%;
 	min-width: 400px;
 	height: 100%;
@@ -243,7 +243,7 @@ input[type=text]:focus, input[type=text]:hover {
 .gallery-card-category {
 	width: 100%;
 	margin: 0 5px;
-	font-size: 16px;
+	font-size: 14px;
 	color: #8e8e8e;
 	display: flex;
 	justify-content: center;

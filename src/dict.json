@@ -1,5 +1,5 @@
 {
-    "countries": [
+    "countries_src": [
         {
             "id": "5ffe0e676aef9cc717bb7a6b",
             "country": "Germany",
@@ -15,59 +15,55 @@
             ]
         },
         {
-            "id": "5ffe0e706aef9cc717bb7a6c",
+            "id": "5ffed9b746c8cd95bff05d52",
             "country": "Belarus",
             "cities": [
                 {
-                    "id": "5ffe1f6d5b7d7cfa325fda3d",
+                    "id": "5ffed9b646c8cd95bff05d50",
                     "city": "Minsk"
                 },
                 {
-                    "id": "5ffe1f6d5b7d7cfa325fda3e",
+                    "id": "5ffed9b746c8cd95bff05d51",
                     "city": "Grodno"
-                },
-                {
-                    "id": "5ffe1f6d5b7d7cfa325fda3f",
-                    "city": "Gomel"
                 }
             ]
         }
     ],
-    "categories": [
+    "categories_src": [
         {
-            "id": "5ffb61b6cd793056fd19606f",
+            "id": "5fff0ae6a62e692d0c8339dc",
             "title": "Restaurant"
         },
         {
-            "id": "5ffb61b6cd793056fd196070",
+            "id": "5fff0ae6a62e692d0c8339dd",
             "title": "Cafe"
         },
         {
-            "id": "5ffb61b6cd793056fd196071",
+            "id": "5fff0ae6a62e692d0c8339de",
             "title": "Bar"
         },
         {
-            "id": "5ffb61b6cd793056fd196072",
+            "id": "5fff0ae6a62e692d0c8339df",
             "title": "Pub"
         },
         {
-            "id": "5ffb61b7cd793056fd196073",
+            "id": "5fff0ae6a62e692d0c8339e0",
             "title": "Hookah bar"
         },
         {
-            "id": "5ffb61b7cd793056fd196074",
+            "id": "5fff0ae6a62e692d0c8339e1",
             "title": "Night club"
         },
         {
-            "id": "5ffb61b7cd793056fd196075",
+            "id": "5fff0ae6a62e692d0c8339e2",
             "title": "Karaoke club"
         },
         {
-            "id": "5ffb61b7cd793056fd196076",
+            "id": "5fff0ae6a62e692d0c8339e3",
             "title": "Gastro pub"
         }
     ],
-    "cuisines": [
+    "cuisines_src": [
         {
             "id": "5ffb0d8c4d0fc9253818fb9a",
             "title": "American"
@@ -505,7 +501,7 @@
             "title": "Molecular"
         }
     ],
-    "additional": [
+    "additional_src": [
         {
             "id": "5ffb19cc4d0fc9253818fc0f",
             "title": "Wi-fi"
