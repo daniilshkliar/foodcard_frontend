@@ -1,574 +1,159 @@
 {
     "countries_src": [
         {
-            "id": "5ffe0e676aef9cc717bb7a6b",
-            "country": "Germany",
-            "cities": [
-                {
-                    "id": "5ffe0e676aef9cc717bb7a69",
-                    "city": "Berlin"
-                },
-                {
-                    "id": "5ffe0e676aef9cc717bb7a6a",
-                    "city": "Bremen"
-                }
-            ]
-        },
-        {
-            "id": "5ffed9b746c8cd95bff05d52",
             "country": "Belarus",
             "cities": [
-                {
-                    "id": "5ffed9b646c8cd95bff05d50",
-                    "city": "Minsk"
-                },
-                {
-                    "id": "5ffed9b746c8cd95bff05d51",
-                    "city": "Grodno"
-                }
+                "Grodno",
+                "Minsk"
             ]
-        }
-    ],
-    "categories_src": [
-        {
-            "id": "5fff0ae6a62e692d0c8339dc",
-            "title": "Restaurant"
         },
         {
-            "id": "5fff0ae6a62e692d0c8339dd",
-            "title": "Cafe"
-        },
-        {
-            "id": "5fff0ae6a62e692d0c8339de",
-            "title": "Bar"
-        },
-        {
-            "id": "5fff0ae6a62e692d0c8339df",
-            "title": "Pub"
-        },
-        {
-            "id": "5fff0ae6a62e692d0c8339e0",
-            "title": "Hookah bar"
-        },
-        {
-            "id": "5fff0ae6a62e692d0c8339e1",
-            "title": "Night club"
-        },
-        {
-            "id": "5fff0ae6a62e692d0c8339e2",
-            "title": "Karaoke club"
-        },
-        {
-            "id": "5fff0ae6a62e692d0c8339e3",
-            "title": "Gastro pub"
+            "country": "Germany",
+            "cities": [
+                "Berlin",
+                "Bremen"
+            ]
         }
     ],
     "cuisines_src": [
-        {
-            "id": "5ffb0d8c4d0fc9253818fb9a",
-            "title": "American"
-        },
-        {
-            "id": "5ffb0d8c4d0fc9253818fb9b",
-            "title": "Asian"
-        },
-        {
-            "id": "5ffb0d8c4d0fc9253818fb9c",
-            "title": "Belarusian"
-        },
-        {
-            "id": "5ffb0d8d4d0fc9253818fb9d",
-            "title": "European"
-        },
-        {
-            "id": "5ffb0d8d4d0fc9253818fb9e",
-            "title": "Italian"
-        },
-        {
-            "id": "5ffb0d8d4d0fc9253818fb9f",
-            "title": "Japanese"
-        },
-        {
-            "id": "5ffb0d8d4d0fc9253818fba0",
-            "title": "Mediterranean"
-        },
-        {
-            "id": "5ffb0d8d4d0fc9253818fba1",
-            "title": "Russian"
-        },
-        {
-            "id": "5ffb0d8d4d0fc9253818fba2",
-            "title": "Afghani"
-        },
-        {
-            "id": "5ffb0d8d4d0fc9253818fba3",
-            "title": "African"
-        },
-        {
-            "id": "5ffb0d8d4d0fc9253818fba4",
-            "title": "Algerian"
-        },
-        {
-            "id": "5ffb0d8d4d0fc9253818fba5",
-            "title": "Arabic"
-        },
-        {
-            "id": "5ffb0d8d4d0fc9253818fba6",
-            "title": "Argentinean"
-        },
-        {
-            "id": "5ffb0d8d4d0fc9253818fba7",
-            "title": "Armenian"
-        },
-        {
-            "id": "5ffb0d8e4d0fc9253818fba8",
-            "title": "Australian"
-        },
-        {
-            "id": "5ffb0d8e4d0fc9253818fba9",
-            "title": "Austrian"
-        },
-        {
-            "id": "5ffb0d8e4d0fc9253818fbaa",
-            "title": "Balti"
-        },
-        {
-            "id": "5ffb0d8e4d0fc9253818fbab",
-            "title": "Barbecue"
-        },
-        {
-            "id": "5ffb0d8e4d0fc9253818fbac",
-            "title": "Basque"
-        },
-        {
-            "id": "5ffb0d8e4d0fc9253818fbad",
-            "title": "Beijing specialties"
-        },
-        {
-            "id": "5ffb0d8e4d0fc9253818fbae",
-            "title": "Belgian"
-        },
-        {
-            "id": "5ffb0d8e4d0fc9253818fbaf",
-            "title": "Brazilian"
-        },
-        {
-            "id": "5ffb0d8e4d0fc9253818fbb0",
-            "title": "British"
-        },
-        {
-            "id": "5ffb0d8e4d0fc9253818fbb1",
-            "title": "Cajun &amp; creole"
-        },
-        {
-            "id": "5ffb0d8f4d0fc9253818fbb2",
-            "title": "Cambodian"
-        },
-        {
-            "id": "5ffb0d8f4d0fc9253818fbb3",
-            "title": "Canadian"
-        },
-        {
-            "id": "5ffb0d8f4d0fc9253818fbb4",
-            "title": "Cantonese"
-        },
-        {
-            "id": "5ffb0d8f4d0fc9253818fbb5",
-            "title": "Caribbean"
-        },
-        {
-            "id": "5ffb0d8f4d0fc9253818fbb6",
-            "title": "Caucasian"
-        },
-        {
-            "id": "5ffb0d8f4d0fc9253818fbb7",
-            "title": "Central american"
-        },
-        {
-            "id": "5ffb0d8f4d0fc9253818fbb8",
-            "title": "Central asian"
-        },
-        {
-            "id": "5ffb0d8f4d0fc9253818fbb9",
-            "title": "Central european"
-        },
-        {
-            "id": "5ffb0d8f4d0fc9253818fbba",
-            "title": "Chilean"
-        },
-        {
-            "id": "5ffb0d904d0fc9253818fbbb",
-            "title": "Chinese"
-        },
-        {
-            "id": "5ffb0d904d0fc9253818fbbc",
-            "title": "Colombian"
-        },
-        {
-            "id": "5ffb0d904d0fc9253818fbbd",
-            "title": "Contemporary"
-        },
-        {
-            "id": "5ffb0d904d0fc9253818fbbe",
-            "title": "Croatian"
-        },
-        {
-            "id": "5ffb0d904d0fc9253818fbbf",
-            "title": "Cuban"
-        },
-        {
-            "id": "5ffb0d904d0fc9253818fbc0",
-            "title": "Danish"
-        },
-        {
-            "id": "5ffb0d904d0fc9253818fbc1",
-            "title": "Dutch"
-        },
-        {
-            "id": "5ffb0d904d0fc9253818fbc2",
-            "title": "Eastern european"
-        },
-        {
-            "id": "5ffb0d904d0fc9253818fbc3",
-            "title": "Egyptian"
-        },
-        {
-            "id": "5ffb0d904d0fc9253818fbc4",
-            "title": "Ethiopian"
-        },
-        {
-            "id": "5ffb0d904d0fc9253818fbc5",
-            "title": "Filipino"
-        },
-        {
-            "id": "5ffb0d904d0fc9253818fbc6",
-            "title": "French"
-        },
-        {
-            "id": "5ffb0d914d0fc9253818fbc7",
-            "title": "Fusion"
-        },
-        {
-            "id": "5ffb0d914d0fc9253818fbc8",
-            "title": "Gastropub"
-        },
-        {
-            "id": "5ffb0d914d0fc9253818fbc9",
-            "title": "Georgian"
-        },
-        {
-            "id": "5ffb0d914d0fc9253818fbca",
-            "title": "German"
-        },
-        {
-            "id": "5ffb0d914d0fc9253818fbcb",
-            "title": "Greek"
-        },
-        {
-            "id": "5ffb0d914d0fc9253818fbcc",
-            "title": "Grill"
-        },
-        {
-            "id": "5ffb0d914d0fc9253818fbcd",
-            "title": "Guatemalan"
-        },
-        {
-            "id": "5ffb0d914d0fc9253818fbce",
-            "title": "Hawaiian"
-        },
-        {
-            "id": "5ffb0d914d0fc9253818fbcf",
-            "title": "Hong kong"
-        },
-        {
-            "id": "5ffb0d914d0fc9253818fbd0",
-            "title": "Healthy"
-        },
-        {
-            "id": "5ffb0d924d0fc9253818fbd1",
-            "title": "Hungarian"
-        },
-        {
-            "id": "5ffb0d924d0fc9253818fbd2",
-            "title": "International"
-        },
-        {
-            "id": "5ffb0d924d0fc9253818fbd3",
-            "title": "Indonesian"
-        },
-        {
-            "id": "5ffb0d924d0fc9253818fbd4",
-            "title": "Indian"
-        },
-        {
-            "id": "5ffb0d924d0fc9253818fbd5",
-            "title": "Imperial chinese"
-        },
-        {
-            "id": "5ffb0d924d0fc9253818fbd6",
-            "title": "Irish"
-        },
-        {
-            "id": "5ffb0d924d0fc9253818fbd7",
-            "title": "Israeli"
-        },
-        {
-            "id": "5ffb0d924d0fc9253818fbd8",
-            "title": "Jamaican"
-        },
-        {
-            "id": "5ffb0d924d0fc9253818fbd9",
-            "title": "Korean"
-        },
-        {
-            "id": "5ffb0d924d0fc9253818fbda",
-            "title": "Latin"
-        },
-        {
-            "id": "5ffb0d924d0fc9253818fbdb",
-            "title": "Latvian"
-        },
-        {
-            "id": "5ffb0d924d0fc9253818fbdc",
-            "title": "Lebanese"
-        },
-        {
-            "id": "5ffb0d934d0fc9253818fbdd",
-            "title": "Malaysian"
-        },
-        {
-            "id": "5ffb0d934d0fc9253818fbde",
-            "title": "Mexican"
-        },
-        {
-            "id": "5ffb0d934d0fc9253818fbdf",
-            "title": "Middle eastern"
-        },
-        {
-            "id": "5ffb0d934d0fc9253818fbe0",
-            "title": "Mongolian"
-        },
-        {
-            "id": "5ffb0d934d0fc9253818fbe1",
-            "title": "Moroccan"
-        },
-        {
-            "id": "5ffb0d934d0fc9253818fbe2",
-            "title": "Native american"
-        },
-        {
-            "id": "5ffb0d934d0fc9253818fbe3",
-            "title": "Nepali"
-        },
-        {
-            "id": "5ffb0d934d0fc9253818fbe4",
-            "title": "New zealand"
-        },
-        {
-            "id": "5ffb0d934d0fc9253818fbe5",
-            "title": "Northeastern chinese"
-        },
-        {
-            "id": "5ffb0d934d0fc9253818fbe6",
-            "title": "Norwegian"
-        },
-        {
-            "id": "5ffb0d934d0fc9253818fbe7",
-            "title": "Pakistani"
-        },
-        {
-            "id": "5ffb0d944d0fc9253818fbe8",
-            "title": "Persian"
-        },
-        {
-            "id": "5ffb0d944d0fc9253818fbe9",
-            "title": "Peruvian"
-        },
-        {
-            "id": "5ffb0d944d0fc9253818fbea",
-            "title": "Polish"
-        },
-        {
-            "id": "5ffb0d944d0fc9253818fbeb",
-            "title": "Polynesian"
-        },
-        {
-            "id": "5ffb0d944d0fc9253818fbec",
-            "title": "Portuguese"
-        },
-        {
-            "id": "5ffb0d944d0fc9253818fbed",
-            "title": "Romanian"
-        },
-        {
-            "id": "5ffb0d944d0fc9253818fbee",
-            "title": "Salvadoran"
-        },
-        {
-            "id": "5ffb0d944d0fc9253818fbef",
-            "title": "Scottish"
-        },
-        {
-            "id": "5ffb0d954d0fc9253818fbf0",
-            "title": "Scandinavian"
-        },
-        {
-            "id": "5ffb0d954d0fc9253818fbf1",
-            "title": "Shanghai"
-        },
-        {
-            "id": "5ffb0d954d0fc9253818fbf2",
-            "title": "Singaporean"
-        },
-        {
-            "id": "5ffb0d954d0fc9253818fbf3",
-            "title": "South american"
-        },
-        {
-            "id": "5ffb0d954d0fc9253818fbf4",
-            "title": "Southwestern"
-        },
-        {
-            "id": "5ffb0d954d0fc9253818fbf5",
-            "title": "Spanish"
-        },
-        {
-            "id": "5ffb0d954d0fc9253818fbf6",
-            "title": "Sri lankan"
-        },
-        {
-            "id": "5ffb0d954d0fc9253818fbf7",
-            "title": "Swedish"
-        },
-        {
-            "id": "5ffb0d954d0fc9253818fbf8",
-            "title": "Swiss"
-        },
-        {
-            "id": "5ffb0d954d0fc9253818fbf9",
-            "title": "Szechuan"
-        },
-        {
-            "id": "5ffb0d964d0fc9253818fbfa",
-            "title": "Taiwanese"
-        },
-        {
-            "id": "5ffb0d964d0fc9253818fbfb",
-            "title": "Thai"
-        },
-        {
-            "id": "5ffb0d964d0fc9253818fbfc",
-            "title": "Tunisian"
-        },
-        {
-            "id": "5ffb0d964d0fc9253818fbfd",
-            "title": "Turkish"
-        },
-        {
-            "id": "5ffb0d964d0fc9253818fbfe",
-            "title": "Ukrainian"
-        },
-        {
-            "id": "5ffb0d964d0fc9253818fbff",
-            "title": "Venezuelan"
-        },
-        {
-            "id": "5ffb0d964d0fc9253818fc00",
-            "title": "Vietnamese"
-        },
-        {
-            "id": "5ffb0d964d0fc9253818fc01",
-            "title": "Azerbaijani"
-        },
-        {
-            "id": "5ffb0d964d0fc9253818fc02",
-            "title": "Eastern"
-        },
-        {
-            "id": "5ffb0d964d0fc9253818fc03",
-            "title": "Lithuanian"
-        },
-        {
-            "id": "5ffb0d964d0fc9253818fc04",
-            "title": "Czech"
-        },
-        {
-            "id": "5ffb0ee84d0fc9253818fc05",
-            "title": "Fast food"
-        },
-        {
-            "id": "5ffb0ee84d0fc9253818fc07",
-            "title": "Molecular"
-        }
+        "American",
+        "Asian",
+        "Belarusian",
+        "European",
+        "Italian",
+        "Japanese",
+        "Mediterranean",
+        "Russian",
+        "Afghani",
+        "African",
+        "Algerian",
+        "Arabic",
+        "Argentinean",
+        "Armenian",
+        "Australian",
+        "Austrian",
+        "Balti",
+        "Barbecue",
+        "Basque",
+        "Beijing Specialties",
+        "Belgian",
+        "Brazilian",
+        "British",
+        "Cajun &amp; Creole",
+        "Cambodian",
+        "Canadian",
+        "Cantonese",
+        "Caribbean",
+        "Caucasian",
+        "Central American",
+        "Central Asian",
+        "Central European",
+        "Chilean",
+        "Chinese",
+        "Colombian",
+        "Contemporary",
+        "Croatian",
+        "Cuban",
+        "Danish",
+        "Dutch",
+        "Eastern European",
+        "Egyptian",
+        "Ethiopian",
+        "Filipino",
+        "French",
+        "Fusion",
+        "Gastropub",
+        "Georgian",
+        "German",
+        "Greek",
+        "Grill",
+        "Guatemalan",
+        "Hawaiian",
+        "Hong Kong",
+        "Healthy",
+        "Hungarian",
+        "International",
+        "Indonesian",
+        "Indian",
+        "Imperial Chinese",
+        "Irish",
+        "Israeli",
+        "Jamaican",
+        "Korean",
+        "Latin",
+        "Latvian",
+        "Lebanese",
+        "Malaysian",
+        "Mexican",
+        "Middle Eastern",
+        "Mongolian",
+        "Moroccan",
+        "Native American",
+        "Nepali",
+        "New Zealand",
+        "NorthEastern Chinese",
+        "Norwegian",
+        "Pakistani",
+        "Persian",
+        "Peruvian",
+        "Polish",
+        "Polynesian",
+        "Portuguese",
+        "Romanian",
+        "Salvadoran",
+        "Scottish",
+        "Scandinavian",
+        "Shanghai",
+        "Singaporean",
+        "South American",
+        "Southwestern",
+        "Spanish",
+        "Sri Lankan",
+        "Swedish",
+        "Swiss",
+        "Szechuan",
+        "Taiwanese",
+        "Thai",
+        "Tunisian",
+        "Turkish",
+        "Ukrainian",
+        "Venezuelan",
+        "Vietnamese",
+        "Azerbaijani",
+        "Eastern",
+        "Lithuanian",
+        "Czech",
+        "Fast food",
+        "Fusion",
+        "Molecular"
+    ],
+    "categories_src": [
+        "Restaurant",
+        "Cafe",
+        "Bar",
+        "Pub",
+        "Hookah bar",
+        "Night club",
+        "Karaoke club",
+        "Gastro pub"
     ],
     "additional_src": [
-        {
-            "id": "5ffb19cc4d0fc9253818fc0f",
-            "title": "Wi-fi"
-        },
-        {
-            "id": "5ffb19cc4d0fc9253818fc10",
-            "title": "Outdoors"
-        },
-        {
-            "id": "5ffb19cc4d0fc9253818fc11",
-            "title": "Parking"
-        },
-        {
-            "id": "5ffb19cc4d0fc9253818fc12",
-            "title": "Takeaway"
-        },
-        {
-            "id": "5ffb19cc4d0fc9253818fc13",
-            "title": "Dress code"
-        },
-        {
-            "id": "5ffb19cc4d0fc9253818fc14",
-            "title": "Smoking allowed"
-        },
-        {
-            "id": "5ffb19cc4d0fc9253818fc15",
-            "title": "Pet friendly"
-        },
-        {
-            "id": "5ffb19cc4d0fc9253818fc16",
-            "title": "Live music"
-        },
-        {
-            "id": "5ffb19cc4d0fc9253818fc17",
-            "title": "Show program"
-        },
-        {
-            "id": "5ffb19cc4d0fc9253818fc18",
-            "title": "Dance floor"
-        },
-        {
-            "id": "5ffb19cc4d0fc9253818fc19",
-            "title": "Karaoke"
-        },
-        {
-            "id": "5ffb19cc4d0fc9253818fc1a",
-            "title": "Sports broadcasts"
-        },
-        {
-            "id": "5ffb19cd4d0fc9253818fc1b",
-            "title": "Dj"
-        },
-        {
-            "id": "5ffb19cd4d0fc9253818fc1c",
-            "title": "Stand up"
-        },
-        {
-            "id": "5ffb19cd4d0fc9253818fc1d",
-            "title": "Playstation/xbox"
-        },
-        {
-            "id": "5ffb19cd4d0fc9253818fc1e",
-            "title": "Table games"
-        },
-        {
-            "id": "5ffb19cd4d0fc9253818fc1f",
-            "title": "Vip-zone"
-        }
+        "Wi-Fi",
+        "Outdoors",
+        "Parking",
+        "Takeaway",
+        "Dress code",
+        "Smoking allowed",
+        "Pet friendly",
+        "Live music",
+        "Show program",
+        "Dance floor",
+        "Karaoke",
+        "Sports broadcasts",
+        "Dj",
+        "Stand up",
+        "PlayStation/XBOX",
+        "Table games",
+        "VIP-zone"
     ]
 }

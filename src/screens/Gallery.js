@@ -74,7 +74,7 @@ export default function Gallery() {
         let country = data.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.CountryName;
         let city = data.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName;
         
-        if (dict.countries_src.find(element => element.country===country && element.cities.find(el => el.city===city))) {
+        if (dict.countries_src.find(element => element.country===country && element.cities.find(el => el===city))) {
             setCountry(country);
             setCity(city);
         }
@@ -158,20 +158,20 @@ export default function Gallery() {
                                 {places && places.map((place, index) =>
                                     <Placemark 
                                         key={index}
-                                        geometry={[place.address.coordinates.latitude, place.address.coordinates.longitude]}
+                                        geometry={[place.address.coordinates[0], place.address.coordinates[1]]}
                                         options={{ 
                                             iconColor: (hoveredCard === place.id ? 'red' : 'black')
                                         }}
                                         modules={['geoObject.addon.balloon']}
                                         properties={{
                                             balloonContentHeader:
-                                                '<div class="balloon-header"><a href="/place/' + place.address.city.city + '/'+ place.title + '/">' + place.title + '</a></div>'
+                                                '<div class="balloon-header"><a href="/place/' + place.address.city + '/'+ place.title + '/">' + place.title + '</a></div>'
                                             ,
                                             balloonContentBody:
                                                 '<div class="balloon">' +
-                                                    '<a href="/place/' + place.address.city.city + '/'+ place.title + '/">' +
-                                                    '<div class="balloon-box"><div class="balloon-row">' + place.categories[0].title + '</div></div>' +
-                                                    '<img class="balloon-photo" src="' + place.photos[0] + '" alt="Photo of ' + place.categories[0].title + ' ' + place.title + '" draggable="false" /></a>' +
+                                                    '<a href="/place/' + place.address.city + '/'+ place.title + '/">' +
+                                                    '<div class="balloon-box"><div class="balloon-row">' + place.main_category + '</div></div>' +
+                                                    '<img class="balloon-photo" src="' + place.main_photo + '" alt="Photo of ' + place.main_category + ' ' + place.title + '" draggable="false" /></a>' +
                                                 '</div>'
                                         }}
                                     />
@@ -236,29 +236,31 @@ export default function Gallery() {
                                             className="gallery-card"
                                             onMouseEnter={() => setHoveredCard(place.id)}
                                             onMouseLeave={() => setHoveredCard(-1)}
-                                            onClick={() => history.push("/place/" + place.address.city.city + "/" + place.title + "/")}
+                                            onClick={() => history.push("/place/" + place.address.city + "/" + place.title + "/")}
                                         >
                                             <div className="gallery-card-photo">
-                                                <img src={place.photos[0]} alt={"A photo of " + place.title} draggable="false" />
+                                                <img src={place.main_photo} alt={"A photo of " + place.title} draggable="false" />
                                             </div>
                                             <div className="gallery-card-title">
                                                 {place.title}
                                             </div>
                                             <div className="gallery-card-category">
-                                                <div>{place.categories[0].title}</div>
+                                                <div>{place.main_category}</div>
                                                 <div class="dot"></div>
-                                                <div>
-                                                    Until {new Date(place.operation_hours[new Date().getDay() - 1][1]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC', hour12: false })}
-                                                </div>
+                                                {place.operation_hours[0] &&
+                                                    <div>
+                                                        Until {new Date(place.operation_hours[new Date().getDay() - 1][1]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC', hour12: false })}
+                                                    </div>
+                                                }
                                             </div>
                                             <div className="gallery-card-cuisine">
-                                                {place.cuisines[0].title} cuisine
+                                                {place.main_cuisine} cuisine
                                             </div>
                                             <div className="gallery-card-rating">
-                                                {place.rounded_rating===null ?
+                                                {place.general_review.rounded_rating===null ?
                                                     "No rating"
                                                 :   <BeautyStars
-                                                        value={place.rounded_rating}
+                                                        value={place.general_review.rounded_rating}
                                                         size="18px"
                                                         gap="4px"
                                                         inactiveColor="#DADADA"
@@ -270,7 +272,7 @@ export default function Gallery() {
                                                 {place.general_review.amount} reviews
                                             </div>
                                             <div className="gallery-card-address">
-                                                {place.address.city.city + ", " + place.address.street}
+                                                {place.address.city + ", " + place.address.street}
                                             </div>
                                         </div>
                                     ))}

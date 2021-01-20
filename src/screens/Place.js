@@ -129,7 +129,7 @@ export default function Place() {
                                 <div className="place-categories">
                                     {place.categories && place.categories.map((elem, index) => (
                                         <div key={index} className="place-category">
-                                            {elem.title}
+                                            {elem}
                                             {index !== (place.categories.length - 1) && <div class="dot"></div>}
                                         </div>
                                     ))}
@@ -137,15 +137,19 @@ export default function Place() {
                                 <div className="place-cuisines">
                                     {place.cuisines && place.cuisines.map((elem, index) => (
                                         <div key={index} className="place-cuisine">
-                                            {elem.title}
+                                            {elem}
                                             {index !== (place.cuisines.length - 1) && <div class="dot"></div>}
                                         </div>
                                     ))}
                                 </div>
                                 <div className="place-dashboard">
                                     <div className="button">Menu</div>
-                                    <div className="icon-link"><a href={place.website} target="_blank"><img className="website-icon" src={WebsiteIcon} alt="Website icon" /></a></div>
-                                    <div className="icon-link"><a href={place.instagram} target="_blank"><img className="instagram-icon" src={InstagramIcon} alt="Instagram icon" /></a></div>
+                                    {place.website &&
+                                        <div className="icon-link"><a href={place.website} target="_blank"><img className="website-icon" src={WebsiteIcon} alt="Website icon" /></a></div>
+                                    }
+                                    {place.instagram &&
+                                        <div className="icon-link"><a href={place.instagram} target="_blank"><img className="instagram-icon" src={InstagramIcon} alt="Instagram icon" /></a></div>
+                                    }
                                     <div className="button invert" onClick={() => window.open("tel:+" + place.phone.replace(/[^0-9]/g, ""), "_self")}>
                                         <img className="phone-icon" src={PhoneIcon} alt="Phone icon" />
                                         {place.phone}
@@ -231,7 +235,7 @@ export default function Place() {
                                 <div className="place-general-review">
                                     <div className="place-row">
                                         <div className="place-general-review-overal-rounded">
-                                            {place.general_review.rating}
+                                            {place.general_review && place.general_review.rating}
                                         </div>
                                         <BeautyStars
                                             value={place.rounded_rating}
@@ -303,7 +307,7 @@ export default function Place() {
                                         <div className="place-body">
                                             {place.additional_services && place.additional_services.map((elem, index) => (
                                                 <div key={index}>
-                                                    {elem.title}
+                                                    {elem}
                                                 </div>
                                             ))}
                                         </div>
@@ -335,14 +339,14 @@ export default function Place() {
                                         {place.address && place.address.country && place.address.city && place.address.street && place.address.coordinates &&
                                             <div className="place-body">
                                                 <div>
-                                                    {place.address.country.country + ", " + place.address.city.city + ", " + place.address.street}
+                                                    {place.address.country + ", " + place.address.city + ", " + place.address.street}
                                                 </div>
                                                 <div className="place-map">
                                                     <YMaps>
-                                                        <Map className="main-map" state={{ center: [place.address.coordinates.latitude, place.address.coordinates.longitude], zoom: 12 }}>
+                                                        <Map className="main-map" state={{ center: [place.address.coordinates[0], place.address.coordinates[1]], zoom: 12 }}>
                                                             <ZoomControl options={{ size: 'small', position: { bottom: 30, right: 10 }}} />
                                                             <Placemark
-                                                                geometry={[place.address.coordinates.latitude, place.address.coordinates.longitude]}
+                                                                geometry={[place.address.coordinates[0], place.address.coordinates[1]]}
                                                                 options={{ iconColor: 'red' }}
                                                             />
                                                         </Map>

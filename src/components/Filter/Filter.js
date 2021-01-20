@@ -6,7 +6,7 @@ import './filter.css';
 import ArrowDownIcon from '../../icons/arrow_down_icon.svg';
 import ArrowUpIcon from '../../icons/arrow_up_icon.svg';
 
-import { countries_src, categories_src, cuisines_src, additional_src } from '../../dict.json';
+import dict from '../../dict.json';
 
 
 export default function Filter({
@@ -43,13 +43,13 @@ export default function Filter({
     }
 
     const handleCuisinesChange = (element) => {
-        cuisine.includes(element) ?
+        cuisines.includes(element) ?
             setCuisines([...cuisines.filter(elem => elem !== element)])
         :   setCuisines([...cuisines, element]);                       
     }
 
     const handleAdditionalServicesChange = (element) => {
-        additionally.includes(element) ?
+        additionalServices.includes(element) ?
             setAdditionalServices([...additionalServices.filter(elem => elem !== element)])
         :   setAdditionalServices([...additionalServices, element]);                       
     }
@@ -79,7 +79,7 @@ export default function Filter({
             <div className="main-filter-header">
                 All filters
             </div>
-            <div className="filter-box half-width margin-right">
+            <div className="filter-box half-width margin-right scrollable">
                 <div className="filter-header clickable" onClick={() => setCountryActive(!isCountryActive)}>
                     Country
                     <div className="invert arrow">
@@ -101,7 +101,7 @@ export default function Filter({
                 </div>
                 {isCountryActive &&
                     <div className="filter-body">
-                        {countries_src.filter(element => element.country !== country).map((element, index) =>
+                        {dict.countries_src && dict.countries_src.filter(element => element.country !== country).map((element, index) =>
                             <div 
                                 key={index} 
                                 className="button filter-element"
@@ -118,7 +118,7 @@ export default function Filter({
                 }
             </div>
             { (country !== "") &&
-                <div className="filter-box half-width">
+                <div className="filter-box half-width scrollable">
                     <div className="filter-header clickable" onClick={() => setCityActive(!isCityActive)}>
                         City
                         <div className="invert arrow">
@@ -140,8 +140,8 @@ export default function Filter({
                     </div>
                     {isCityActive &&
                         <div className="filter-body">
-                            {countries_src
-                                .find(element => element.country===country).city
+                            {dict.countries_src && dict.countries_src
+                                .find(element => element.country===country).cities
                                 .filter(element => element !== city)
                                 .map((element, index) => 
                                     <div
@@ -201,7 +201,7 @@ export default function Filter({
                     </div>
                 </div>
             </div>
-            {sourceCategories &&
+            {dict.categories_src &&
                 <div className="filter-box">
                     <div className="filter-header clickable" onClick={() => setCategoryActive(!isCategoryActive)}>
                         Category
@@ -214,7 +214,7 @@ export default function Filter({
                     </div>
                     {isCategoryActive &&
                     <div className="filter-body">
-                        {sourceCategories.map((element, index) => 
+                        {dict.categories_src.map((element, index) => 
                             <div key={index} className={"button filter-element" + (categories.includes(element) ? " active-button" : "")}
                                 onClick={() => handleCategoriesChange(element)}>
                                 {element}
@@ -223,29 +223,29 @@ export default function Filter({
                     </div>}
                 </div>
             }
-            {sourceCuisine &&
+            {dict.additional_src &&
                 <div className="filter-box">
-                    <div className="filter-header clickable" onClick={() => setCuisineActive(!isCuisineActive)}>
-                        Cuisine
+                    <div className="filter-header clickable" onClick={() => setAdditionalServicesActive(!isAdditionalServicesActive)}>
+                        Additional
                         <div className="invert arrow">
-                            {isCuisineActive ?
+                            {isAdditionalServicesActive ?
                             <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
                             : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
                             }
                         </div>
                     </div>
-                    {isCuisineActive &&
+                    {isAdditionalServicesActive &&
                     <div className="filter-body">
-                        {sourceCuisine.map((element, index) => 
-                            <div key={index} className={"button filter-element" + (cuisine.includes(element) ? " active-button" : "")}
-                                onClick={() => handleCuisineChange(element)}>
+                        {dict.additional_src.map((element, index) => 
+                            <div key={index} className={"button filter-element" + (additionalServices.includes(element) ? " active-button" : "")}
+                                onClick={() => handleAdditionalServicesChange(element)}>
                                 {element}
                             </div>
                         )}
                     </div>}
                 </div>
             }
-            {sourceInMenu &&
+            {dict.inmenu_src &&
                 <div className="filter-box">
                     <div className="filter-header clickable" onClick={() => setInMenuActive(!isInMenuActive)}>
                         In menu
@@ -258,7 +258,7 @@ export default function Filter({
                     </div>
                     {isInMenuActive &&
                     <div className="filter-body">
-                        {sourceInMenu.map((element, index) => 
+                        {dict.inmenu_src.map((element, index) => 
                             <div key={index} className={"button filter-element" + (inMenu.includes(element) ? " active-button" : "")}
                                 onClick={() => handleInMenuChange(element)}>
                                 {element}
@@ -267,22 +267,22 @@ export default function Filter({
                     </div>}
                 </div>
             }
-            {sourceAdditionally &&
+            {dict.cuisines_src &&
                 <div className="filter-box">
-                    <div className="filter-header clickable" onClick={() => setAdditionallyActive(!isAdditionallyActive)}>
-                        Additional
+                    <div className="filter-header clickable" onClick={() => setCuisineActive(!isCuisineActive)}>
+                        Cuisine
                         <div className="invert arrow">
-                            {isAdditionallyActive ?
+                            {isCuisineActive ?
                             <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
                             : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
                             }
                         </div>
                     </div>
-                    {isAdditionallyActive &&
+                    {isCuisineActive &&
                     <div className="filter-body">
-                        {sourceAdditionally.map((element, index) => 
-                            <div key={index} className={"button filter-element" + (additionally.includes(element) ? " active-button" : "")}
-                                onClick={() => handleAdditionallyChange(element)}>
+                        {dict.cuisines_src.map((element, index) => 
+                            <div key={index} className={"button filter-element" + (cuisines.includes(element) ? " active-button" : "")}
+                                onClick={() => handleCuisinesChange(element)}>
                                 {element}
                             </div>
                         )}
@@ -290,5 +290,5 @@ export default function Filter({
                 </div>
             }
         </div>
-    )
+    );
 }

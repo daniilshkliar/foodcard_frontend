@@ -4,7 +4,7 @@ import Spinner from '../components/LoaderSpinner/Spinner';
 import axiosApiInstance from '../services/JWTaxios';
 
 import '../reservation.css';
-import place from '../place.json';
+// import place from '../place.json';
 
 import ArrowDownIcon from '../icons/arrow_down_icon.svg';
 import ArrowUpIcon from '../icons/arrow_up_icon.svg';

@@ -97,6 +97,12 @@
 	margin: 2px auto;
 }
 
+.scrollable .filter-body {
+	max-height: 100px;
+	overflow: auto;
+	flex-direction: unset;
+}
+
 .sort-direction {
 	width: 100%;
 	display: flex;
