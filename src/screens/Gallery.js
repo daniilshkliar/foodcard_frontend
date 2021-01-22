@@ -258,7 +258,9 @@ export default function Gallery() {
                                             </div>
                                             <div className="gallery-card-rating">
                                                 {place.general_review.rounded_rating===null ?
-                                                    "No rating"
+                                                    <div className="text-color-main">
+                                                        No rating
+                                                    </div>
                                                 :   <BeautyStars
                                                         value={place.general_review.rounded_rating}
                                                         size="18px"

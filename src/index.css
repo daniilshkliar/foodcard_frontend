@@ -28,6 +28,10 @@ a {
 .right-scope {z-index: 1;}
 .elevator {z-index: 10;}
 
+.text-color-main {
+	color: #3e3e3e;
+}
+
 .wrapper {
 	top: 70px;
 	width: 100%;

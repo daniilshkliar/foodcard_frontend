@@ -1,6 +1,22 @@
 .edit-form-background {z-index: 10000;}
 .edit-form-description {z-index: 50000;}
 
+.edit-scope {
+    width: 70%;
+    margin: 50px auto;
+}
+
+.popup {
+    width: max-content;
+    margin: 20px auto;
+    padding: 10px 30px;
+    border-radius: 30px;
+    text-align: center;
+    background-color: #F47D24;
+    color: #ffffff;
+    user-select: none;
+}
+
 .edit-form-background {
     position: absolute;
 	width: 100%;
@@ -26,7 +42,7 @@
 
 .edit-form-title {
     margin: 0 0 10px 10px;
-    font-size: 22px;
+    font-size: 18px;
     color: #3e3e3e;
     align-self: flex-start;
 }

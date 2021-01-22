@@ -15,11 +15,9 @@ export default function Slider({
 	const sliderRef = useRef(null);
 	const length = elements.length;
 
-
 	useEffect(() => {
         sliderRef.current.focus();
 	}, []);
-	
 
 	return (
 		<div

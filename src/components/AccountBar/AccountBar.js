@@ -15,12 +15,12 @@ export default function AccountBar() {
     const [isLoading, setLoading] = useState(false);
     const [isFavoriteLoading, setFavoriteLoading] = useState(false);
     const [id, setID] = useState(null);
-    const [isSuperuser, setSuperuser] = useState(false);
+    const [isStaff, setStaff] = useState(false);
     const [manager, setManager] = useState([]);
     const [email, setEmail] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [favorites, setFavorites] = useState([]);
+    const [favorites, setFavorites] = useState({"places": []});
     const [messages, setMessages] = useState({});
     const [isFavoriteActive, setFavoriteActive] = useState(false);
 
@@ -36,7 +36,7 @@ export default function AccountBar() {
             withCredentials: true
         }).then((response) => {
             setID(response.data.id);
-            setSuperuser(response.data.is_superuser);
+            setStaff(response.data.is_staff);
             setEmail(response.data.email);
             setFirstName(response.data.first_name);
             setLastName(response.data.last_name);
@@ -83,7 +83,7 @@ export default function AccountBar() {
             withCredentials: true
         }).then((response) => {
             setID(null);
-            setSuperuser(false);
+            setStaff(false);
             setManager([]);
             setEmail("");
             setFirstName("");
@@ -108,68 +108,61 @@ export default function AccountBar() {
             {isLoading ?
                 <Spinner />
             :   <div className="account-bar">
-                    {messages.statusText &&
-                        <div className="account-bar">
-                            <div className="auth-error">
-                                {messages.statusText}
-                            </div>
-                        </div>
-                    }
                     <div className="account-bar">
                         {id ?
-                                <div>
-                                    {id &&
-                                        <div className={"user-avatar color" + id.toString().slice(-1)}>
-                                            {firstName.charAt(0).toUpperCase()}
+                            <div>
+                                {id &&
+                                    <div className={"user-avatar color" + id.toString().slice(-1)}>
+                                        {firstName.charAt(0).toUpperCase()}
+                                    </div>
+                                }
+                                <div className="account-row">{email}</div>
+                                <div className="account-row">{firstName}</div>
+                                <div className="account-row">{lastName}</div>
+                                <div className="account-scope">
+                                    <div className="account-scope-header clickable" onClick={() => setFavoriteActive(!isFavoriteActive)}>
+                                        Favorites
+                                        <div className="invert arrow">
+                                            {isFavoriteActive ?
+                                            <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
+                                            : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
+                                            }
                                         </div>
-                                    }
-                                    <div className="account-row">{email}</div>
-                                    <div className="account-row">{firstName}</div>
-                                    <div className="account-row">{lastName}</div>
-                                    <div className="account-scope">
-                                        <div className="account-scope-header clickable" onClick={() => setFavoriteActive(!isFavoriteActive)}>
-                                            Favorites
-                                            <div className="invert arrow">
-                                                {isFavoriteActive ?
-                                                <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
-                                                : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
-                                                }
-                                            </div>
-                                        </div>
-                                        {isFavoriteActive &&
-                                            <div className="fav-button-panel">
-                                                {isFavoriteLoading ?
-                                                    <Spinner small={true} />
-                                                :   (favorites.length > 0 ?
-                                                        (favorites.map((elem, index) => (
-                                                            <div key={index} className="">
-                                                                <div className="button orange-button" onClick={() => history.push("/place/" + elem.place.address.city + "/" + elem.place.title + "/")}>
-                                                                    {elem.place.title}
-                                                                </div>
+                                    </div>
+                                    {isFavoriteActive &&
+                                        <div className="fav-button-panel">
+                                            {isFavoriteLoading ?
+                                                <Spinner small={true} />
+                                            :   (favorites.places.length > 0 ?
+                                                    (favorites.places.map((elem, index) => (
+                                                        <div key={index} className="">
+                                                            <div className="button orange-button" onClick={() => history.push("/place/" + elem.address.city + "/" + elem.title + "/")}>
+                                                                {elem.title}
                                                             </div>
-                                                        )))
-                                                    :   <div className="tip">
-                                                            You have no favorite places
                                                         </div>
-                                                    )
-                                                }
-                                            </div>
-                                        }
-                                    </div>
-                                    {(isSuperuser || manager.length > 0) &&
-                                        <div className="account-scope">
-                                            <div className="button active-button" onClick={() => history.push("/controlpanel/")}>Control panel</div>
+                                                    )))
+                                                :   <div className="tip">
+                                                        You have no favorite places
+                                                    </div>
+                                                )
+                                            }
                                         </div>
                                     }
+                                </div>
+                                {(isStaff || manager.length > 0) &&
                                     <div className="account-scope">
-                                        <div className="button" onClick={() => editProfile()}>Edit profile</div>
-                                        <div className="button" onClick={() => logout()}>Log out</div>
+                                        <div className="button active-button" onClick={() => history.push("/controlpanel/")}>Control panel</div>
                                     </div>
+                                }
+                                <div className="account-scope">
+                                    <div className="button" onClick={() => editProfile()}>Edit profile</div>
+                                    <div className="button" onClick={() => logout()}>Log out</div>
                                 </div>
-                            :   <div>
-                                    <div className="button active-button" onClick={() => history.push("/login/")}>Login</div>
-                                    <div className="button active-button" onClick={() => history.push("/signup/")}>Signup</div>
-                                </div>
+                            </div>
+                        :   <div>
+                                <div className="button active-button" onClick={() => history.push("/login/")}>Login</div>
+                                <div className="button active-button" onClick={() => history.push("/signup/")}>Signup</div>
+                            </div>
                         }
                     </div>
                 </div>
