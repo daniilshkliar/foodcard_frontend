@@ -256,23 +256,27 @@ export default function Gallery() {
                                             <div className="gallery-card-cuisine">
                                                 {place.main_cuisine} cuisine
                                             </div>
-                                            <div className="gallery-card-rating">
-                                                {place.general_review.rounded_rating===null ?
-                                                    <div className="text-color-main">
-                                                        No rating
+                                            {place.general_review &&
+                                                <div>
+                                                    <div className="gallery-card-rating">
+                                                        {place.general_review.rounded_rating===null ?
+                                                            <div className="text-color-main">
+                                                                No rating
+                                                            </div>
+                                                        :   <BeautyStars
+                                                                value={place.general_review.rounded_rating}
+                                                                size="18px"
+                                                                gap="4px"
+                                                                inactiveColor="#DADADA"
+                                                                activeColor="#ED6E2D"
+                                                            />
+                                                        }
                                                     </div>
-                                                :   <BeautyStars
-                                                        value={place.general_review.rounded_rating}
-                                                        size="18px"
-                                                        gap="4px"
-                                                        inactiveColor="#DADADA"
-                                                        activeColor="#ED6E2D"
-                                                    />
-                                                }
-                                            </div>
-                                            <div className="gallery-card-reviews">
-                                                {place.general_review.amount} reviews
-                                            </div>
+                                                    <div className="gallery-card-reviews">
+                                                        {place.general_review.amount} reviews
+                                                    </div>
+                                                </div>
+                                            }
                                             <div className="gallery-card-address">
                                                 {place.address.city + ", " + place.address.street}
                                             </div>

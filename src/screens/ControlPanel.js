@@ -5,6 +5,13 @@ import jwt_axios from '../services/JWTaxios';
 import Header from '../components/Header/Header';
 import Spinner from '../components/LoaderSpinner/Spinner';
 import EditTitle from '../components/EditForms/EditTitle';
+import EditDescription from '../components/EditForms/EditDescription';
+import EditCategories from '../components/EditForms/EditCategories';
+import EditCuisines from '../components/EditForms/EditCuisines';
+import EditAdditionalServices from '../components/EditForms/EditAdditionalServices';
+import EditContacts from '../components/EditForms/EditContacts';
+import EditSchedule from '../components/EditForms/EditSchedule';
+import EditPhotos from '../components/EditForms/EditPhotos';
 
 import '../editForms.css';
 import '../panel.css';
@@ -24,6 +31,13 @@ export default function ControlPanel({  }) {
     const [editPlaceOption, setEditPlaceOption] = useState("");
 
     const [editTitle, setEditTitle] = useState(false);
+    const [editDescription, setEditedDescription] = useState(false);
+    const [editCategories, setEditCategories] = useState(false);
+    const [editCuisines, setEditCuisines] = useState(false);
+    const [editAdditionalServices, setEditAdditionalServices] = useState(false);
+    const [editContacts, setEditContacts] = useState(false);
+    const [editSchedule, setEditSchedule] = useState(false);
+    const [editPhotos, setEditPhotos] = useState(false);
     
     useEffect(() => {
         fetchPlaces();
@@ -75,7 +89,14 @@ export default function ControlPanel({  }) {
     }
     
     const clearUseState = (except) => {
-        setEditTitle(except === "Edit title");
+        setEditTitle(except === "title");
+        setEditedDescription(except === "description");
+        setEditCategories(except === "categories");
+        setEditCuisines(except === "cuisines");
+        setEditAdditionalServices(except === "additional");
+        setEditContacts(except === "contacts");
+        setEditSchedule(except === "schedule");
+        setEditPhotos(except === "photos");
     }
 
 	return (
@@ -124,6 +145,7 @@ export default function ControlPanel({  }) {
                                             onClick={() => {
                                                 fetchPlace();
                                                 setActiveOption("Edit place");
+                                                setEditPlaceOption("");
                                                 clearUseState(null);
                                             }}
                                         >
@@ -136,22 +158,76 @@ export default function ControlPanel({  }) {
                                 {activePlace && activeOption &&
                                     <div>
                                         <div
-                                            className={editPlaceOption === "Edit title" ? "panel-row selected" : "panel-row"}
+                                            className={editPlaceOption === "title" ? "panel-row selected" : "panel-row"}
                                             onClick={() => {
-                                                setEditPlaceOption("Edit title");
-                                                clearUseState("Edit title");
+                                                setEditPlaceOption("title");
+                                                clearUseState("title");
                                             }}
                                         >
                                             Edit title
                                         </div>
                                         <div
-                                            className={editPlaceOption === "Edit description" ? "panel-row selected" : "panel-row"}
+                                            className={editPlaceOption === "description" ? "panel-row selected" : "panel-row"}
                                             onClick={() => {
-                                                setEditPlaceOption("Edit description");
-                                                clearUseState("Edit description");
+                                                setEditPlaceOption("description");
+                                                clearUseState("description");
                                             }}
                                         >
                                             Edit description
+                                        </div>
+                                        <div
+                                            className={editPlaceOption === "categories" ? "panel-row selected" : "panel-row"}
+                                            onClick={() => {
+                                                setEditPlaceOption("categories");
+                                                clearUseState("categories");
+                                            }}
+                                        >
+                                            Edit categories
+                                        </div>
+                                        <div
+                                            className={editPlaceOption === "cuisines" ? "panel-row selected" : "panel-row"}
+                                            onClick={() => {
+                                                setEditPlaceOption("cuisines");
+                                                clearUseState("cuisines");
+                                            }}
+                                        >
+                                            Edit cuisines
+                                        </div>
+                                        <div
+                                            className={editPlaceOption === "additional" ? "panel-row selected" : "panel-row"}
+                                            onClick={() => {
+                                                setEditPlaceOption("additional");
+                                                clearUseState("additional");
+                                            }}
+                                        >
+                                            Edit additional services
+                                        </div>
+                                        <div
+                                            className={editPlaceOption === "contacts" ? "panel-row selected" : "panel-row"}
+                                            onClick={() => {
+                                                setEditPlaceOption("contacts");
+                                                clearUseState("contacts");
+                                            }}
+                                        >
+                                            Edit contacts
+                                        </div>
+                                        <div
+                                            className={editPlaceOption === "schedule" ? "panel-row selected" : "panel-row"}
+                                            onClick={() => {
+                                                setEditPlaceOption("schedule");
+                                                clearUseState("schedule");
+                                            }}
+                                        >
+                                            Edit hours of operation
+                                        </div>
+                                        <div
+                                            className={editPlaceOption === "photos" ? "panel-row selected" : "panel-row"}
+                                            onClick={() => {
+                                                setEditPlaceOption("photos");
+                                                clearUseState("photos");
+                                            }}
+                                        >
+                                            Edit photos
                                         </div>
                                     </div>
                                 }
@@ -177,6 +253,50 @@ export default function ControlPanel({  }) {
                                                         setPlace={setPlace}
                                                         places={places}
                                                         setPlaces={setPlaces}
+                                                    />
+                                                }
+                                                {editDescription && 
+                                                    <EditDescription
+                                                        place={place}
+                                                        setPlace={setPlace}
+                                                    />
+                                                }
+                                                {editCategories && 
+                                                    <EditCategories
+                                                        place={place}
+                                                        setPlace={setPlace}
+                                                    />
+                                                }
+                                                {editCuisines && 
+                                                    <EditCuisines
+                                                        place={place}
+                                                        setPlace={setPlace}
+                                                    />
+                                                }
+                                                {editAdditionalServices && 
+                                                    <EditAdditionalServices
+                                                        place={place}
+                                                        setPlace={setPlace}
+                                                    />
+                                                }
+                                                {editContacts && 
+                                                    <EditContacts
+                                                        place={place}
+                                                        setPlace={setPlace}
+                                                        places={places}
+                                                        setPlaces={setPlaces}
+                                                    />
+                                                }
+                                                {editSchedule && 
+                                                    <EditSchedule
+                                                        place={place}
+                                                        setPlace={setPlace}
+                                                    />
+                                                }
+                                                {editPhotos && 
+                                                    <EditPhotos
+                                                        place={place}
+                                                        setPlace={setPlace}
                                                     />
                                                 }
                                             </div>

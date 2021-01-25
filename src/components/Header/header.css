@@ -1,6 +1,6 @@
 .header {z-index: 300000;}
-.account-background{z-index: 99;}
-.account-window{z-index: 100;}
+.account-background{z-index: 290000;}
+.account-window{z-index: 295000;}
 
 .header {
 	width: 100%;

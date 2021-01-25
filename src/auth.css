@@ -2,6 +2,7 @@
     width: 100vw;
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
 }
 
@@ -96,11 +97,11 @@
 
 .auth-error {
     z-index: 110000;
-    position: absolute;
-    top: 30px;
     width: max-content;
-    padding: 10px;
+    margin: 10px auto 70px;
+    padding: 10px 30px;
     border-radius: 30px;
+    text-align: center;
     border: 1px solid #ED6E2D;
     color: #ED6E2D;
     align-self: center;

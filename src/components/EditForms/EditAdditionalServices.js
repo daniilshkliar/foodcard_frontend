@@ -1,35 +1,30 @@
 import React, { useState } from 'react';
 import jwt_axios from '../../services/JWTaxios';
-import { isAlpha } from 'validator';
 
 import Spinner from '../LoaderSpinner/Spinner';
 
+import dict from '../../dict.json';
 
-export default function EditTitle({ 
+
+export default function EditAdditionalServices({ 
     place,
-    setPlace,
-    places,
-    setPlaces
+    setPlace
 }) {
     const [messages, setMessages] = useState({});
     const [isLoading, setLoading] = useState(false);
-    const [newTitle, setNewTitle] = useState("");
-    const [isTitleValid, setTitleValid] = useState(false);
+    const [newAdditionalServices, setNewAdditionalServices] = useState(place.additional_services);
     const [popup, setPopup] = useState(false);
 
-    const setTitle = async () => {
+    const setAdditionalServices = async () => {
         setLoading(true);
         setMessages({});
 
         await jwt_axios.post("/core/place/update/" + place.id + "/", {
-            "title": newTitle
+            "additional_services": newAdditionalServices
         }, {
             withCredentials: true 
         }).then((response) => {
             setPlace(response.data);
-            let placeDataBefore = places.find(elem => elem.id === place.id);
-            placeDataBefore.title = response.data.title;
-            setPlaces([...places.filter(elem => elem.id !== place.id), placeDataBefore]);
             setPopup(true);
         }).catch((error) => {
             setMessages(
@@ -45,9 +40,10 @@ export default function EditTitle({
         });
     }
 
-    const titleValidator = (value) => {
-        setNewTitle(value);
-        setTitleValid(isAlpha(value) && value.length > 0 && value.length <= 70);
+    const handleAdditionalServicesChange = (element) => {
+        newAdditionalServices.includes(element) ?
+            setNewAdditionalServices([...newAdditionalServices.filter(elem => elem !== element)])
+        :   setNewAdditionalServices([...newAdditionalServices, element]);                
     }
 
 	return (
@@ -59,25 +55,27 @@ export default function EditTitle({
             :   <div>
                     <div className="edit-scope">
                         <div className="edit-form-title">
-                            Enter new title
+                            Choose your additional services
                         </div>
-                        <div className="base-row">
-                            <input
-                                type="title"
-                                name="title"
-                                className={isTitleValid || newTitle.length === 0 ? "input-text" : "input-text invalid"}
-                                placeholder={place.title}
-                                value={newTitle}
-                                onChange={(e) => titleValidator(e.target.value)}
-                            />
-                        </div>
+                        {dict.additional_src &&
+                            <div className="filter-box editable">
+                                <div className="filter-body">
+                                    {dict.additional_src.map((element, index) => 
+                                        <div key={index} className={"button filter-element" + (newAdditionalServices.includes(element) ? " active-button" : "")}
+                                            onClick={() => handleAdditionalServicesChange(element)}>
+                                            {element}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        }
                         <div className="row">
-                            {isTitleValid ?
+                            {newAdditionalServices.length > 0 ?
                                 <div
                                     tabindex="0"
                                     className="save"
-                                    onClick={() => setTitle()}
-                                    onKeyDown={(e) => e.key === 'Enter' && setTitle()}
+                                    onClick={() => setAdditionalServices()}
+                                    onKeyDown={(e) => e.key === 'Enter' && setAdditionalServices()}
                                 >
                                     Save
                                 </div>
@@ -87,7 +85,7 @@ export default function EditTitle({
                     </div>
                     {popup &&
                         <div className="popup">
-                            Title changed successfully
+                            Additional services changed successfully
                         </div>
                     }
                     <div className="panel-error">
