@@ -10,8 +10,7 @@ export default function Slider({
 	elements,
 	sliderIndex,
 	setSliderIndex
-	}) {
-
+}) {
 	const sliderRef = useRef(null);
 	const length = elements.length;
 

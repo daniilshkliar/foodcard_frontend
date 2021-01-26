@@ -26,12 +26,12 @@ export default function EditContacts({
     const [isPhoneValid, setPhoneValid] = useState(isMobilePhone(place.phone, isMobilePhoneLocales, {strictMode: true}));
     const [newWebsite, setNewWebsite] = useState(place.website ? place.website.split('www.')[1].replace('/','') : "");
     const [newInstagram, setNewInstagram] = useState(place.instagram ? place.instagram.split('instagram.com/')[1].replace('/','') : "");
-    const [country, setCountry] = useState("");
+    const [country, setCountry] = useState(place.address && place.address.country);
     const [isCountryActive, setCountryActive] = useState(false);
-    const [city, setCity] = useState("");
+    const [city, setCity] = useState(place.address && place.address.city);
     const [isCityActive, setCityActive] = useState(false);
-    const [street, setStreet] = useState("");
-    const [isStreetValid, setStreetValid] = useState(false);
+    const [street, setStreet] = useState(place.address && place.address.street);
+    const [isStreetValid, setStreetValid] = useState(place.address && street === place.address.street);
     const [popup, setPopup] = useState(false);
 
     const setContacts = async () => {
@@ -230,7 +230,7 @@ export default function EditContacts({
                             <input
                                 type="text"
                                 name="street"
-                                className={isStreetValid || street.length === 0 ? "input-text" : "input-text invalid"}
+                                className={isStreetValid || (place.address && street === place.address.street) ? "input-text" : "input-text invalid"}
                                 value={street}
                                 onChange={(e) => streetValidator(e.target.value)}
                             />

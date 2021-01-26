@@ -2,8 +2,8 @@
 .edit-form-description {z-index: 50000;}
 
 .edit-scope {
-    width: 70%;
-    margin: 50px auto 20px auto;
+    width: 80%;
+    margin: 30px auto 20px auto;
 }
 
 .editable {
@@ -170,14 +170,14 @@ input[type="time"] {
     user-select: none;
 }
 
-.small-photo img {
+.small-photo-img {
     width: 100%;
     height: 100%;
 	object-fit: cover;
     transition: all 0.2s;
 }
 
-.small-photo img:hover {
+.small-photo-img:hover {
     transform: scale(1.1);
 }
 
@@ -197,7 +197,7 @@ input[type="time"] {
 }
 
 .for-deletion img {
-	width: 80%;
+	width: 70%;
 }
 
 .for-deletion:hover {
@@ -213,4 +213,60 @@ input[type="time"] {
     position: absolute;
     top: 5px;
     left: 5px;
+}
+
+.radio {
+    z-index: 1000;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    display: block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.radio input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #eaeaea99;
+    border-radius: 50%;
+}
+
+.radio:hover input ~ .checkmark {
+    background-color: #eaeaeacc;
+}
+
+.radio input:checked ~ .checkmark {
+    background-color: #ffffff;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.radio input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.radio .checkmark:after {
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #F47D24;
 }

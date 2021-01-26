@@ -107,12 +107,12 @@ export default function EditPhotos({
                         Choose your photos
                     </div>
                     <div className="base-row">
-                        <label for="upload" className="button orange-button">Choose</label>
+                        <label for="upload" className="button active-button">Choose</label>
                     </div>
                     <div className="edit-gallery">
                         {allPhotos && allPhotos.map((image, index) => (
                             <div key={index} className={deletePhotos.includes(image.id) ? "small-photo to-delete" : "small-photo"}>
-                                <img src={image.thumbnail_uri} alt='' draggable="false" />
+                                <img className="small-photo-img" src={image.thumbnail_uri} alt='' draggable="false" />
                                 <div
                                     className="for-deletion"
                                     onClick={() => {
@@ -123,14 +123,18 @@ export default function EditPhotos({
                                 >
                                     <img src={CloseIcon} alt="Close icon" draggable="false" />
                                 </div>
-                                <input
-                                    type="radio"
-                                    value={image.id}
-                                    name="set-main-photo"
-                                    className="set-main-photo"
-                                    checked={newMainPhoto === image.id}
-                                    onChange={() => setNewMainPhoto(image.id)}
-                                />
+                                <label className="radio">
+                                    <input
+                                        type="radio"
+                                        value={image.id}
+                                        name="set-main-photo"
+                                        className="set-main-photo"
+                                        checked={newMainPhoto === image.id}
+                                        onChange={() => setNewMainPhoto(image.id)}
+                                    />
+                                    <span className="checkmark"></span>
+                                </label>
+                                <label for={"radio" + index} className=""></label>
                             </div>
                         ))}
                     </div>
@@ -143,7 +147,7 @@ export default function EditPhotos({
                         onChange={(e) => uploadImages(e)}
                     />
                     <div className="row">
-                        {newMainPhoto ?
+                        {newMainPhoto || deletePhotos.length > 0 ?
                             <div
                                 tabindex="0"
                                 className="save"
