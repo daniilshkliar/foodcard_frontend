@@ -171,7 +171,7 @@ export default function Gallery() {
                                                 '<div class="balloon">' +
                                                     '<a href="/place/' + place.address.city + '/'+ place.title + '/">' +
                                                     '<div class="balloon-box"><div class="balloon-row">' + place.main_category + '</div></div>' +
-                                                    '<img class="balloon-photo" src="' + place.main_photo + '" alt="Photo of ' + place.main_category + ' ' + place.title + '" draggable="false" /></a>' +
+                                                    '<img class="balloon-photo" src="' + place.main_photo.thumbnail_uri + '" alt="Photo of ' + place.main_category + ' ' + place.title + '" draggable="false" /></a>' +
                                                 '</div>'
                                         }}
                                     />
@@ -239,7 +239,7 @@ export default function Gallery() {
                                             onClick={() => history.push("/place/" + place.address.city + "/" + place.title + "/")}
                                         >
                                             <div className="gallery-card-photo">
-                                                <img src={place.main_photo} alt={"A photo of " + place.title} draggable="false" />
+                                                <img src={place.main_photo.thumbnail_uri} alt={"A photo of " + place.title} draggable="false" />
                                             </div>
                                             <div className="gallery-card-title">
                                                 {place.title}

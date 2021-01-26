@@ -89,41 +89,41 @@ export default function Place() {
                             </div>
                         :   <div>
                                 {sliderIndex!==-1 && place.photos.length > 0 &&
-                                    <Slider elements={place.photos} sliderIndex={sliderIndex} setSliderIndex={setSliderIndex} />
+                                    <Slider elements={[...place.photos.map(elem => elem.image_uri)]} sliderIndex={sliderIndex} setSliderIndex={setSliderIndex} />
                                 }
                                 
                                 <div className="main">
                                     <div className="place-photos">
                                         <div className="place-photo-container-1">
                                             <div className="color0" onClick={() => setSliderIndex(0)}>
-                                                {place.photos && place.photos[0] && <img src={place.photos[0]} alt="Photo" draggable="false" className="place-photo" />}
+                                                {place.photos && place.photos[0] && <img src={place.photos[0].image_uri} alt="Photo" draggable="false" className="place-photo" />}
                                             </div>
                                             <div className="color1" onClick={() => setSliderIndex(1)}>
-                                                {place.photos && place.photos[1] && <img src={place.photos[1]} alt="Photo" draggable="false" className="place-photo" />}
+                                                {place.photos && place.photos[1] && <img src={place.photos[1].image_uri} alt="Photo" draggable="false" className="place-photo" />}
                                             </div>
                                         </div>
                                         <div className="place-photo-container-2">
                                             <div className="color2" onClick={() => setSliderIndex(2)}>
-                                                {place.photos && place.photos[2] && <img src={place.photos[2]} alt="Photo" draggable="false" className="place-photo" />}
+                                                {place.photos && place.photos[2] && <img src={place.photos[2].image_uri} alt="Photo" draggable="false" className="place-photo" />}
                                             </div>
                                         </div>
                                         <div className="place-photo-container-0">
                                             <div className="color3" onClick={() => setSliderIndex(3)}>
-                                                {place.photos && place.photos[3] && <img src={place.photos[3]} alt="Photo" draggable="false" className="place-photo" />}
+                                                {place.photos && place.photos[3] && <img src={place.photos[3].image_uri} alt="Photo" draggable="false" className="place-photo" />}
                                             </div>
                                         </div>
                                         <div className="place-photo-container-3">
                                             <div className="place-photo-container-4">
                                                 <div className="color4" onClick={() => setSliderIndex(4)}>
-                                                    {place.photos && place.photos[4] && <img src={place.photos[4]} alt="Photo" draggable="false" className="place-photo" />}
+                                                    {place.photos && place.photos[4] && <img src={place.photos[4].image_uri} alt="Photo" draggable="false" className="place-photo" />}
                                                 </div>
                                             </div>
                                             <div className="place-photo-container-5">
                                                 <div className="color5" onClick={() => setSliderIndex(5)}>
-                                                    {place.photos && place.photos[5] && <img src={place.photos[5]} alt="Photo" draggable="false" className="place-photo" />}
+                                                    {place.photos && place.photos[5] && <img src={place.photos[5].image_uri} alt="Photo" draggable="false" className="place-photo" />}
                                                 </div>
                                                 <div className="color6" onClick={() => setSliderIndex(6)}>
-                                                    {place.photos && place.photos[6] && <img src={place.photos[6]} alt="Photo" draggable="false" className="place-photo" />}
+                                                    {place.photos && place.photos[6] && <img src={place.photos[6].image_uri} alt="Photo" draggable="false" className="place-photo" />}
                                                 </div>
                                             </div>
                                         </div>

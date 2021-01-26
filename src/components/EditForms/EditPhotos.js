@@ -14,7 +14,7 @@ export default function EditPhotos({
     const [isLoading, setLoading] = useState(false);
     const [allPhotos, setAllPhotos] = useState(place.photos);
     const [deletePhotos, setDeletePhotos] = useState([]);
-    const [newMainPhoto, setNewMainPhoto] = useState(place.main_photo);
+    const [newMainPhoto, setNewMainPhoto] = useState(place.main_photo && place.main_photo.id);
 
     const [popup, setPopup] = useState(false);
 
@@ -23,13 +23,14 @@ export default function EditPhotos({
         setMessages({});
         
         if (deletePhotos.length > 0) {
-            await jwt_axios.post("/core/place/delete_image/" + place.id + "/", {
+            await jwt_axios.post("/core/image/delete/" + place.id + "/", {
                 "photos": deletePhotos
             }, {
                 withCredentials: true
             }).then((response) => {
                 setPlace(response.data);
                 setAllPhotos(response.data.photos);
+                setDeletePhotos([]);
             }).catch((error) => {
                 alert(error.response.statusText)
             }).finally(() => {
@@ -78,7 +79,7 @@ export default function EditPhotos({
             }
             const photos = await Promise.all(newPromises);
             
-            await jwt_axios.post("/core/place/upload_image/" + place.id + "/", {
+            await jwt_axios.post("/core/image/upload/" + place.id + "/", {
                 "photos": [...photos.map((elem) => elem.split(';base64,')[1])]
             }, {
                 withCredentials: true
@@ -109,26 +110,26 @@ export default function EditPhotos({
                         <label for="upload" className="button orange-button">Choose</label>
                     </div>
                     <div className="edit-gallery">
-                        {allPhotos.length > 0 && allPhotos.map((image, index) => (
-                            <div key={index} className={deletePhotos.includes(image) ? "small-photo to-delete" : "small-photo"}>
-                                <img src={image} alt='' draggable="false" />
+                        {allPhotos && allPhotos.map((image, index) => (
+                            <div key={index} className={deletePhotos.includes(image.id) ? "small-photo to-delete" : "small-photo"}>
+                                <img src={image.thumbnail_uri} alt='' draggable="false" />
                                 <div
                                     className="for-deletion"
                                     onClick={() => {
-                                        deletePhotos.includes(image) ?
-                                            setDeletePhotos([...deletePhotos.filter(elem => elem!==image)])
-                                        :   setDeletePhotos([...deletePhotos, image])
+                                        deletePhotos.includes(image.id) ?
+                                            setDeletePhotos([...deletePhotos.filter(elem => elem!==image.id)])
+                                        :   setDeletePhotos([...deletePhotos, image.id])
                                     }}
                                 >
                                     <img src={CloseIcon} alt="Close icon" draggable="false" />
                                 </div>
                                 <input
                                     type="radio"
-                                    value={image}
+                                    value={image.id}
                                     name="set-main-photo"
                                     className="set-main-photo"
-                                    checked={newMainPhoto === image}
-                                    onChange={() => setNewMainPhoto(image)}
+                                    checked={newMainPhoto === image.id}
+                                    onChange={() => setNewMainPhoto(image.id)}
                                 />
                             </div>
                         ))}
