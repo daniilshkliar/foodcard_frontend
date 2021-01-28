@@ -12,6 +12,7 @@ import EditAdditionalServices from '../components/EditForms/EditAdditionalServic
 import EditContacts from '../components/EditForms/EditContacts';
 import EditSchedule from '../components/EditForms/EditSchedule';
 import EditPhotos from '../components/EditForms/EditPhotos';
+import EditConfiguration from '../components/EditForms/EditConfiguration';
 
 import '../editForms.css';
 import '../panel.css';
@@ -38,6 +39,7 @@ export default function ControlPanel({  }) {
     const [editContacts, setEditContacts] = useState(false);
     const [editSchedule, setEditSchedule] = useState(false);
     const [editPhotos, setEditPhotos] = useState(false);
+    const [editConfiguration, setEditConfiguration] = useState(false);
     
     useEffect(() => {
         fetchPlaces();
@@ -97,6 +99,7 @@ export default function ControlPanel({  }) {
         setEditContacts(except === "contacts");
         setEditSchedule(except === "schedule");
         setEditPhotos(except === "photos");
+        setEditConfiguration(except === "conf");
     }
 
 	return (
@@ -128,6 +131,18 @@ export default function ControlPanel({  }) {
                                         <div className="id">
                                             {elem.id}
                                         </div>
+                                        {/* <div className="activity">
+                                            <label class="switch">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={elem.is_active}
+                                                    onChange={(e) => (
+
+                                                    )}
+                                                ></input>
+                                                <span class="switch-slider round"></span>
+                                            </label>
+                                        </div> */}
                                         <div>
                                             Title: {elem.title}
                                         </div>
@@ -229,6 +244,15 @@ export default function ControlPanel({  }) {
                                         >
                                             Edit photos
                                         </div>
+                                        <div
+                                            className={editPlaceOption === "conf" ? "panel-row selected" : "panel-row"}
+                                            onClick={() => {
+                                                setEditPlaceOption("conf");
+                                                clearUseState("conf");
+                                            }}
+                                        >
+                                            Edit configuration
+                                        </div>
                                     </div>
                                 }
                             </div>
@@ -295,6 +319,12 @@ export default function ControlPanel({  }) {
                                                 }
                                                 {editPhotos && 
                                                     <EditPhotos
+                                                        place={place}
+                                                        setPlace={setPlace}
+                                                    />
+                                                }
+                                                {editConfiguration && 
+                                                    <EditConfiguration
                                                         place={place}
                                                         setPlace={setPlace}
                                                     />

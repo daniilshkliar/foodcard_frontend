@@ -13,7 +13,7 @@
 
 .popup {
     width: max-content;
-    margin: 10px auto 70px;
+    margin: 30px auto;
     padding: 10px 30px;
     border-radius: 30px;
     text-align: center;
@@ -269,4 +269,14 @@ input[type="time"] {
     height: 16px;
     border-radius: 50%;
     background: #F47D24;
+}
+
+input[type="number"] {
+    width: 70px;
+    margin: 0 10px 0 10px;
+    padding: 2px 10px 2px 10px;
+    border: 1px solid #3e3e3e;
+    border-radius: 15px;
+    color: #3e3e3e;
+    outline: none;
 }

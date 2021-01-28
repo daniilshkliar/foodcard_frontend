@@ -61,7 +61,17 @@ export default function EditCuisines({
                 <div className="margin-top">
                     <Spinner small={true} />
                 </div>
-            :   <div>
+                :   <div>
+                    {popup &&
+                        <div className="popup">
+                            Cuisines changed successfully
+                        </div>
+                    }
+                    {messages.status &&
+                        <div className="auth-error">
+                            {messages.statusText}
+                        </div>
+                    }
                     <div className="edit-scope">
                         <div className="edit-form-title">
                             Choose your cuisines
@@ -129,18 +139,6 @@ export default function EditCuisines({
                             :   <div tabindex="0" className="button inactive">Save</div>
                             }
                         </div>
-                    </div>
-                    {popup &&
-                        <div className="popup">
-                            Cuisines changed successfully
-                        </div>
-                    }
-                    <div className="panel-error">
-                        {messages.status &&
-                            <div className="auth-error">
-                                {messages.statusText}
-                            </div>
-                        }
                     </div>
                 </div>
             }

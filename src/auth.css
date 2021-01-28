@@ -96,15 +96,14 @@
 }
 
 .auth-error {
-    z-index: 110000;
+    z-index: 1100;
     width: max-content;
-    margin: 10px auto 70px;
+    margin: 30px auto;
     padding: 10px 30px;
     border-radius: 30px;
     text-align: center;
     border: 1px solid #ED6E2D;
     color: #ED6E2D;
-    align-self: center;
 }
 
 .auth-logo {

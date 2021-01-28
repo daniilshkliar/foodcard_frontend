@@ -57,6 +57,16 @@ export default function EditTitle({
                     <Spinner small={true} />
                 </div>
             :   <div>
+                    {popup &&
+                        <div className="popup">
+                            Title changed successfully
+                        </div>
+                    }
+                    {messages.status &&
+                        <div className="auth-error">
+                            {messages.statusText}
+                        </div>
+                    }
                     <div className="edit-scope">
                         <div className="edit-form-title">
                             Enter new title
@@ -84,18 +94,6 @@ export default function EditTitle({
                             :   <div tabindex="0" className="button inactive">Save</div>
                             }
                         </div>
-                    </div>
-                    {popup &&
-                        <div className="popup">
-                            Title changed successfully
-                        </div>
-                    }
-                    <div className="panel-error">
-                        {messages.status &&
-                            <div className="auth-error">
-                                {messages.statusText}
-                            </div>
-                        }
                     </div>
                 </div>
             }

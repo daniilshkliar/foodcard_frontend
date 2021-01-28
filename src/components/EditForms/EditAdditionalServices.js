@@ -53,6 +53,16 @@ export default function EditAdditionalServices({
                     <Spinner small={true} />
                 </div>
             :   <div>
+                    {popup &&
+                        <div className="popup">
+                            Additional services changed successfully
+                        </div>
+                    }
+                    {messages.status &&
+                        <div className="auth-error">
+                            {messages.statusText}
+                        </div>
+                    }
                     <div className="edit-scope">
                         <div className="edit-form-title">
                             Choose your additional services
@@ -82,18 +92,6 @@ export default function EditAdditionalServices({
                             :   <div tabindex="0" className="button inactive">Save</div>
                             }
                         </div>
-                    </div>
-                    {popup &&
-                        <div className="popup">
-                            Additional services changed successfully
-                        </div>
-                    }
-                    <div className="panel-error">
-                        {messages.status &&
-                            <div className="auth-error">
-                                {messages.statusText}
-                            </div>
-                        }
                     </div>
                 </div>
             }

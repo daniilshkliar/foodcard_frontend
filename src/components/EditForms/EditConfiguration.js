@@ -4,30 +4,23 @@ import jwt_axios from '../../services/JWTaxios';
 import Spinner from '../LoaderSpinner/Spinner';
 
 
-export default function EditSchedule({ 
+export default function EditConfiguration({ 
     place,
     setPlace
 }) {
     const [messages, setMessages] = useState({});
     const [isLoading, setLoading] = useState(false);
+    const [newTables, setNewTables] = useState(place.configuration.tables);
     const [popup, setPopup] = useState(false);
-    const [operationHours, setOperationHours] = useState(place.operation_hours.length === 7 ? place.operation_hours : [
-        [,],
-        [,],
-        [,],
-        [,],
-        [,],
-        [,],
-        [,]
-    ]);
-    let date = new Date().toISOString().split('T')[0] + 'T';
 
-    const setSchedule = async () => {
+    const setConfiguration = async () => {
         setLoading(true);
         setMessages({});
 
         await jwt_axios.post("/core/place/update/" + place.id + "/", {
-            "operation_hours": operationHours
+            "configuration": {
+                "tables": newTables
+            }
         }, {
             withCredentials: true 
         }).then((response) => {
@@ -47,12 +40,6 @@ export default function EditSchedule({
         });
     }
 
-    const appendTime = (day, index, time) => {
-        let schedule = [...operationHours];
-        schedule[index][day] = date + time;
-        setOperationHours(schedule);
-    }
-
 	return (
 		<div>
             {isLoading ?
@@ -62,7 +49,7 @@ export default function EditSchedule({
             :   <div>
                     {popup &&
                         <div className="popup">
-                            Operation hours changed successfully
+                            Configuration changed successfully
                         </div>
                     }
                     {messages.status &&
@@ -72,42 +59,37 @@ export default function EditSchedule({
                     }
                     <div className="edit-scope">
                         <div className="edit-form-title">
-                            Choose hours of operation
+                            Enter new configuration
                         </div>
-                        <div className="border-top">
-                            <div className="schedule-scope">
-                                {operationHours && operationHours.map((day, index) => (
+                        <div class="border-top">
+                            <div class="schedule-scope">
+                                {newTables && newTables.map((elem, index) => (
                                     <div key={index} className="row">
                                         <div className="schedule-weekday">
-                                            {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][index]}
+                                            Number of {index + 1}-seat tables:
                                         </div>
-                                        <div className="orange-dot"></div>
                                         <input
-                                            type="time"
-                                            name="weekday"
-                                            step="900"
-                                            value={operationHours[index][0] && operationHours[index][0].split('T')[1].slice(0,5)}
-                                            onChange={(e) => appendTime(0, index, e.target.value)}
-                                        />
-                                        -
-                                        <input
-                                            type="time"
-                                            name="weekday"
-                                            step="900"
-                                            value={operationHours[index][1] && operationHours[index][1].split('T')[1].slice(0,5)}
-                                            onChange={(e) => appendTime(1, index, e.target.value)}
-                                        />
+                                            type="number"
+                                            name={"table" + index + 1}
+                                            min="0"
+                                            value={elem}
+                                            onChange={(e) => {
+                                                let list = [...newTables];
+                                                list[index] = parseInt(e.target.value);
+                                                setNewTables([...list]);
+                                            }}
+                                        ></input>
                                     </div>
                                 ))}
                             </div>
                         </div>
                         <div className="row">
-                            {operationHours && !operationHours.find(list => list[0]===date || list[1]===date) && operationHours.length === 7 ?
+                            {newTables && !newTables.includes(NaN) ?
                                 <div
                                     tabindex="0"
                                     className="save"
-                                    onClick={() => setSchedule()}
-                                    onKeyDown={(e) => e.key === 'Enter' && setSchedule()}
+                                    onClick={() => setConfiguration()}
+                                    onKeyDown={(e) => e.key === 'Enter' && setConfiguration()}
                                 >
                                     Save
                                 </div>

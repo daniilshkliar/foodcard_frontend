@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Spinner from '../components/LoaderSpinner/Spinner';
-import axiosApiInstance from '../services/JWTaxios';
+import jwt_axios from '../services/JWTaxios';
 
 import '../reservation.css';
 // import place from '../place.json';
@@ -11,7 +11,6 @@ import ArrowUpIcon from '../icons/arrow_up_icon.svg';
 
 
 export default function Reservation() {
-
     const history = useHistory();
     const [isLoading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
@@ -35,7 +34,7 @@ export default function Reservation() {
         setLoading(true);
 
         try {
-            const response = await axiosApiInstance.get("/authentication/user/get/", { withCredentials: true });
+            const response = await jwt_axios.get("/authentication/user/get/", { withCredentials: true });
             setEmail(response.data.email);
             setFirstName(response.data.first_name);
             setLastName(response.data.last_name);
@@ -51,7 +50,6 @@ export default function Reservation() {
             setLoading(false);
         }
     }
-
 
 	return (
         <div>

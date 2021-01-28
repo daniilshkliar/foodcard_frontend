@@ -361,11 +361,11 @@ input[type=text]:focus, input[type=text]:hover {
 
 .map-close {
 	position: absolute;
-	top: 10px;	
+	top: 80px;	
 	right: 10px;
 	width: 35px;
 	height: 35px;
-	border-radius: 15px;
+	border-radius: 20px;
 	background-color: #eaeaeaa1;
 	display: flex;
 	justify-content: center;

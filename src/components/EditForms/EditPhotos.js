@@ -102,6 +102,16 @@ export default function EditPhotos({
                         <Spinner small={true} />
                     </div>
                 }
+                {popup &&
+                    <div className="popup">
+                        Photos changed successfully
+                    </div>
+                }
+                {messages.status &&
+                    <div className="auth-error">
+                        {messages.statusText}
+                    </div>
+                }
                 <div className="edit-scope">
                     <div className="edit-form-title">
                         Choose your photos
@@ -159,18 +169,6 @@ export default function EditPhotos({
                         :   <div tabindex="0" className="button inactive">Save</div>
                         }
                     </div>
-                </div>
-                {popup &&
-                    <div className="popup">
-                        Photos changed successfully
-                    </div>
-                }
-                <div className="panel-error">
-                    {messages.status &&
-                        <div className="auth-error">
-                            {messages.statusText}
-                        </div>
-                    }
                 </div>
             </div>
 		</div>
