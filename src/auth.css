@@ -83,6 +83,11 @@
     background-color: #ffe6f4;
 }
 
+input.invalid {
+    border: 1px solid #ffe6f4;
+    background-color: #ffe6f4;
+}
+
 .invalid:hover,
 .invalid:focus {
     border: 1px solid #fdeff7;

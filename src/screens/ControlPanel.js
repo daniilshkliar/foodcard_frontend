@@ -233,7 +233,7 @@ export default function ControlPanel({  }) {
                                                 clearUseState("schedule");
                                             }}
                                         >
-                                            Edit hours of operation
+                                            Edit opening hours
                                         </div>
                                         <div
                                             className={editPlaceOption === "photos" ? "panel-row selected" : "panel-row"}

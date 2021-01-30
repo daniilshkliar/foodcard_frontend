@@ -11,7 +11,7 @@ import Signup from './screens/Signup';
 import AccountActivate from './screens/AccountActivate';
 import ControlPanel from './screens/ControlPanel';
 import NotFound from './screens/NotFound';
-// import Reservation from './screens/Reservation';
+import Reservation from './screens/Reservation';
 
 import './index.css';
 import './auth.css';
@@ -43,9 +43,9 @@ ReactDOM.render(
 			<Route exact path="/place/:city/:title">
 				<Place />
 			</Route>
-			{/* <Route exact path="/reservation">
+			<Route exact path="/reservation/:city/:title">
 				<Reservation />
-			</Route> */}
+			</Route>
 			<Route exact path="/notfound">
 				<NotFound />
 			</Route>

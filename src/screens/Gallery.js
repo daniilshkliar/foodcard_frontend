@@ -4,6 +4,7 @@ import axios from 'axios';
 import { YMaps, Map, Placemark, ZoomControl } from 'react-yandex-maps';
 import { motion, AnimatePresence } from 'framer-motion';
 import BeautyStars from 'beauty-stars';
+import moment from 'moment-timezone';
 
 import Spinner from '../components/LoaderSpinner/Spinner';
 import Header from '../components/Header/Header';
@@ -57,6 +58,9 @@ export default function Gallery() {
 
     const [messages, setMessages] = useState({});
     const [isLoading, setLoading] = useState(false);
+
+    let day = new Date().getDay() - 1;
+    if (day === -1) day = 6;
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -253,9 +257,9 @@ export default function Gallery() {
                                             <div className="gallery-card-category">
                                                 <div>{place.main_category}</div>
                                                 <div class="dot"></div>
-                                                {place.operation_hours[0] &&
+                                                {place.opening_hours[0] &&
                                                     <div>
-                                                        Until {new Date(place.operation_hours[new Date().getDay() - 1][1]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC', hour12: false })}
+                                                        Until {moment.tz(place.opening_hours[day][1], place.timezone).format("HH:mm")}
                                                     </div>
                                                 }
                                             </div>

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { YMaps, Map, Placemark, ZoomControl } from 'react-yandex-maps';
 import BeautyStars from 'beauty-stars';
 import ShowMoreText from 'react-show-more-text';
+import moment from 'moment-timezone';
 
 import jwt_axios from '../services/JWTaxios';
 import Spinner from '../components/LoaderSpinner/Spinner';
@@ -30,6 +31,9 @@ export default function Place() {
 
     const [messages, setMessages] = useState({});
     const [isLoading, setLoading] = useState(false);
+
+    let day = new Date().getDay() - 1;
+    if (day === -1) day = 6;
 
     useEffect(() => {
         getPlace();
@@ -133,7 +137,7 @@ export default function Place() {
                                             {place.title}
                                         </div>
                                         <div className="place-row">
-                                            <div className="button active-button" onClick={() => history.push("/reservation/")}>Reserve</div>
+                                            <div className="button active-button" onClick={() => history.push("/reservation/" + city + "/" + title + "/")}>Reserve</div>
                                             {isAuthenticated &&
                                                 <div className={"favorite" + (isFavorite ? " active-button" : "")} onClick={() => handleFavorite()}>❥</div>
                                             }
@@ -324,21 +328,21 @@ export default function Place() {
                                                     ))}
                                                 </div>
                                             </div>
-                                            <div className="place-operation-hours">
+                                            <div className="place-opening-hours">
                                                 <div className="place-header">
-                                                    Hours of operation
+                                                    Hours of opening
                                                 </div>
                                                 <div className="place-body">
-                                                    {place.operation_hours && place.operation_hours.map((elem, index) => (
-                                                        <div key={index} className="place-operation-hours-row">
+                                                    {place.opening_hours && place.opening_hours.map((elem, index) => (
+                                                        <div key={index} className="place-opening-hours-row">
                                                             <div className="place-weekday">
                                                                 {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][index]}
                                                             </div>
-                                                            {index === new Date().getDay() - 1 && <div className="orange-dot"></div>}
+                                                            {index === day && <div className="orange-dot"></div>}
                                                             <div>
-                                                                {new Date(elem[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC', hour12: false }) 
+                                                                {moment.tz(elem[0], place.timezone).format("HH:mm")
                                                                 + " - " + 
-                                                                new Date(elem[1]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC', hour12: false })}
+                                                                moment.tz(elem[1], place.timezone).format("HH:mm")}
                                                             </div>
                                                         </div>
                                                     ))}

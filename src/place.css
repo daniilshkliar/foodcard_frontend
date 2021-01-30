@@ -311,14 +311,14 @@
     flex-direction: column;
 }
 
-.place-operation-hours {
+.place-opening-hours {
     width: 100%;
     margin: 30px 0 0 0;
     display: flex;
     flex-direction: column;
 }
 
-.place-operation-hours-row {
+.place-opening-hours-row {
     height: 24px;
     display: flex;
 }
