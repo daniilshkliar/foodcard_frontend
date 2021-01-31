@@ -14,6 +14,7 @@ import '../reservation.css';
 export default function Reservation() {
     const history = useHistory();
     const [isLoading, setLoading] = useState(false);
+    const [isChecking, setChecking] = useState(false);
     const [messages, setMessages] = useState({});
     const [notFound, setNotFound] = useState(false);
     const { city, title } = useParams();
@@ -22,9 +23,9 @@ export default function Reservation() {
     const [phone, setPhone] = useState("");
     const [dateTime, setDateTime] = useState("");
     const [comment, setComment] = useState("");
+    const [chosenDateTime, setChosenDateTime] = useState("");
     const [tableSize, setTableSize] = useState();
     const [isReserved, setReserved] = useState(false);
-    const [isNotReserved, setNotReserved] = useState(false);
     const [isFirstNameValid, setFirstNameValid] = useState(false);
     const [isPhoneValid, setPhoneValid] = useState(false);
     const [isDateTimeValid, setDateTimeValid] = useState(false);
@@ -39,21 +40,12 @@ export default function Reservation() {
 
     const fetchUser = async () => {
         setLoading(true);
-        setMessages({});
 
         await jwt_axios.get("/authentication/user/get/", {
             withCredentials: true
         }).then((response) => {
             firstNameValidator(response.data.first_name);
             setLastName(response.data.last_name);
-        }).catch((error) => {
-            setMessages(
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                error.response ||
-                error.toString()
-            );
         }).finally(() => {
             setLoading(false);
         });
@@ -81,30 +73,34 @@ export default function Reservation() {
     }
 
     const reserve = async () => {
-        setLoading(true);
+        setChecking(true);
         setMessages({});
 
-        // await axios.post("/reservation/" + city + "/" + title + "/", {
-        //     "first_name": firstName,
-        //     "last_name": lastName,
-        //     "phone": phone,
-        //     "date_time": ,
-        //     "table_size": tableSize,
-        //     "comment": comment
-        // }).then((response) => {
-        //     setReserved(true);
-        // }).catch((error) => {
-        //     setNotReserved(true);
-        //     setMessages(
-        //         (error.response &&
-        //             error.response.data &&
-        //             error.response.data.message) ||
-        //         error.response ||
-        //         error.toString()
-        //     );
-        // }).finally(() => {
-        //     setLoading(false);
-        // });
+        let data = {};
+        data["first_name"] = firstName;
+        data["phone"] = phone;
+        data["date_time"] = chosenDateTime;
+        data["table_size"] = tableSize;
+        if (lastName) data["last_name"] = lastName;
+        if (comment) data["comment"] = comment;
+
+        await jwt_axios.post("/reservation/create/" + place.id + "/", 
+            data
+        ).then((response) => {
+            setReserved(true);
+        }).catch((error) => {
+            setMessages(
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                (error.response &&
+                    error.response.data) ||
+                error.response ||
+                error.toString()
+            );
+        }).finally(() => {
+            setChecking(false);
+        });
     }
 
     // const emailValidator = (value) => {
@@ -122,15 +118,13 @@ export default function Reservation() {
         setPhoneValid(isMobilePhone(value, isMobilePhoneLocales, {strictMode: true}) && value.length > 0);
     }
 
-    const dateTimeValidator = (value) => {
-        setDateTime(value);
-        
+    const dateTimeValidator = (value) => {        
         let chosen = moment.tz(value, place.timezone);
         let year = chosen.get('year');
         let month = chosen.get('month');
         let date = chosen.get('date');
 
-        let today = moment.tz(value, place.timezone).isoWeekday() - 1;
+        let today = chosen.isoWeekday() - 1;
         let yesterday = today - 1 === -1 ? 6 : today - 1;
         let today_min = moment.tz(place.opening_hours[today][0], place.timezone).set({"year": year, "month": month, "date": date});
         let today_max = moment.tz(place.opening_hours[today][1], place.timezone).set({"year": year, "month": month, "date": date});
@@ -151,20 +145,14 @@ export default function Reservation() {
             );
         
         setHoursTip(tip);
-
-        if (today_max < today_min) {
-            setDateTimeValid(
-                chosen >= moment() && 
-                (chosen >= today_min) ||
-                (yesterday_min > yesterday_max && chosen < yesterday_max)
-            );
-        } else {
-            setDateTimeValid(
-                chosen >= moment() && 
-                (chosen >= today_min && chosen < today_max) ||
-                (yesterday_min > yesterday_max && chosen < yesterday_max)
-            );
-        }
+        setDateTime(value);
+        setChosenDateTime(chosen.format());
+        setDateTimeValid(
+            chosen >= moment.tz(place.timezone) && (
+            (yesterday_min >= yesterday_max && chosen < yesterday_max) ||
+            (today_min >= today_max && chosen >= today_min) ||
+            (chosen >= today_min && chosen < today_max))
+        );
     }
 
     const tableSizeValidator = (value) => {
@@ -175,18 +163,24 @@ export default function Reservation() {
     }
 
 	return (
-        <div className="auth">
+        <div>
             {isLoading ?
                 <Spinner />
             :   (notFound ?
                     <NotFound />
-                :   (messages.statusText ?
-                        <div className="account-bar">
+                :   <div className="auth">
+                        {isChecking && <Spinner />}
+                        {messages.non_field_errors &&
+                            <div className="auth-error">
+                                {messages.non_field_errors}
+                            </div>
+                        }
+                        {messages.statusText &&
                             <div className="auth-error">
                                 {messages.statusText}
                             </div>
-                        </div>
-                    :   <div className="reservation-container">
+                        }
+                        <div className="reservation-container">
                             {isReserved &&
                                 <div className="success-back">
                                     <div className="success">
@@ -204,7 +198,7 @@ export default function Reservation() {
                                 Reservation
                             </div>
                             <div className="place-info">
-                                <div className="rrow">
+                                <div className="rrrow">
                                     <div className="title">
                                         {place.title}
                                     </div>
@@ -212,7 +206,7 @@ export default function Reservation() {
                                         {place.main_category}
                                     </div>
                                 </div>
-                                <div className="rrow">
+                                <div className="rrrow">
                                     <div className="address">
                                         {place.address && place.address.country + ", " + place.address.city + ", " + place.address.street} 
                                     </div>
@@ -339,7 +333,7 @@ export default function Reservation() {
                                 }
                             </div>
                         </div>
-                    )
+                    </div>
                 )
             }
 		</div>
