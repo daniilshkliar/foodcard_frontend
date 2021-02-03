@@ -45,6 +45,7 @@ export default function Gallery() {
     const [isFilterActive, setFilter] = useState(false);
     const [isMapOpen, setMapOpen] = useState(false);
     const [isElevatorActive, setElevator] = useState(false);
+    const [scrolValue, setScrolValue] = useState(0);
     
     const [places, setPlaces] = useState([]);
     const [country, setCountry] = useState("");
@@ -58,6 +59,7 @@ export default function Gallery() {
 
     const [messages, setMessages] = useState({});
     const [isLoading, setLoading] = useState(false);
+    const [nextPage, setNextPage] = useState(1);
 
     let day = new Date().getDay() - 1;
     if (day === -1) day = 6;
@@ -88,9 +90,10 @@ export default function Gallery() {
         setLoading(true);
         setMessages({});
 
-        await axios.get("/core/place/get/all/"
+        await axios.get("/core/place/get/?page=" + nextPage
         ).then((response) => {
-            setPlaces(response.data);
+            setPlaces([...places, ...response.data.results]);
+            setNextPage(response.data.next ? nextPage + 1 : null);
         }).catch((error) => {
             setMessages(
                 (error.response &&
@@ -199,102 +202,110 @@ export default function Gallery() {
                     <div
                         className="right-scope" 
                         ref={scrollRef}
-                        onScroll={() => setElevator(scrollRef.current.scrollTop >= 800)}
+                        onScroll={() => {
+                            setElevator(scrollRef.current.scrollTop >= 800);
+                            if (nextPage && scrollRef.current.scrollHeight - scrollRef.current.scrollTop === scrollRef.current.clientHeight) {
+                                fetchPlaces();
+                            }
+                        }}
                     >
-                        {isLoading ?
-                            <Spinner />
-                        :   <div>
-                                {isElevatorActive && 
-                                    <div className="elevator" onClick={() => scrollRef.current.scrollTo(0, 0)}>
-                                        <img src={ArrowUpIcon} alt="Arrow up icon" draggable="false" />
+                        <div className="gallery-padding">
+                            {isElevatorActive && 
+                                <div className="elevator" onClick={() => scrollRef.current.scrollTo(0, 0)}>
+                                    <img src={ArrowUpIcon} alt="Arrow up icon" draggable="false" />
+                                </div>
+                            }
+                            <div className="options-panel">
+                                {width < minWidth && 
+                                    <div className="show-map">
+                                        <div className="button active-button" onClick={() => setMapOpen(!isMapOpen)}>
+                                            Map
+                                        </div>
                                     </div>
                                 }
-                                <div className="options-panel">
-                                    {width < minWidth && 
-                                        <div className="show-map">
-                                            <div className="button active-button" onClick={() => setMapOpen(!isMapOpen)}>
-                                                Map
-                                            </div>
-                                        </div>
-                                    }
-                                    <div className="searchbar">
-                                        <input 
-                                            type="text" 
-                                            id="query"
-                                            name="query" 
-                                            value={searchQuery}
-                                            placeholder="Search"
-                                            onChange={(e) => setSearchQuery(e.target.value)}
-                                        />        
-                                        <div className="searchbutton active-button" onClick={() => {console.log(searchQuery)}}>
-                                            <img src={SearchIcon} alt="Search icon" draggable="false" />
-                                        </div>
-                                    </div>
-                                    <div className="filterbutton">
-                                        <div className="button active-button" onClick={() => setFilter(!isFilterActive)}>
-                                            Filter
-                                        </div>
+                                <div className="searchbar">
+                                    <input 
+                                        type="text" 
+                                        id="query"
+                                        name="query" 
+                                        value={searchQuery}
+                                        placeholder="Search"
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                    />        
+                                    <div className="searchbutton active-button" onClick={() => {console.log(searchQuery)}}>
+                                        <img src={SearchIcon} alt="Search icon" draggable="false" />
                                     </div>
                                 </div>
-                                <div className="gallery">
-                                    {places && places.map((place, index) => (
-                                        <div 
-                                            key={index}
-                                            className="gallery-card"
-                                            onMouseEnter={() => setHoveredCard(place.id)}
-                                            onMouseLeave={() => setHoveredCard(-1)}
-                                            onClick={() => history.push("/place/" + place.address.city + "/" + place.title + "/")}
-                                        >
-                                            <div className="gallery-card-photo">
-                                                {place.main_photo && place.main_photo.thumbnail_uri ?
-                                                    <img src={place.main_photo.thumbnail_uri} alt={"A photo of " + place.title} draggable="false" />
-                                                :   <div className={"thumbnail-photo color" + Math.floor(Math.random() * Math.floor(7))}></div>
-                                                }
-                                            </div>
-                                            <div className="gallery-card-title">
-                                                {place.title}
-                                            </div>
-                                            <div className="gallery-card-category">
-                                                <div>{place.main_category}</div>
-                                                <div class="dot"></div>
-                                                {place.opening_hours[0] &&
-                                                    <div>
-                                                        Until {moment.tz(place.opening_hours[day][1], place.timezone).format("HH:mm")}
-                                                    </div>
-                                                }
-                                            </div>
-                                            <div className="gallery-card-cuisine">
-                                                {place.main_cuisine} cuisine
-                                            </div>
-                                            {place.general_review &&
-                                                <div>
-                                                    <div className="gallery-card-rating">
-                                                        {place.general_review.rounded_rating===null ?
-                                                            <div className="text-color-main">
-                                                                No rating
-                                                            </div>
-                                                        :   <BeautyStars
-                                                                value={place.general_review.rounded_rating}
-                                                                size="18px"
-                                                                gap="4px"
-                                                                inactiveColor="#DADADA"
-                                                                activeColor="#ED6E2D"
-                                                            />
-                                                        }
-                                                    </div>
-                                                    <div className="gallery-card-reviews">
-                                                        {place.general_review.amount} reviews
-                                                    </div>
-                                                </div>
-                                            }
-                                            <div className="gallery-card-address">
-                                                {place.address.city + ", " + place.address.street}
-                                            </div>
-                                        </div>
-                                    ))}
+                                <div className="filterbutton">
+                                    <div className="button active-button" onClick={() => setFilter(!isFilterActive)}>
+                                        Filter
+                                    </div>
                                 </div>
                             </div>
-                        }
+                            <div className="gallery">
+                                {messages.status &&
+                                    <div className="auth-error">
+                                        {messages.statusText}
+                                    </div>
+                                }
+                                {places && places.map((place, index) => (
+                                    <div 
+                                        key={index}
+                                        className="gallery-card"
+                                        onMouseEnter={() => setHoveredCard(place.id)}
+                                        onMouseLeave={() => setHoveredCard(-1)}
+                                        onClick={() => history.push("/place/" + place.address.city + "/" + place.title + "/")}
+                                    >
+                                        <div className="gallery-card-photo">
+                                            {place.main_photo && place.main_photo.thumbnail_uri ?
+                                                <img src={place.main_photo.thumbnail_uri} alt={"A photo of " + place.title} draggable="false" />
+                                            :   <div className={"thumbnail-photo color" + Math.floor(Math.random() * Math.floor(7))}></div>
+                                            }
+                                        </div>
+                                        <div className="gallery-card-title">
+                                            {place.title}
+                                        </div>
+                                        <div className="gallery-card-category">
+                                            <div>{place.main_category}</div>
+                                            <div class="dot"></div>
+                                            {place.opening_hours[0] &&
+                                                <div>
+                                                    Until {moment.tz(place.opening_hours[day][1], place.timezone).format("HH:mm")}
+                                                </div>
+                                            }
+                                        </div>
+                                        <div className="gallery-card-cuisine">
+                                            {place.main_cuisine} cuisine
+                                        </div>
+                                        {place.general_review &&
+                                            <div>
+                                                <div className="gallery-card-rating">
+                                                    {place.general_review.rounded_rating===null ?
+                                                        <div className="text-color-main">
+                                                            No rating
+                                                        </div>
+                                                    :   <BeautyStars
+                                                            value={place.general_review.rounded_rating}
+                                                            size="18px"
+                                                            gap="4px"
+                                                            inactiveColor="#DADADA"
+                                                            activeColor="#ED6E2D"
+                                                        />
+                                                    }
+                                                </div>
+                                                <div className="gallery-card-reviews">
+                                                    {place.general_review.amount} reviews
+                                                </div>
+                                            </div>
+                                        }
+                                        <div className="gallery-card-address">
+                                            {place.address.city + ", " + place.address.street}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            {isLoading && <Spinner small={true}/>}
+                        </div>
                     </div>
                 }
             </div>

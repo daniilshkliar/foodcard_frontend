@@ -198,10 +198,14 @@ input[type=text]:focus, input[type=text]:hover {
 }
 
 .gallery {
-	margin: 20px 5px;
+	margin: 20px 5px 20px;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
+}
+
+.gallery-padding {
+	padding: 0 0 60px 0;
 }
 
 .gallery-card {
@@ -328,12 +332,12 @@ input[type=text]:focus, input[type=text]:hover {
 
 .elevator {
 	position: fixed;
-	right: 15px;
-	bottom: 10px;
+	right: 20px;
+	bottom: 15px;
 	width: 60px;
 	height: 60px;
 	border-radius: 30px;
-	background-color: #c3c3c3a1;
+	background-color: #c3c3c355;
 	display: flex;
 	justify-content: center;
 	cursor: pointer;
@@ -343,11 +347,15 @@ input[type=text]:focus, input[type=text]:hover {
 
 .elevator img {
 	width: 50%;
-	opacity: 0.4;
+	opacity: 0.24;
 }
 
 .elevator:active {
 	transform: translateY(-3px);
+}
+
+.elevator:hover {
+	transform:scale(1.06);
 }
 
 .show-map {

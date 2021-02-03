@@ -46,6 +46,7 @@ export default function EditPhotos({
             setPlace(response.data);
             setPopup(true);
         }).catch((error) => {
+            console.log(error.response)
             setMessages(
                 (error.response &&
                     error.response.data &&
@@ -97,79 +98,81 @@ export default function EditPhotos({
 	return (
 		<div>
             <div>
-                {isLoading &&
+                {isLoading ?
                     <div className="margin-top">
                         <Spinner small={true} />
                     </div>
-                }
-                {popup &&
-                    <div className="popup">
-                        Photos changed successfully
-                    </div>
-                }
-                {messages.status &&
-                    <div className="auth-error">
-                        {messages.statusText}
-                    </div>
-                }
-                <div className="edit-scope">
-                    <div className="edit-form-title">
-                        Choose your photos
-                    </div>
-                    <div className="base-row">
-                        <label for="upload" className="button active-button">Choose</label>
-                    </div>
-                    <div className="edit-gallery">
-                        {allPhotos && allPhotos.map((image, index) => (
-                            <div key={index} className={deletePhotos.includes(image.id) ? "small-photo to-delete" : "small-photo"}>
-                                <img className="small-photo-img" src={image.thumbnail_uri} alt='' draggable="false" />
-                                <div
-                                    className="for-deletion"
-                                    onClick={() => {
-                                        deletePhotos.includes(image.id) ?
-                                            setDeletePhotos([...deletePhotos.filter(elem => elem!==image.id)])
-                                        :   setDeletePhotos([...deletePhotos, image.id])
-                                    }}
-                                >
-                                    <img src={CloseIcon} alt="Close icon" draggable="false" />
-                                </div>
-                                <label className="radio">
-                                    <input
-                                        type="radio"
-                                        value={image.id}
-                                        name="set-main-photo"
-                                        className="set-main-photo"
-                                        checked={newMainPhoto === image.id}
-                                        onChange={() => setNewMainPhoto(image.id)}
-                                    />
-                                    <span className="checkmark"></span>
-                                </label>
-                                <label for={"radio" + index} className=""></label>
+                :   <div>
+                        {popup &&
+                            <div className="popup">
+                                Photos changed successfully
                             </div>
-                        ))}
-                    </div>
-                    <input
-                        type="file"
-                        id="upload"
-                        accept="image/png, image/jpeg"
-                        multiple
-                        hidden
-                        onChange={(e) => uploadImages(e)}
-                    />
-                    <div className="row">
-                        {newMainPhoto || deletePhotos.length > 0 ?
-                            <div
-                                tabindex="0"
-                                className="save"
-                                onClick={() => {setImages()}}
-                                onKeyDown={(e) => e.key === 'Enter' && setImages()}
-                            >
-                                Save
-                            </div>
-                        :   <div tabindex="0" className="button inactive">Save</div>
                         }
+                        {messages.status &&
+                            <div className="auth-error">
+                                {messages.statusText}
+                            </div>
+                        }
+                        <div className="edit-scope">
+                            <div className="edit-form-title">
+                                Choose your photos
+                            </div>
+                            <div className="base-row">
+                                <label for="upload" className="button active-button">Choose</label>
+                            </div>
+                            <div className="edit-gallery">
+                                {allPhotos && allPhotos.map((image, index) => (
+                                    <div key={index} className={deletePhotos.includes(image.id) ? "small-photo to-delete" : "small-photo"}>
+                                        <img className="small-photo-img" src={image.thumbnail_uri} alt='' draggable="false" />
+                                        <div
+                                            className="for-deletion"
+                                            onClick={() => {
+                                                deletePhotos.includes(image.id) ?
+                                                    setDeletePhotos([...deletePhotos.filter(elem => elem!==image.id)])
+                                                :   setDeletePhotos([...deletePhotos, image.id])
+                                            }}
+                                        >
+                                            <img src={CloseIcon} alt="Close icon" draggable="false" />
+                                        </div>
+                                        <label className="radio">
+                                            <input
+                                                type="radio"
+                                                value={image.id}
+                                                name="set-main-photo"
+                                                className="set-main-photo"
+                                                checked={newMainPhoto === image.id}
+                                                onChange={() => setNewMainPhoto(image.id)}
+                                            />
+                                            <span className="checkmark"></span>
+                                        </label>
+                                        <label for={"radio" + index} className=""></label>
+                                    </div>
+                                ))}
+                            </div>
+                            <input
+                                type="file"
+                                id="upload"
+                                accept="image/png, image/jpeg"
+                                multiple
+                                hidden
+                                onChange={(e) => uploadImages(e)}
+                            />
+                            <div className="row">
+                                {newMainPhoto || deletePhotos.length > 0 ?
+                                    <div
+                                        tabindex="0"
+                                        className="save"
+                                        onClick={() => {setImages()}}
+                                        onKeyDown={(e) => e.key === 'Enter' && setImages()}
+                                    >
+                                        Save
+                                    </div>
+                                :   <div tabindex="0" className="button inactive">Save</div>
+                                }
+                            </div>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
 		</div>
 	);

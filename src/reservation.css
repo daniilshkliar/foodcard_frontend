@@ -110,3 +110,14 @@ input[type="datetime-local"] {
 	font-size: 12px;
 	color: #8e8e8e;
 }
+
+.less-margin-auth-error {
+	z-index: 1100;
+	width: max-content;
+	margin: 0 auto 14px auto;
+	padding: 10px 30px;
+	border-radius: 30px;
+	text-align: center;
+	border: 1px solid #ED6E2D;
+	color: #ED6E2D;
+}

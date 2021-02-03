@@ -171,12 +171,12 @@ export default function Reservation() {
                 :   <div className="auth">
                         {isChecking && <Spinner />}
                         {messages.non_field_errors &&
-                            <div className="auth-error">
+                            <div className="less-margin-auth-error">
                                 {messages.non_field_errors}
                             </div>
                         }
                         {messages.statusText &&
-                            <div className="auth-error">
+                            <div className="less-margin-auth-error">
                                 {messages.statusText}
                             </div>
                         }
