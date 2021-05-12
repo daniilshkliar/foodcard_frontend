@@ -51,6 +51,13 @@
     overflow-y: auto;
 }
 
+.panel-scope-3-4 {
+    width: 65%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 .panel-scope-4-container{
     width: 100%;
     height: 100%;
@@ -58,7 +65,7 @@
 
 .panel-row {
     width: 100%;
-    padding: 3px 4px;
+    padding: 3px 8px;
     border-bottom: 1px solid #eaeaee;
     font-size: 15px;
     color: #3e3e3e;
@@ -149,4 +156,187 @@ input:checked + .switch-slider:before {
 
 .switch-slider.round:before {
     border-radius: 50%;
+}
+
+.reservations-scope {
+    border-top: 1px solid #eaeaea;
+    padding: 20px 0;
+}
+
+.reservations-list-element-column {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.reservations-list-element-row {
+    width: 100%;
+    display: flex;
+}
+
+.reservations-list-card {
+    width: 100%;
+	margin: 22px 0;
+	border-radius: 8px;
+	box-shadow: 0 0 5px 0 #c3c3c3;
+    padding: 10px 8px 8px 8px;
+    position: relative;
+}
+
+.reservations-list {
+    margin: 0 0 20px 10px;
+}
+
+.reservations-list-time {
+    width: 15%;
+    font-size: 36px;
+    font-family: 'CustomFont';
+    color: #ED6E2D;
+    align-self: center;
+    text-align: center;
+}
+
+.el-table {
+    width: 18%;
+    align-self: center;
+    text-align: left;
+    padding: 0 0 0 5px;
+    font-size: 17px;
+    color:#ED6E2D;
+}
+
+.reservations-list-table {
+    font-size: 20px;
+}
+
+.reservations-list-guests {
+
+}
+
+.el-name {
+    width: 32%;
+    justify-content: flex-start;
+    padding: 0 0 0 10px;
+    text-align: left;
+}
+
+.reservations-list-name {
+    font-size: 20px;
+    color:#3e3e3e;
+}
+
+.reservations-list-phone {
+    width: 30%;
+    align-self: center;
+}
+
+.reservations-list-email {
+    color:#8e8e8e;
+    word-wrap: break-word;
+}
+
+.reservations-list-delete {
+    width: 5%;
+    align-self: center;
+}
+
+.reservations-list-delete {
+    width: 26px;
+	height: 26px;
+	cursor: pointer;
+	transition: all 0.25s;
+	user-select: none;
+}
+
+.reservations-list-delete img {
+	width: 100%;
+}
+
+.reservations-list-delete:hover {
+	transform: rotate(90deg);
+}
+
+.reservations-list-comment {
+    width: 96%;
+    align-self: center;
+    color: #3e3e3e;
+    margin: 10px 0 0;
+    padding: 6px 0 0 8px;
+    border-top: 1px solid #eaeaea;
+}
+
+.reservations-list-comment-title {
+    color: #3e3e3e;
+}
+
+.reservations-list-comment-text {
+    margin: 0 0 0 15px;
+    text-align: left;
+    color: #8e8e8e;
+}
+
+.past-reservations {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.08);
+    clip-path: polygon(40% 100%, 60% 0, 100% 0, 100% 100%, 0 100%, 0 0, 30% 0, 10% 100%);
+}
+
+.staff-add {
+    width: 80%;
+    margin: 0 0 0 10px;
+    align-items: center;
+}
+
+.staff-add-title {
+    width: 10%;
+    color: #8e8e8e;
+    align-self: center;
+}
+
+.staff-add input {
+    width: 50%;
+    margin: 0 20px 0 0;
+}
+
+.el-first-last-name {
+    display: flex;
+    flex-direction: column;
+    width: 23%;
+    padding: 0 0 0 20px;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.staff-list-first-name {
+    color: #ED6E2D;
+    font-size: 22px;
+}
+
+.staff-list-last-name {
+    color: #8e8e8e;
+    font-size: 18px;
+}
+
+.staff-list-email {
+    width: 32%;
+    color: #3e3e3e;
+    align-self: center;
+}
+
+.staff-list-phone {
+    width: 40%;
+    align-self: center;
+}
+
+.edit-row.staff-checkbox {
+    margin: 0 0 0 0;
+}
+
+.staff-checkbox .label {
+    font-size: 15px;
 }

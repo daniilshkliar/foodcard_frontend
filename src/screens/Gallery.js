@@ -80,7 +80,7 @@ export default function Gallery() {
         let country = data.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.CountryName;
         let city = data.data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName;
         
-        if (dict.countries_src.find(element => element.country===country && element.cities.find(el => el===city))) {
+        if (dict.countries_src.find(element => element.country[0]===country && element.cities.find(el => el[0]===city))) {
             setCountry(country);
             setCity(city);
         }
@@ -90,7 +90,7 @@ export default function Gallery() {
         setLoading(true);
         setMessages({});
 
-        await axios.get("/core/place/get/?page=" + nextPage
+        nextPage && await axios.get("/core/places/?page=" + nextPage
         ).then((response) => {
             setPlaces([...places, ...response.data.results]);
             setNextPage(response.data.next ? nextPage + 1 : null);
@@ -165,21 +165,21 @@ export default function Gallery() {
                                 {places && places.map((place, index) =>
                                     <Placemark 
                                         key={index}
-                                        geometry={[place.address.coordinates[0], place.address.coordinates[1]]}
+                                        geometry={[place.coordinates[0], place.coordinates[1]]}
                                         options={{ 
                                             iconColor: (hoveredCard === place.id ? 'red' : 'black')
                                         }}
                                         modules={['geoObject.addon.balloon']}
                                         properties={{
                                             balloonContentHeader:
-                                                '<div class="balloon-header"><a href="/place/' + place.address.city + '/'+ place.title + '/">' + place.title + '</a></div>'
+                                                '<div class="balloon-header"><a href="/place/' + place.city + '/'+ place.title + '/">' + place.title + '</a></div>'
                                             ,
                                             balloonContentBody:
                                                 '<div class="balloon">' +
-                                                    '<a href="/place/' + place.address.city + '/'+ place.title + '/">' +
-                                                    '<div class="balloon-box"><div class="balloon-row">' + place.main_category + '</div></div>' +
-                                                    (place.main_photo && place.main_photo.thumbnail_uri?
-                                                        '<img class="balloon-photo" src="' + place.main_photo.thumbnail_uri + '" alt="Photo of ' + place.main_category + ' ' + place.title + '" draggable="false" />'
+                                                    '<a href="/place/' + place.city + '/'+ place.title + '/">' +
+                                                    '<div class="balloon-box"><div class="balloon-row">' + dict.categories_src_dict[place.main_category.name] + '</div></div>' +
+                                                    (place.main_photo?
+                                                        '<img class="balloon-photo" src="' + place.main_photo + '" alt="Photo of ' + place.main_category.name + ' ' + place.title + '" draggable="false" />'
                                                     :   '')
                                                     + '</a>' +
                                                 '</div>'
@@ -229,7 +229,7 @@ export default function Gallery() {
                                         id="query"
                                         name="query" 
                                         value={searchQuery}
-                                        placeholder="Search"
+                                        placeholder="Поиск"
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                     />        
                                     <div className="searchbutton active-button" onClick={() => {console.log(searchQuery)}}>
@@ -238,7 +238,7 @@ export default function Gallery() {
                                 </div>
                                 <div className="filterbutton">
                                     <div className="button active-button" onClick={() => setFilter(!isFilterActive)}>
-                                        Filter
+                                        Фильтры
                                     </div>
                                 </div>
                             </div>
@@ -254,11 +254,11 @@ export default function Gallery() {
                                         className="gallery-card"
                                         onMouseEnter={() => setHoveredCard(place.id)}
                                         onMouseLeave={() => setHoveredCard(-1)}
-                                        onClick={() => history.push("/place/" + place.address.city + "/" + place.title + "/")}
+                                        onClick={() => history.push("/place/" + place.city + "/" + place.title + "/")}
                                     >
                                         <div className="gallery-card-photo">
-                                            {place.main_photo && place.main_photo.thumbnail_uri ?
-                                                <img src={place.main_photo.thumbnail_uri} alt={"A photo of " + place.title} draggable="false" />
+                                            {place.main_photo ?
+                                                <img src={place.main_photo} alt={"A photo of " + place.title} draggable="false" />
                                             :   <div className={"thumbnail-photo color" + Math.floor(Math.random() * Math.floor(7))}></div>
                                             }
                                         </div>
@@ -266,40 +266,39 @@ export default function Gallery() {
                                             {place.title}
                                         </div>
                                         <div className="gallery-card-category">
-                                            <div>{place.main_category}</div>
+                                            <div>{dict.categories_src_dict[place.main_category.name]}</div>
                                             <div class="dot"></div>
-                                            {place.opening_hours[0] &&
+                                            {place.opening_hours && place.opening_hours[day][1] &&
                                                 <div>
-                                                    Until {moment.tz(place.opening_hours[day][1], place.timezone).format("HH:mm")}
+                                                    До {moment.utc(place.opening_hours[day][1]).tz(place.timezone).format("HH:mm")}
                                                 </div>
                                             }
                                         </div>
                                         <div className="gallery-card-cuisine">
-                                            {place.main_cuisine} cuisine
+                                            {dict.cuisines_src_dict[place.main_cuisine.name]} кухня
                                         </div>
-                                        {place.general_review &&
-                                            <div>
-                                                <div className="gallery-card-rating">
-                                                    {place.general_review.rounded_rating===null ?
-                                                        <div className="text-color-main">
-                                                            No rating
-                                                        </div>
-                                                    :   <BeautyStars
-                                                            value={place.general_review.rounded_rating}
-                                                            size="18px"
-                                                            gap="4px"
-                                                            inactiveColor="#DADADA"
-                                                            activeColor="#ED6E2D"
-                                                        />
-                                                    }
-                                                </div>
-                                                <div className="gallery-card-reviews">
-                                                    {place.general_review.amount} reviews
-                                                </div>
+                                        <div>
+                                            <div className="gallery-card-rating">
+                                                {place.rounded_rating === null ?
+                                                    <div className="text-color-main tip">
+                                                        Нет рейтинга
+                                                    </div>
+                                                :   <BeautyStars
+                                                        value={place.rounded_rating}
+                                                        size="18px"
+                                                        gap="4px"
+                                                        editable="false"
+                                                        inactiveColor="#DADADA"
+                                                        activeColor="#ED6E2D"
+                                                    />
+                                                }
                                             </div>
-                                        }
+                                            <div className="gallery-card-reviews">
+                                                {place.amount} отзывов
+                                            </div>
+                                        </div>
                                         <div className="gallery-card-address">
-                                            {place.address.city + ", " + place.address.street}
+                                            {dict.cities_src_dict[place.city] + ", " + place.street}
                                         </div>
                                     </div>
                                 ))}

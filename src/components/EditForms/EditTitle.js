@@ -21,8 +21,8 @@ export default function EditTitle({
         setLoading(true);
         setMessages({});
 
-        await jwt_axios.post("/core/place/update/" + place.id + "/", {
-            "title": newTitle
+        await jwt_axios.post("/core/places/update/" + place.id + "/", {
+            title: newTitle
         }, {
             withCredentials: true 
         }).then((response) => {
@@ -59,7 +59,7 @@ export default function EditTitle({
             :   <div>
                     {popup &&
                         <div className="popup">
-                            Title changed successfully
+                            Название успешно изменено
                         </div>
                     }
                     {messages.status &&
@@ -69,7 +69,7 @@ export default function EditTitle({
                     }
                     <div className="edit-scope">
                         <div className="edit-form-title">
-                            Enter new title
+                            Введите новое название
                         </div>
                         <div className="base-row">
                             <input
@@ -89,9 +89,9 @@ export default function EditTitle({
                                     onClick={() => setTitle()}
                                     onKeyDown={(e) => e.key === 'Enter' && setTitle()}
                                 >
-                                    Save
+                                    Сохранить
                                 </div>
-                            :   <div tabindex="0" className="button inactive">Save</div>
+                            :   <div tabindex="0" className="button inactive">Сохранить</div>
                             }
                         </div>
                     </div>

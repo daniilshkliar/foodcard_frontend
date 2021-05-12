@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { isEmail, isAlpha } from 'validator';
+import { isEmail, isAlpha, isMobilePhone } from 'validator';
 import jwt_axios from '../services/JWTaxios';
 
 import Spinner from '../components/LoaderSpinner/Spinner';
@@ -9,6 +9,8 @@ import Spinner from '../components/LoaderSpinner/Spinner';
 
 export default function Signup() {
     const history = useHistory();
+    const [phone, setPhone] = useState("");
+    const [isPhoneValid, setPhoneValid] = useState(false);
     const [email, setEmail] = useState("");
     const [isEmailValid, setEmailValid] = useState(false);
     const [firstName, setFirstName] = useState("");
@@ -29,7 +31,7 @@ export default function Signup() {
     }, []);
 
     const isAuthenticated = async () => {
-        await jwt_axios.get("/authentication/user/check/login/", { 
+        await jwt_axios.get("/accounts/user/", { 
             withCredentials: true
         }).then(() => {
             history.push("/");
@@ -38,11 +40,12 @@ export default function Signup() {
         });
     }
 
-    const handleSignup = async () => {
+    const signup = async () => {
         setLoading(true);
         setMessages({});
         
-        await axios.post("/authentication/signup/", {
+        await axios.post("/accounts/signup/", {
+            phone: phone,
             email: email,
             first_name: firstName,
             last_name: lastName,
@@ -61,6 +64,11 @@ export default function Signup() {
         }).finally(() => {
             setLoading(false);
         });
+    }
+
+    const phoneValidator = (value) => {
+        setPhone(value);
+        setPhoneValid(isMobilePhone(value));
     }
 
     const emailValidator = (value) => {
@@ -104,17 +112,27 @@ export default function Signup() {
                             {messages.statusText}
                         </div>
                     }
+                    {messages.data && messages.data.email &&
+                        <div className="auth-error">
+                            {messages.data.email[0].charAt(0).toUpperCase() + messages.data.email[0].slice(1)}
+                        </div>
+                    }
+                    {messages.data && messages.data.phone &&
+                        <div className="auth-error">
+                            {messages.data.phone[0].charAt(0).toUpperCase() + messages.data.phone[0].slice(1)}
+                        </div>
+                    }
                     <div className="signup-container">
                         <div className="auth-logo">
                             Foodcard
                         </div>
                         <div className="auth-title">
-                            Sign up
+                            Регистрация
                         </div>
                         {confirmation ? 
                             <div>
                                 <div className="confirmation">
-                                    Please confirm your email address to complete the registration.
+                                    На вашу почту было отправлено письмо с подтверждением регистрации.
                                 </div>
                                 <div 
                                     tabindex="0"
@@ -122,14 +140,28 @@ export default function Signup() {
                                     onClick={() => history.push("/")}
                                     onKeyDown={(e) => e.key === 'Enter' && history.push("/")}
                                 >
-                                    Got it
+                                    Понятно
                                 </div>
                             </div>
                         :   <div>
                                 <div className="form-row">
                                     <div className="signup-element full-width">
                                         <div className="form-element-title">
-                                            Email
+                                            Телефон
+                                        </div>
+                                        <input
+                                            type="phone"
+                                            name="phone"
+                                            className={isPhoneValid || phone.length===0 ? "input-text" : "input-text invalid"}
+                                            value={phone}
+                                            onChange={(e) => phoneValidator(e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="form-row">
+                                    <div className="signup-element full-width">
+                                        <div className="form-element-title">
+                                            Почта
                                         </div>
                                         <input
                                             type="email"
@@ -143,7 +175,7 @@ export default function Signup() {
                                 <div className="form-row">
                                     <div className="signup-element">
                                         <div className="form-element-title">
-                                            First name
+                                            Имя
                                         </div>
                                         <input
                                             type="text"
@@ -155,7 +187,7 @@ export default function Signup() {
                                     </div>
                                     <div className="signup-element">
                                         <div className="form-element-title">
-                                            Last name
+                                            Фамилия
                                         </div>
                                         <input
                                             type="text"
@@ -169,7 +201,7 @@ export default function Signup() {
                                 <div className="form-row">
                                     <div className="signup-element">
                                         <div className="form-element-title">
-                                            Password
+                                            Пароль
                                         </div>
                                         <input
                                             type="password"
@@ -181,7 +213,7 @@ export default function Signup() {
                                     </div>
                                     <div className="signup-element">
                                         <div className="form-element-title">
-                                            Confirm password
+                                            Подтвердите пароль
                                         </div>
                                         <input
                                             type="password"
@@ -193,25 +225,25 @@ export default function Signup() {
                                     </div>
                                 </div>
                                 <div className="form-buttons">
+                                    {isPhoneValid && isEmailValid && isPassword1Valid && isPassword2Valid && isFirstNameValid && isLastNameValid ?
+                                        <div
+                                            tabindex="0"
+                                            className="button active-button"
+                                            onClick={() => signup()}
+                                            onKeyDown={(e) => e.key === 'Enter' && signup()}
+                                        >
+                                            Зарегистрироваться
+                                        </div>
+                                    :   <div tabindex="0" className="button inactive">Зарегистрироваться</div>
+                                    }
                                     <div
                                         tabindex="0"
                                         className="button"
                                         onClick={() => history.push("/login/")}
                                         onKeyDown={(e) => e.key === 'Enter' && history.push("/login/")}
                                     >
-                                        Login
+                                        Войти
                                     </div>
-                                    {isEmailValid && isPassword1Valid && isPassword2Valid && isFirstNameValid && isLastNameValid ?
-                                        <div
-                                            tabindex="0"
-                                            className="button active-button"
-                                            onClick={() => handleSignup()}
-                                            onKeyDown={(e) => e.key === 'Enter' && handleSignup()}
-                                        >
-                                            Sign up
-                                        </div>
-                                    :   <div tabindex="0" className="button inactive">Sign up</div>
-                                    }
                                 </div>
                             </div>
                         }

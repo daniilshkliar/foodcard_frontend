@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import jwt_axios from '../../services/JWTaxios';
 
 import Spinner from '../LoaderSpinner/Spinner';
@@ -15,8 +15,8 @@ export default function EditCuisines({
 }) {
     const [messages, setMessages] = useState({});
     const [isLoading, setLoading] = useState(false);
-    const [newCuisines, setNewCuisines] = useState(place.cuisines);
-    const [newMainCuisine, setNewMainCuisine] = useState(place.main_cuisine);
+    const [newCuisines, setNewCuisines] = useState([...place.additional_cuisines.map(elem => elem.name), place.main_cuisine && place.main_cuisine.name]);
+    const [newMainCuisine, setNewMainCuisine] = useState(place.main_cuisine && place.main_cuisine.name);
     const [popup, setPopup] = useState(false);
     const [isMainCuisineActive, setMainCuisineActive] = useState(false);
 
@@ -24,9 +24,9 @@ export default function EditCuisines({
         setLoading(true);
         setMessages({});
 
-        await jwt_axios.post("/core/place/update/" + place.id + "/", {
-            "main_cuisine": newMainCuisine,
-            "cuisines": newCuisines
+        await jwt_axios.post("/core/places/update/" + place.id + "/", {
+            main_cuisine: newMainCuisine,
+            additional_cuisines: newCuisines
         }, {
             withCredentials: true 
         }).then((response) => {
@@ -64,7 +64,7 @@ export default function EditCuisines({
                 :   <div>
                     {popup &&
                         <div className="popup">
-                            Cuisines changed successfully
+                            Кухни успешно изменены
                         </div>
                     }
                     {messages.status &&
@@ -74,15 +74,15 @@ export default function EditCuisines({
                     }
                     <div className="edit-scope">
                         <div className="edit-form-title">
-                            Choose your cuisines
+                            Выберите ваши кухни (максимум 5)
                         </div>
                         {dict.cuisines_src &&
                             <div className="filter-box editable">
                                 <div className="filter-body">
                                     {dict.cuisines_src.map((element, index) => 
-                                        <div key={index} className={"button filter-element" + (newCuisines.includes(element) ? " active-button" : "")}
-                                            onClick={() => handleCuisinesChange(element)}>
-                                            {element}
+                                        <div key={index} className={"button filter-element" + (newCuisines.includes(element[0]) ? " active-button" : "")}
+                                            onClick={() => handleCuisinesChange(element[0])}>
+                                            {element[1]}
                                         </div>
                                     )}
                                 </div>
@@ -90,7 +90,7 @@ export default function EditCuisines({
                         }
                         <div className="filter-box half-width margin-right scrollable margin-top">
                             <div className="filter-header clickable" onClick={() => setMainCuisineActive(!isMainCuisineActive)}>
-                                Main cuisine
+                                Основаная кухня
                                 <div className="invert arrow">
                                     {isMainCuisineActive ?
                                     <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
@@ -105,7 +105,7 @@ export default function EditCuisines({
                                         setMainCuisineActive(!isMainCuisineActive);
                                     }}
                                 >
-                                    {newMainCuisine}
+                                    {dict.cuisines_src_dict[newMainCuisine]}
                                 </div>
                             </div>
                             {isMainCuisineActive &&
@@ -117,26 +117,26 @@ export default function EditCuisines({
                                                 className="button filter-element"
                                                 onClick={() => setNewMainCuisine(element)}
                                             >
-                                                {element}
+                                                {dict.cuisines_src_dict[element]}
                                             </div>)
                                     :   <div className="tip small-margin-top">
-                                            No options
+                                            Пусто
                                         </div>
                                     }
                                 </div>
                             }
                         </div>
                         <div className="row">
-                            {newCuisines.length > 0 && newMainCuisine ?
+                            {newCuisines.length > 0 && newCuisines.length <= 5 && newMainCuisine ?
                                 <div
                                     tabindex="0"
                                     className="save"
                                     onClick={() => setCuisines()}
                                     onKeyDown={(e) => e.key === 'Enter' && setCuisines()}
                                 >
-                                    Save
+                                    Сохранить
                                 </div>
-                            :   <div tabindex="0" className="button inactive">Save</div>
+                            :   <div tabindex="0" className="button inactive">Сохранить</div>
                             }
                         </div>
                     </div>

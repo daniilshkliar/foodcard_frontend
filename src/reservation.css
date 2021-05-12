@@ -1,14 +1,29 @@
+.reserve {
+	display: flex;
+	justify-content: center;
+	overflow-y: auto;
+}
+
+.reservation {
+	padding: 0 0 30px 0;
+	min-height: calc(100vh - 320px);
+}
+
 .reservation-container {
-	width: 440px;
-	align-self: center;
+	width: 700px;
+	padding: 20px 0 0 0;
 }
 
 .rrow {
-	margin: 4px 0;
+	min-height: 110px;
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: space-around;
 	align-items: flex-start;
+}
+
+.space-around {
+	justify-content: space-around;
 }
 
 .rrrow {
@@ -16,7 +31,7 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	align-items: flex-start;
+	align-items: center;
 }
 
 .reservation-element {
@@ -24,9 +39,26 @@
 	margin: 2px 0;
 }
 
-#guests { 
-	width: 100%;
+.floors-select {
+	margin: 0 -5px 0 0;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.button.floor {
+	margin: 0 5px 0 0;
+}
+
+.guests {
+	width: 70px;
+}
+
+.guests .input-text {
 	margin: 0 0 0 0;
+}
+
+.date-time {
+	width: 220px;
 }
 
 .el30 {
@@ -41,57 +73,94 @@
 	width: 48%;
 }
 
-.success-back {
+.el80 {
+	width: 80%;
+}
+
+.confirm-back {
+	z-index: 999;
 	position: fixed;
-	left: 0;
 	top: 0;
+	left: 0;
 	width: 100vw;
 	height: 100vh;
 	background-color: #3e3e3ea0;
 }
 
-.success {
-	position: absolute;
-	top: calc(50vh - 60px);
-	left: calc(50vw - 160px);
-	border-radius: 30px;
-	width: 320px;
-	height: 120px;
+.confirm-window {
+	z-index: 1000;
+	position: fixed;
+	top: calc(50% - 300px);
+	left: calc(50% - 200px);
+	width: 400px;
+	height: 600px;
+	padding: 20px;
+	border-radius: 12px;
 	background-color: #ffffff;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
 }
 
-.success-text {
+.el70 {
+	width: 80%;
+	margin: 0 auto;
+}
+
+.comment textarea {
+	height: 108px;
+	padding: 3px 8px;
+	font-size: 15px;
+	resize: none;
+}
+
+.comment textarea::-webkit-scrollbar {
+	width: 0;
+}
+
+.confirm-buttons {
+	margin: 15px 0 0 0;
+	display: flex;
+	justify-content: center;
+}
+
+.confirm-info {
+	margin: -25px 0 5px 0;
+	padding: 0 0 5px 0;
+	text-align: center;
+	border-bottom: 1px solid #3e3e3e;
+	color: #8e8e8e;
+}
+
+.reserved-info {
+	margin: 170px 0 0 0;
 	text-align: center;
 	color: #3e3e3e;
-	font-size: 20px;
-	margin: 10px auto;
 }
 
 .place-info {
-	margin: 0 0 10px;
-	padding: 3px 0;
+	width: 100%;
+	margin: -30px auto 10px;
+	padding: 3px 0 10px 0;
 	border-bottom: #3e3e3e 1px solid;
 }
 
 .title {
+	margin: 0 0 0 50px;
 	font-size: 20px;
 	color: #3e3e3e;
 }
 
 .category {
-	font-size: 18px;
+	margin: 0 0 0 50px;
 	color: #8e8e8e;
 }
 
 .address {
+	margin: 0 50px 0 0;
 	color: #8e8e8e;
 }
 
 .phone {
+	margin: 0 45px 0 0;
+	font-size: 17px;
 	color: #3e3e3e;
 }
 
@@ -106,7 +175,7 @@ input[type="datetime-local"] {
 
 .hours-tip {
 	position: relative;
-	margin: 5px 0 0 15px;
+	margin: 5px 10px;
 	font-size: 12px;
 	color: #8e8e8e;
 }

@@ -18,7 +18,7 @@ export default function EditDescription({
         setLoading(true);
         setMessages({});
 
-        await jwt_axios.post("/core/place/update/" + place.id + "/", {
+        await jwt_axios.post("/core/places/update/" + place.id + "/", {
             "description": newDescription
         }, {
             withCredentials: true 
@@ -53,7 +53,7 @@ export default function EditDescription({
             :   <div>
                     {popup &&
                         <div className="popup">
-                            Description changed successfully
+                            Описание успешно изменено
                         </div>
                     }
                     {messages.status &&
@@ -63,7 +63,7 @@ export default function EditDescription({
                     }
                     <div className="edit-scope">
                         <div className="edit-form-title">
-                            Enter new description
+                            Введите новое описание
                         </div>
 						<textarea
 							name="description"
@@ -79,9 +79,9 @@ export default function EditDescription({
                                     onClick={() => setDescription()}
                                     onKeyDown={(e) => e.key === 'Enter' && setDescription()}
                                 >
-                                    Save
+                                    Сохранить
                                 </div>
-                            :   <div tabindex="0" className="button inactive">Save</div>
+                            :   <div tabindex="0" className="button inactive">Сохранить</div>
                             }
                         </div>
                     </div>

@@ -100,8 +100,9 @@
 
 .place-title {
     width: 100%;
+    margin: 5px 0 10px 0;
     color: #3e3e3e;
-	font-family: 'Staatliches';
+	font-family: 'CustomFont';
 	font-size: 40px;
     display: flex;
     justify-content: center;
@@ -187,7 +188,7 @@
     width: 100%;
     margin: 5px 5px;
     font-size: 17px;
-    color: #8e8e8e;
+    color: #3e3e3e;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -360,6 +361,9 @@
 .color4 {background-color: #E35F34;}
 .color5 {background-color: #ED6E2D;}
 .color6 {background-color: #F47D24;}
+.color7 {background-color: #791740;}
+.color8 {background-color: #d85139;}
+.color9 {background-color: #2C062A;}
 
 .review {
     font-size: 16px;
@@ -374,9 +378,16 @@
 .place-review {
     width: 100%;
     margin: 10px 0 10px 0;
-    padding: 0 0 20px 0;
+    padding: 0 0 30px 0;
     display: flex;
     border-bottom: 1px solid #eaeaea;
+
+    /* border-bottom-left-radius: 15px; */
+    /* border-bottom-right-radius: 15px; */
+    /* box-shadow: 0 7px 5px -7px #eaeaea; */
+
+    /* box-shadow: 0px 8px 6px -5px #EAEAEA; */
+    /* box-shadow: 0 -50px 5px 0px #eaeaea; */
 }
 
 .review-user {
@@ -443,23 +454,89 @@
     background-color: #eaeaea;
 }
 
+.tip.left-side {
+    text-align: left;
+    margin: 0 0 10px 0;
+    display: flex;
+}
 
+.login-tip {
+    color: #F47D24;
+    cursor: pointer;
+}
 
+.leave-review-background {
+    z-index: 999;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: #3e3e3ea0;
+}
 
+.leave-review-window {
+    z-index: 1000;
+	position: fixed;
+	top: calc(50% - 280px);
+	left: calc(50% - 380px);
+	width: 760px;
+	height: 560px;
+	padding: 30px 50px;
+	border-radius: 12px;
+	background-color: #ffffff;
+}
 
+.rrrow.leave-review {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 10px;
+}
 
+.note-title {
+    width: 150px;
+    margin: 0 0 0 10px;
+    color: #8e8e8e;
+    text-align: left;
+}
 
+.leave-review .review-rating {
+    display: flex;
+    flex-direction: row;
+}
 
+.review-rating.noise {
+    margin: 0 0 0 -5px;
+}
 
+.leave-review .reservation-element {
+    margin: 0 0 15px 0;
+}
 
+.leave-review textarea {
+    width: 640px;
+    height: 129px;
+    padding: 5px 10px;
+    line-height: 20px;
+    resize: none;
+}
 
+.leave-review textarea::-webkit-scrollbar {
+    width: 0;
+}
 
+.leave-review .review-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin: -3px 30px 0 0;
+}
 
-
-
-
-
-
+.review-text {
+    margin: 5px 0 0 0;
+    color: #8e8e8e;
+}
 
 
 

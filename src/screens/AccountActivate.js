@@ -11,13 +11,13 @@ export default function AccountActivate() {
     const [messages, setMessages] = useState("");
 
     useEffect(() => {        
-        handleActivation();
+        activate();
     }, []);
 
-    const handleActivation = async () => {
+    const activate = async () => {
         setMessages("");
 
-        await axios.get("/authentication/activate/" + uid + "/" + token + "/", {
+        await axios.get("/accounts/activate/" + uid + "/" + token + "/", {
             withCredentials: true
         }).then(() => {
             history.push("/");

@@ -15,7 +15,7 @@ import Reservation from './screens/Reservation';
 
 import './index.css';
 import './auth.css';
-
+import './19471.ttf'; 
 
 const history = createBrowserHistory();
 

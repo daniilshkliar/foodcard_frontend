@@ -15,8 +15,8 @@ export default function EditCategories({
 }) {
     const [messages, setMessages] = useState({});
     const [isLoading, setLoading] = useState(false);
-    const [newCategories, setNewCategories] = useState(place.categories);
-    const [newMainCategory, setNewMainCategory] = useState(place.main_category);
+    const [newCategories, setNewCategories] = useState([...place.additional_categories.map(elem => elem.name), place.main_category && place.main_category.name]);
+    const [newMainCategory, setNewMainCategory] = useState(place.main_category && place.main_category.name);
     const [popup, setPopup] = useState(false);
     const [isMainCategoryActive, setMainCategoryActive] = useState(false);
 
@@ -24,9 +24,9 @@ export default function EditCategories({
         setLoading(true);
         setMessages({});
 
-        await jwt_axios.post("/core/place/update/" + place.id + "/", {
-            "main_category": newMainCategory,
-            "categories": newCategories
+        await jwt_axios.post("/core/places/update/" + place.id + "/", {
+            main_category: newMainCategory,
+            additional_categories: newCategories
         }, {
             withCredentials: true 
         }).then((response) => {
@@ -64,7 +64,7 @@ export default function EditCategories({
             :   <div>
                     {popup &&
                         <div className="popup">
-                            Categories changed successfully
+                            Категории успешно изменены
                         </div>
                     }
                     {messages.status &&
@@ -74,15 +74,15 @@ export default function EditCategories({
                     }
                     <div className="edit-scope">
                         <div className="edit-form-title">
-                            Choose your categories
+                            Выберите ваши категории (максимум 5)
                         </div>
                         {dict.categories_src &&
                             <div className="filter-box editable">
                                 <div className="filter-body">
                                     {dict.categories_src.map((element, index) => 
-                                        <div key={index} className={"button filter-element" + (newCategories.includes(element) ? " active-button" : "")}
-                                            onClick={() => handleCategoriesChange(element)}>
-                                            {element}
+                                        <div key={index} className={"button filter-element" + (newCategories.includes(element[0]) ? " active-button" : "")}
+                                            onClick={() => handleCategoriesChange(element[0])}>
+                                            {element[1]}
                                         </div>
                                     )}
                                 </div>
@@ -90,7 +90,7 @@ export default function EditCategories({
                         }
                         <div className="filter-box half-width margin-right scrollable margin-top">
                             <div className="filter-header clickable" onClick={() => setMainCategoryActive(!isMainCategoryActive)}>
-                                Main category
+                                Основная категория
                                 <div className="invert arrow">
                                     {isMainCategoryActive ?
                                     <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
@@ -105,7 +105,7 @@ export default function EditCategories({
                                         setMainCategoryActive(!isMainCategoryActive);
                                     }}
                                 >
-                                    {newMainCategory}
+                                    {dict.categories_src_dict[newMainCategory]}
                                 </div>
                             </div>
                             {isMainCategoryActive &&
@@ -117,27 +117,27 @@ export default function EditCategories({
                                                 className="button filter-element"
                                                 onClick={() => setNewMainCategory(element)}
                                             >
-                                                {element}
+                                                {dict.categories_src_dict[element]}
                                             </div>
                                         )
                                     :   <div className="tip small-margin-top">
-                                            No options
+                                            Пусто
                                         </div>
                                     }
                                 </div>
                             }
                         </div>
                         <div className="row">
-                            {newCategories.length > 0 && newMainCategory ?
+                            {newCategories.length > 0 && newCategories.length <= 5 && newMainCategory ?
                                 <div
                                     tabindex="0"
                                     className="save"
                                     onClick={() => setCategories()}
                                     onKeyDown={(e) => e.key === 'Enter' && setCategories()}
                                 >
-                                    Save
+                                    Сохранить
                                 </div>
-                            :   <div tabindex="0" className="button inactive">Save</div>
+                            :   <div tabindex="0" className="button inactive">Сохранить</div>
                             }
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import moment from 'moment-timezone';
+import moment, { utc } from 'moment-timezone';
 import jwt_axios from '../../services/JWTaxios';
 
 import Spinner from '../LoaderSpinner/Spinner';
@@ -12,22 +12,18 @@ export default function EditSchedule({
     const [messages, setMessages] = useState({});
     const [isLoading, setLoading] = useState(false);
     const [popup, setPopup] = useState(false);
-    const [openingHours, setOpeningHours] = useState(place.opening_hours.length === 7 ? place.opening_hours : [
-        [,],
-        [,],
-        [,],
-        [,],
-        [,],
-        [,],
-        [,]
-    ]);
+    const [openingHours, setOpeningHours] = useState(
+        place.opening_hours && place.opening_hours.length === 7 ? 
+            place.opening_hours 
+        :   [[,], [,], [,], [,], [,], [,], [,]]
+    );
 
     const setSchedule = async () => {
         setLoading(true);
         setMessages({});
 
-        await jwt_axios.post("/core/place/update/" + place.id + "/", {
-            "opening_hours": openingHours
+        await jwt_axios.post("/core/places/update/" + place.id + "/", {
+            opening_hours: openingHours
         }, {
             withCredentials: true 
         }).then((response) => {
@@ -49,7 +45,11 @@ export default function EditSchedule({
 
     const appendTime = (index, day, time) => {
         let schedule = [...openingHours];
-        schedule[day][index] = moment.tz(place.timezone).second(0).format().replace(/\d{2}:\d{2}/, time);
+        if (time == "") {
+            schedule[day][index] = null;
+        } else {
+            schedule[day][index] = moment.tz(place.timezone).second(0).format().replace(/\d{2}:\d{2}/, time);
+        }
         setOpeningHours(schedule);
     }
 
@@ -62,7 +62,7 @@ export default function EditSchedule({
             :   <div>
                     {popup &&
                         <div className="popup">
-                            Opening hours changed successfully
+                            Расписание успешно изменено
                         </div>
                     }
                     {messages.status &&
@@ -72,21 +72,21 @@ export default function EditSchedule({
                     }
                     <div className="edit-scope">
                         <div className="edit-form-title">
-                            Choose opening hours
+                            Введите новый график работы
                         </div>
                         <div className="border-top">
                             <div className="schedule-scope">
                                 {openingHours && openingHours.map((day, index) => (
                                     <div key={index} className="row">
                                         <div className="schedule-weekday">
-                                            {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][index]}
+                                            {["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"][index]}
                                         </div>
                                         <div className="orange-dot"></div>
                                         <input
                                             type="time"
                                             name="weekday"
                                             step="900"
-                                            value={openingHours[index][0] && moment.tz(openingHours[index][0], place.timezone).format("HH:mm")}
+                                            value={openingHours[index][0] && moment.utc(openingHours[index][0]).tz(place.timezone).format("HH:mm") || ''}
                                             onChange={(e) => appendTime(0, index, e.target.value)}
                                         />
                                         -
@@ -94,7 +94,7 @@ export default function EditSchedule({
                                             type="time"
                                             name="weekday"
                                             step="900"
-                                            value={openingHours[index][1] && moment.tz(openingHours[index][1], place.timezone).format("HH:mm")}
+                                            value={openingHours[index][1] && moment.utc(openingHours[index][1]).tz(place.timezone).format("HH:mm") || ''}
                                             onChange={(e) => appendTime(1, index, e.target.value)}
                                         />
                                     </div>
@@ -109,9 +109,9 @@ export default function EditSchedule({
                                     onClick={() => setSchedule()}
                                     onKeyDown={(e) => e.key === 'Enter' && setSchedule()}
                                 >
-                                    Save
+                                    Сохранить
                                 </div>
-                            :   <div tabindex="0" className="button inactive">Save</div>
+                            :   <div tabindex="0" className="button inactive">Сохранить</div>
                             }
                         </div>
                     </div>

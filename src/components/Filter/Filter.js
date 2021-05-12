@@ -77,11 +77,11 @@ export default function Filter({
     return (
         <div className="filter">
             <div className="main-filter-header">
-                All filters
+                Все фильтры
             </div>
             <div className="filter-box half-width margin-right scrollable">
                 <div className="filter-header clickable" onClick={() => setCountryActive(!isCountryActive)}>
-                    Country
+                    Страна
                     <div className="invert arrow">
                         {isCountryActive ?
                         <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
@@ -96,22 +96,22 @@ export default function Filter({
                             setCountryActive(!isCountryActive);
                         }}
                     >
-                        {country}
+                        {dict.countries_src_dict[country]}
                     </div>
                 </div>
                 {isCountryActive &&
                     <div className="filter-body">
-                        {dict.countries_src && dict.countries_src.filter(element => element.country !== country).map((element, index) =>
+                        {dict.countries_src && dict.countries_src.filter(element => element.country[0] !== country).map((element, index) =>
                             <div 
                                 key={index} 
                                 className="button filter-element"
                                 onClick={() => {
-                                    setCountry(element.country);
-                                    country!==element.country && setCity("");
-                                    fetchCountryCoordinates(element.country);
+                                    setCountry(element.country[0]);
+                                    country!==element.country[0] && setCity("");
+                                    fetchCountryCoordinates(element.country[0]);
                                 }}
                             >
-                                {element.country}
+                                {element.country[1]}
                             </div>
                         )}
                     </div>
@@ -120,7 +120,7 @@ export default function Filter({
             { (country !== "") &&
                 <div className="filter-box half-width scrollable">
                     <div className="filter-header clickable" onClick={() => setCityActive(!isCityActive)}>
-                        City
+                        Город
                         <div className="invert arrow">
                             {isCityActive ?
                             <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
@@ -135,24 +135,24 @@ export default function Filter({
                                 setCityActive(!isCityActive);
                             }}
                         >
-                            {city}
+                            {dict.cities_src_dict[city]}
                         </div>
                     </div>
                     {isCityActive &&
                         <div className="filter-body">
                             {dict.countries_src && dict.countries_src
-                                .find(element => element.country===country).cities
-                                .filter(element => element !== city)
+                                .find(element => element.country[0]===country).cities
+                                .filter(element => element[0] !== city)
                                 .map((element, index) => 
                                     <div
                                         key={index}
                                         className="button filter-element"
                                         onClick={() => {
-                                                setCity(element);
-                                                fetchCityCoordinates(country, element);
+                                                setCity(element[0]);
+                                                fetchCityCoordinates(country, element[0]);
                                             }}
                                         >
-                                        {element}
+                                        {element[1]}
                                     </div>
                             )}
                         </div>
@@ -161,50 +161,50 @@ export default function Filter({
             }
             <div className="filter-box">
                 <div className="filter-header">
-                    Sort by
+                    Сортировать по
                 </div>
                 <div className="filter-body">
                     <div className={"button filter-element" + (sortMode===1 ? " active-button" : "")}
                         onClick={() => setSortMode(1)}>
-                        Most rated
+                        Рейтингу
                     </div>
                     <div className={"button filter-element" + (sortMode===2 ? " active-button" : "")}
                         onClick={() => setSortMode(2)}>
-                        Most popular
+                        Популярности
                     </div>
                     <div className={"button filter-element" + (sortMode===3 ? " active-button" : "")}
                         onClick={() => setSortMode(3)}>
-                        Distance from me
+                        Расстоянию от меня
                     </div>
                 </div>
             </div>
             <div className="filter-box">
                 <div className="filter-header">
-                    Open
+                    Открыто
                 </div>
                 <div className="filter-body">   
                     <div className={"button filter-element" + (open===1 ? " active-button" : "")}
                         onClick={() => setOpen(open===1 ? 0 : 1)}>
-                        At least 3 more hours
+                        Еще 3 часа
                     </div>
                     <div className={"button filter-element" + (open===2 ? " active-button" : "")}
                         onClick={() => setOpen(open===2 ? 0 : 2)}>
-                        Today
+                        Сегодня
                     </div>
                     <div className={"button filter-element" + (open===3 ? " active-button" : "")}
                         onClick={() => setOpen(open===3 ? 0 : 3)}>
-                        Tomorrow
+                        Завтра
                     </div>
                     <div className={"button filter-element" + (open===4 ? " active-button" : "")}
                         onClick={() => setOpen(open===4 ? 0 : 4)}>
-                        Around the clock
+                        Круглосуточно
                     </div>
                 </div>
             </div>
             {dict.categories_src &&
                 <div className="filter-box">
                     <div className="filter-header clickable" onClick={() => setCategoryActive(!isCategoryActive)}>
-                        Category
+                        Категория
                         <div className="invert arrow">
                             {isCategoryActive ?
                             <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
@@ -215,31 +215,9 @@ export default function Filter({
                     {isCategoryActive &&
                     <div className="filter-body">
                         {dict.categories_src.map((element, index) => 
-                            <div key={index} className={"button filter-element" + (categories.includes(element) ? " active-button" : "")}
-                                onClick={() => handleCategoriesChange(element)}>
-                                {element}
-                            </div>
-                        )}
-                    </div>}
-                </div>
-            }
-            {dict.additional_src &&
-                <div className="filter-box">
-                    <div className="filter-header clickable" onClick={() => setAdditionalServicesActive(!isAdditionalServicesActive)}>
-                        Additional
-                        <div className="invert arrow">
-                            {isAdditionalServicesActive ?
-                            <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
-                            : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
-                            }
-                        </div>
-                    </div>
-                    {isAdditionalServicesActive &&
-                    <div className="filter-body">
-                        {dict.additional_src.map((element, index) => 
-                            <div key={index} className={"button filter-element" + (additionalServices.includes(element) ? " active-button" : "")}
-                                onClick={() => handleAdditionalServicesChange(element)}>
-                                {element}
+                            <div key={index} className={"button filter-element" + (categories.includes(element[0]) ? " active-button" : "")}
+                                onClick={() => handleCategoriesChange(element[0])}>
+                                {element[1]}
                             </div>
                         )}
                     </div>}
@@ -248,7 +226,7 @@ export default function Filter({
             {dict.inmenu_src &&
                 <div className="filter-box">
                     <div className="filter-header clickable" onClick={() => setInMenuActive(!isInMenuActive)}>
-                        In menu
+                        В меню
                         <div className="invert arrow">
                             {isInMenuActive ?
                             <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
@@ -270,7 +248,7 @@ export default function Filter({
             {dict.cuisines_src &&
                 <div className="filter-box">
                     <div className="filter-header clickable" onClick={() => setCuisineActive(!isCuisineActive)}>
-                        Cuisine
+                        Кухня
                         <div className="invert arrow">
                             {isCuisineActive ?
                             <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
@@ -281,9 +259,31 @@ export default function Filter({
                     {isCuisineActive &&
                     <div className="filter-body">
                         {dict.cuisines_src.map((element, index) => 
-                            <div key={index} className={"button filter-element" + (cuisines.includes(element) ? " active-button" : "")}
-                                onClick={() => handleCuisinesChange(element)}>
-                                {element}
+                            <div key={index} className={"button filter-element" + (cuisines.includes(element[0]) ? " active-button" : "")}
+                                onClick={() => handleCuisinesChange(element[0])}>
+                                {element[1]}
+                            </div>
+                        )}
+                    </div>}
+                </div>
+            }
+            {dict.additional_src &&
+                <div className="filter-box">
+                    <div className="filter-header clickable" onClick={() => setAdditionalServicesActive(!isAdditionalServicesActive)}>
+                        Дополнительно
+                        <div className="invert arrow">
+                            {isAdditionalServicesActive ?
+                            <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
+                            : <img src={ArrowDownIcon} alt={"Arrow down icon"} draggable="false" />
+                            }
+                        </div>
+                    </div>
+                    {isAdditionalServicesActive &&
+                    <div className="filter-body">
+                        {dict.additional_src.map((element, index) => 
+                            <div key={index} className={"button filter-element" + (additionalServices.includes(element[0]) ? " active-button" : "")}
+                                onClick={() => handleAdditionalServicesChange(element[0])}>
+                                {element[1]}
                             </div>
                         )}
                     </div>}

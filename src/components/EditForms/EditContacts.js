@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { isMobilePhone, isMobilePhoneLocales } from 'validator';
+import { YMaps, Map, Placemark, ZoomControl } from 'react-yandex-maps';
 import jwt_axios from '../../services/JWTaxios';
 
 import Spinner from '../LoaderSpinner/Spinner';
@@ -26,39 +27,37 @@ export default function EditContacts({
     const [isPhoneValid, setPhoneValid] = useState(isMobilePhone(place.phone, isMobilePhoneLocales, {strictMode: true}));
     const [newWebsite, setNewWebsite] = useState(place.website ? place.website.split('www.')[1].replace('/','') : "");
     const [newInstagram, setNewInstagram] = useState(place.instagram ? place.instagram.split('instagram.com/')[1].replace('/','') : "");
-    const [country, setCountry] = useState(place.address && place.address.country);
+    const [country, setCountry] = useState(place.country.name);
     const [isCountryActive, setCountryActive] = useState(false);
-    const [city, setCity] = useState(place.address && place.address.city);
+    const [city, setCity] = useState(place.city);
+    const [coordinates, setCoordinates] = useState(place.coordinates);
     const [isCityActive, setCityActive] = useState(false);
-    const [street, setStreet] = useState(place.address && place.address.street);
-    const [isStreetValid, setStreetValid] = useState(place.address && street === place.address.street);
+    const [street, setStreet] = useState(place.street);
+    const [isStreetValid, setStreetValid] = useState(street === place.street);
+    const [floor, setFloor] = useState(place.floor);
     const [popup, setPopup] = useState(false);
 
     const setContacts = async () => {
         setLoading(true);
         setMessages({});
 
-        let locationInfo = await axios(
-            "https://geocode-maps.yandex.ru/1.x/?apikey=d08fc50d-a7e6-4f37-bc51-1eb5df129e9d&format=json&geocode=" + country + "+" + city + "+" + street.split(/,|\.| /).join('+')
-        );
-        let coordinates = [...locationInfo.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ').map(el => parseFloat(el)).reverse()];
-
-        await jwt_axios.post("/core/place/update/" + place.id + "/", {
-            "phone": newPhone,
-            "instagram": "https://www.instagram.com/" + newInstagram,
-            "website": newWebsite ? "http://www." + newWebsite : "http://www.none.com",
-            "address": {
-                "country": country,
-                "city": city,
-                "street": street,
-                "coordinates": coordinates
-            }
+        await jwt_axios.post("/core/places/update/" + place.id + "/", {
+            phone: newPhone,
+            instagram: newInstagram ? "https://www.instagram.com/" + newInstagram : "",
+            website: newWebsite ? "http://www." + newWebsite : "",
+            country: country,
+            city: city,
+            street: street,
+            coordinates: coordinates,
+            floor: floor
         }, {
             withCredentials: true 
         }).then((response) => {
             setPlace(response.data);
             let placeDataBefore = places.find(elem => elem.id === place.id);
-            placeDataBefore.address = response.data.address;
+            placeDataBefore.country = response.data.country;
+            placeDataBefore.city = response.data.city;
+            placeDataBefore.street = response.data.street;
             setPlaces([...places.filter(elem => elem.id !== place.id), placeDataBefore]);
             setPopup(true);
         }).catch((error) => {
@@ -73,6 +72,13 @@ export default function EditContacts({
         }).finally(() => {
             setLoading(false);
         });
+    }
+
+    const change_location = async (ctry, cty, str) => {
+        let locationInfo = await axios(
+            "https://geocode-maps.yandex.ru/1.x/?apikey=d08fc50d-a7e6-4f37-bc51-1eb5df129e9d&format=json&geocode=" + ctry + "+" + cty + "+" + str.split(/,|\.| /).join('+')
+        );
+        setCoordinates([...locationInfo.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ').map(el => parseFloat(el)).reverse()]);
     }
 
     const phoneValidator = (value) => {
@@ -94,7 +100,7 @@ export default function EditContacts({
             :   <div>
                     {popup &&
                         <div className="popup">
-                            Contacts changed successfully
+                            Контакты успешно изменены
                         </div>
                     }
                     {messages.status &&
@@ -104,14 +110,14 @@ export default function EditContacts({
                     }
                     <div className="edit-scope">
                         <div className="edit-form-title">
-                            Enter contacts
+                            Введите контакты
                         </div>
                         <div className="base-row">
                             <div className="icon-link">
                                 <img className="phone-icon" src={PhoneIcon} alt="Phone icon" />
                             </div>
-                            <div className="big-tip">
-                                Phone:
+                            <div className="label">
+                                Телефон:
                             </div>
                             <input
                                 type="phone"
@@ -125,7 +131,7 @@ export default function EditContacts({
                             <div className="icon-link">
                                 <img className="website-icon" src={WebsiteIcon} alt="Website icon" />
                             </div>
-                            <div className="big-tip">
+                            <div className="label">
                                 http://www.
                             </div>
                             <input
@@ -141,7 +147,7 @@ export default function EditContacts({
                             <div className="icon-link">
                                 <img className="instagram-icon" src={InstagramIcon} alt="Instagram icon" />
                             </div>
-                            <div className="big-tip">
+                            <div className="label">
                                 https://www.instagram.com/
                             </div>
                             <input
@@ -156,7 +162,7 @@ export default function EditContacts({
                         <div className="base-row top-stick">
                             <div className="filter-box half-width margin-right scrollable">
                                 <div className="filter-header clickable" onClick={() => setCountryActive(!isCountryActive)}>
-                                    Country
+                                    Страна
                                     <div className="invert arrow">
                                         {isCountryActive ?
                                         <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
@@ -171,21 +177,23 @@ export default function EditContacts({
                                             setCountryActive(!isCountryActive);
                                         }}
                                     >
-                                        {country}
+                                        {dict.countries_src_dict[country]}
                                     </div>
                                 </div>
                                 {isCountryActive &&
                                     <div className="filter-body">
-                                        {dict.countries_src && dict.countries_src.filter(element => element.country !== country).map((element, index) =>
+                                        {dict.countries_src && dict.countries_src.filter(element => element.country[0] !== country).map((element, index) =>
                                             <div 
                                                 key={index} 
                                                 className="button filter-element"
                                                 onClick={() => {
-                                                    setCountry(element.country);
-                                                    country!==element.country && setCity("");
+                                                    change_location(element.country[0], "", "");
+                                                    setCountry(element.country[0]);
+                                                    setCity("");
+                                                    setStreet("");
                                                 }}
                                             >
-                                                {element.country}
+                                                {element.country[1]}
                                             </div>
                                         )}
                                     </div>
@@ -194,7 +202,7 @@ export default function EditContacts({
                             { (country !== "") &&
                                 <div className="filter-box half-width scrollable">
                                     <div className="filter-header clickable" onClick={() => setCityActive(!isCityActive)}>
-                                        City
+                                        Город
                                         <div className="invert arrow">
                                             {isCityActive ?
                                             <img src={ArrowUpIcon} alt={"Arrow up icon"} draggable="false" />
@@ -209,23 +217,25 @@ export default function EditContacts({
                                                 setCityActive(!isCityActive);
                                             }}
                                         >
-                                            {city}
+                                            {dict.cities_src_dict[city]}
                                         </div>
                                     </div>
                                     {isCityActive &&
                                         <div className="filter-body">
                                             {dict.countries_src && dict.countries_src
-                                                .find(element => element.country===country).cities
-                                                .filter(element => element !== city)
+                                                .find(element => element.country[0]===country).cities
+                                                .filter(element => element[0] !== city)
                                                 .map((element, index) => 
                                                     <div
                                                         key={index}
                                                         className="button filter-element"
                                                         onClick={() => {
-                                                                setCity(element);
-                                                            }}
-                                                        >
-                                                        {element}
+                                                            change_location(country, element[0], "");
+                                                            setCity(element[0]);
+                                                            setStreet("");
+                                                        }}
+                                                    >
+                                                        {element[1]}
                                                     </div>
                                             )}
                                         </div>
@@ -234,28 +244,54 @@ export default function EditContacts({
                             }
                         </div>
                         <div className="row">
-                            <div className="big-tip">
-                                Street:
+                            <div className="label">
+                                Улица:
                             </div>
                             <input
                                 type="text"
                                 name="street"
-                                className={isStreetValid || (place.address && street === place.address.street) ? "input-text" : "input-text invalid"}
+                                className={isStreetValid || (place.street && street === place.street) ? "input-text" : "input-text invalid"}
                                 value={street}
-                                onChange={(e) => streetValidator(e.target.value)}
+                                onChange={(e) => {
+                                    streetValidator(e.target.value);
+                                    change_location(country, city, e.target.value);
+                                }}
                             />
                         </div>
+                        <div className="row flex-start">
+                            <div className="label">
+                                Этаж:
+                            </div>
+                            <input
+                                type="number"
+                                name="floor"
+                                className={floor || floor === 0 ? "input-text" : "input-text invalid"}
+                                value={floor}
+                                onChange={(e) => setFloor(parseInt(e.target.value))}
+                            />
+                        </div>
+                        <div className="place-map">
+                            <YMaps>
+                                <Map className="main-map" state={{ center: coordinates, zoom: 16 }}>
+                                    <ZoomControl options={{ size: 'small', position: { bottom: 30, right: 10 }}} />
+                                    <Placemark
+                                        geometry={coordinates}
+                                        options={{ iconColor: 'red' }}
+                                    />
+                                </Map>
+                            </YMaps>
+                        </div>
                         <div className="row">
-                            {isPhoneValid && isStreetValid && country && city ?
+                            {floor && isPhoneValid && isStreetValid && country && city ?
                                 <div
                                     tabindex="0"
                                     className="save"
                                     onClick={() => setContacts()}
                                     onKeyDown={(e) => e.key === 'Enter' && setContacts()}
                                 >
-                                    Save
+                                    Сохранить
                                 </div>
-                            :   <div tabindex="0" className="button inactive">Save</div>
+                            :   <div tabindex="0" className="button inactive">Сохранить</div>
                             }
                         </div>
                     </div>

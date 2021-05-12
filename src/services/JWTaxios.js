@@ -9,7 +9,7 @@ jwt_axios.interceptors.response.use(
     (error) => {
         const originalRequest = error.config;
         if (error.response.status === 401 && !originalRequest._retry) {
-            return axios.get("/authentication/token/refresh/", {
+            return axios.get("/accounts/refresh/", {
                 withCredentials: true 
             }).then(response => {
                 originalRequest._retry = true;
