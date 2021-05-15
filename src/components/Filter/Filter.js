@@ -27,51 +27,72 @@ export default function Filter({
     setAdditionalServices,
     inMenu,
     setInMenu,
+    fetchPlaces,
+    setSearchQuery,
     }) {
 
     const [isCountryActive, setCountryActive] = useState(false);
     const [isCityActive, setCityActive] = useState(false);
-    const [isCategoryActive, setCategoryActive] = useState(false);
+    const [isCategoryActive, setCategoryActive] = useState(true);
     const [isCuisineActive, setCuisineActive] = useState(false);
     const [isAdditionalServicesActive, setAdditionalServicesActive] = useState(false);
     const [isInMenuActive, setInMenuActive] = useState(false);
 
     const handleCategoriesChange = (element) => {
+        let array = []
         categories.includes(element) ?
-            setCategories([...categories.filter(elem => elem !== element)])
-        :   setCategories([...categories, element]);                       
+            array = [...categories.filter(elem => elem !== element)]
+        :   array = [...categories, element];
+        setCategories(array);
+        setSearchQuery("");
+        fetchPlaces(1, array, cuisines, additionalServices, country, city);                     
     }
 
     const handleCuisinesChange = (element) => {
+        let array = []
         cuisines.includes(element) ?
-            setCuisines([...cuisines.filter(elem => elem !== element)])
-        :   setCuisines([...cuisines, element]);                       
+            array = [...cuisines.filter(elem => elem !== element)]
+        :   array = [...cuisines, element];  
+        setCuisines(array);
+        setSearchQuery("");
+        fetchPlaces(1, categories, array, additionalServices, country, city);                               
     }
 
     const handleAdditionalServicesChange = (element) => {
+        let array = []
         additionalServices.includes(element) ?
-            setAdditionalServices([...additionalServices.filter(elem => elem !== element)])
-        :   setAdditionalServices([...additionalServices, element]);                       
+            array = [...additionalServices.filter(elem => elem !== element)]
+        :   array = [...additionalServices, element];    
+        setAdditionalServices(array);
+        setSearchQuery("");
+        fetchPlaces(1, categories, cuisines, array, country, city);                               
     }
 
     const handleInMenuChange = (element) => {
+        let array = []
         inMenu.includes(element) ?
-            setInMenu([...inMenu.filter(elem => elem !== element)])
-        :   setInMenu([...inMenu, element]);                       
+            array = [...inMenu.filter(elem => elem !== element)]
+        :   array = [...inMenu, element]; 
+        setInMenu(array);
+        setSearchQuery("");
+        fetchPlaces(1, categories, cuisines, additionalServices, country, city);                                   
     }
 
-    const fetchCountryCoordinates = async (country) => {
+    const fetchCountryCoordinates = async (ctr) => {
         const data = await axios(
-            "https://geocode-maps.yandex.ru/1.x/?apikey=d08fc50d-a7e6-4f37-bc51-1eb5df129e9d&format=json&geocode=" + country
+            "https://geocode-maps.yandex.ru/1.x/?apikey=d08fc50d-a7e6-4f37-bc51-1eb5df129e9d&format=json&geocode=" + ctr
         );
+        setSearchQuery("");
         setCoordinates([...data.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ').map(el => parseInt(el)).reverse()]);
     }
 
-    const fetchCityCoordinates = async (country, city) => {
+    const fetchCityCoordinates = async (ctr, cty) => {
         const data = await axios(
-            "https://geocode-maps.yandex.ru/1.x/?apikey=d08fc50d-a7e6-4f37-bc51-1eb5df129e9d&format=json&geocode=" + country + "+" + city
+            "https://geocode-maps.yandex.ru/1.x/?apikey=d08fc50d-a7e6-4f37-bc51-1eb5df129e9d&format=json&geocode=" + ctr + "+" + cty
         );
+        setSearchQuery("");
         setCoordinates([...data.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(' ').map(el => parseFloat(el)).reverse()]);
+        fetchPlaces(1, categories, cuisines, additionalServices, ctr, cty);
     }
 
     return (
@@ -165,20 +186,33 @@ export default function Filter({
                 </div>
                 <div className="filter-body">
                     <div className={"button filter-element" + (sortMode===1 ? " active-button" : "")}
-                        onClick={() => setSortMode(1)}>
-                        Рейтингу
+                        onClick={() => {
+                            setSortMode(1);
+                            fetchPlaces(1, categories, cuisines, additionalServices, country, city, "", 1);
+                        }}>
+                        Количеству отзывов
                     </div>
                     <div className={"button filter-element" + (sortMode===2 ? " active-button" : "")}
-                        onClick={() => setSortMode(2)}>
-                        Популярности
+                        onClick={() => {
+                            setSortMode(2);
+                            fetchPlaces(1, categories, cuisines, additionalServices, country, city, "", 2);
+                        }}>
+                        Рейтингу
                     </div>
                     <div className={"button filter-element" + (sortMode===3 ? " active-button" : "")}
+                        onClick={() => {
+                            setSortMode(3);
+                            fetchPlaces(1, categories, cuisines, additionalServices, country, city, "", 3);
+                        }}>
+                        Названию
+                    </div>
+                    {/* <div className={"button filter-element" + (sortMode===3 ? " active-button" : "")}
                         onClick={() => setSortMode(3)}>
                         Расстоянию от меня
-                    </div>
+                    </div> */}
                 </div>
             </div>
-            <div className="filter-box">
+            {/* <div className="filter-box">
                 <div className="filter-header">
                     Открыто
                 </div>
@@ -200,7 +234,7 @@ export default function Filter({
                         Круглосуточно
                     </div>
                 </div>
-            </div>
+            </div> */}
             {dict.categories_src &&
                 <div className="filter-box">
                     <div className="filter-header clickable" onClick={() => setCategoryActive(!isCategoryActive)}>
@@ -215,8 +249,8 @@ export default function Filter({
                     {isCategoryActive &&
                     <div className="filter-body">
                         {dict.categories_src.map((element, index) => 
-                            <div key={index} className={"button filter-element" + (categories.includes(element[0]) ? " active-button" : "")}
-                                onClick={() => handleCategoriesChange(element[0])}>
+                            <div key={index} className={"button filter-element" + (categories.includes(index+1) ? " active-button" : "")}
+                                onClick={() => handleCategoriesChange(index+1)}>
                                 {element[1]}
                             </div>
                         )}
@@ -259,8 +293,8 @@ export default function Filter({
                     {isCuisineActive &&
                     <div className="filter-body">
                         {dict.cuisines_src.map((element, index) => 
-                            <div key={index} className={"button filter-element" + (cuisines.includes(element[0]) ? " active-button" : "")}
-                                onClick={() => handleCuisinesChange(element[0])}>
+                            <div key={index} className={"button filter-element" + (cuisines.includes(index+1) ? " active-button" : "")}
+                                onClick={() => handleCuisinesChange(index+1)}>
                                 {element[1]}
                             </div>
                         )}
@@ -281,8 +315,8 @@ export default function Filter({
                     {isAdditionalServicesActive &&
                     <div className="filter-body">
                         {dict.additional_src.map((element, index) => 
-                            <div key={index} className={"button filter-element" + (additionalServices.includes(element[0]) ? " active-button" : "")}
-                                onClick={() => handleAdditionalServicesChange(element[0])}>
+                            <div key={index} className={"button filter-element" + (additionalServices.includes(index+1) ? " active-button" : "")}
+                                onClick={() => handleAdditionalServicesChange(index+1)}>
                                 {element[1]}
                             </div>
                         )}

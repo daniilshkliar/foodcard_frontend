@@ -390,7 +390,7 @@ input[type="number"] {
     margin: auto 0;
 }
 
-input[name="deposit"] {
+input[name="price"], input[name="deposit"] {
     width: 110px;
 }
 
@@ -408,4 +408,129 @@ input[name="deposit"] {
     width: 200px;
     font-size: 10px;
     word-wrap: break-word;
+}
+
+.filter-body.margin-bottom {
+    justify-content: flex-start;
+    border-top: 1px solid #eaeaea;
+    padding: 20px 0 0 0;
+}
+
+.margin-bottom {
+    margin: 0 0 20px 0;
+}
+
+input[name="weight"],
+input[name="calories"],
+input[name="proteins"],
+input[name="fats"],
+input[name="carbohydrates"] {
+    width: 80px;
+}
+
+.menu-card {
+    width: 300px;
+    height: fit-content;
+	margin: 10px;
+	border-radius: 8px;
+	box-shadow: 0 0 5px 0 #c3c3c3;
+	transition: all 0.15s;
+}
+
+.menu-card:hover {
+	transform: translateY(-3px);
+}
+
+.menu-card-photo {
+	width: 100%;
+	max-height: 200px;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	object-fit: cover;
+	overflow: hidden;
+}
+
+.menu-card-photo img {
+	width: 100%;
+}
+
+.edit-row.composition textarea {
+    width: 100%;
+    height: 125px;
+    min-height: auto;
+    border: 1px solid #eaeaea;
+    margin: 0 0 10px 0;
+}
+
+.edit-row.composition textarea::-webkit-scrollbar {
+	width: 0;
+}
+
+.edit-row.composition textarea.invalid {
+    border: 1px solid #ffe6f4;
+}
+
+.edit-row.composition textarea.invalid:hover {
+    border: 1px solid #FDEFF7;
+}
+
+.menu-card-composition {
+    width: 280px;
+    font-size: 14px;
+    color: #3e3e3e;
+    margin: auto;
+    text-align: left;
+    max-height: fit-content;
+    word-wrap: break-word;
+}
+
+.menu-card-nutrients-header {
+    font-size: 12px;
+    color: #8e8e8e;
+    border-bottom: 1px solid #eaeaea;
+    text-align: center;
+}
+
+.menu-card-nutrients-body {
+    font-size: 12px;
+    color: #F47D24;
+    text-align: center;
+}
+
+.nutrients {
+    margin: 10px 0 10px;
+    justify-content: space-around;
+}
+
+.menu-card-nutrients {
+    max-width: min-content;
+}
+
+.menu-card-main {
+    padding: 10px 10px 10px 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-card-title {
+    font-family: 'CustomFont';
+    color: #3e3e3e;
+    font-size: 24px;
+}
+
+.menu-card-weight {
+    color: #8e8e8e;
+    margin: 0 15px 0 0;
+}
+
+.menu-card-price {
+    font-size: 14px;
+    text-align: right;
+    color: #F47D24;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
 }

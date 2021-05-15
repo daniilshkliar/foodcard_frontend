@@ -48,8 +48,8 @@ export default function Gallery() {
     const [scrolValue, setScrolValue] = useState(0);
     
     const [places, setPlaces] = useState([]);
-    const [country, setCountry] = useState("");
-    const [city, setCity] = useState("");
+    const [country, setCountry] = useState("Belarus");
+    const [city, setCity] = useState("Minsk");
     const [sortMode, setSortMode] = useState(2);
     const [open, setOpen] = useState(0);
     const [categories, setCategories] = useState([]);
@@ -72,7 +72,7 @@ export default function Gallery() {
         });
 
         fetchLocation(53.907058, 27.557018);
-        fetchPlaces();
+        fetchPlaces(1, categories, cuisines, additionalServices, country, city);
     }, []);
 
     const fetchLocation = async (lat, long) => {
@@ -86,13 +86,39 @@ export default function Gallery() {
         }
     }
 
-    const fetchPlaces = async () => {
+    const fetchPlaces = async (page, cat, cui, ser, ctr, cty, search, mode) => {
         setLoading(true);
         setMessages({});
 
-        nextPage && await axios.get("/core/places/?page=" + nextPage
+        let queries = ""
+        if (!search) {
+            queries += "cat="
+            if (cat.length > 0) queries += cat.join('&cat=')
+            else queries += dict.categories_src.map((elem, index) => index + 1).join('&cat=')
+            queries += "&cui="
+            if (cui.length > 0) queries += cui.join('&cui=')
+            else queries += dict.cuisines_src.map((elem, index) => index + 1).join('&cui=')
+            queries += "&ser="
+            if (ser.length > 0) queries += ser.join('&ser=')
+            else queries += dict.additional_src.map((elem, index) => index + 1).join('&ser=')
+            queries += "&ctr=" + ctr
+            queries += "&cty=" + cty
+        } else {
+            queries += "search=" + search
+        }
+
+        page && await axios.get("/core/places/?" + queries + "&page=" + page
         ).then((response) => {
-            setPlaces([...places, ...response.data.results]);
+            let result = []
+            page === 1 ? 
+                result = response.data.results
+            :   result = [...places, ...response.data.results];
+
+            if (mode === 1) result.sort((a, b) => b.amount - a.amount)
+            else if (mode === 2) result.sort((a, b) => b.rounded_rating - a.rounded_rating)
+            else if (mode === 3) result.sort()
+
+            setPlaces(result);
             setNextPage(response.data.next ? nextPage + 1 : null);
         }).catch((error) => {
             setMessages(
@@ -145,6 +171,8 @@ export default function Gallery() {
                                 setAdditionalServices={setAdditionalServices}
                                 inMenu={inMenu}
                                 setInMenu={setInMenu}
+                                fetchPlaces={fetchPlaces}
+                                setSearchQuery={setSearchQuery}
                             />
                             <div
                                 className="filter-close"
@@ -205,7 +233,7 @@ export default function Gallery() {
                         onScroll={() => {
                             setElevator(scrollRef.current.scrollTop >= 800);
                             if (nextPage && scrollRef.current.scrollHeight - scrollRef.current.scrollTop === scrollRef.current.clientHeight) {
-                                fetchPlaces();
+                                fetchPlaces(nextPage, categories, cuisines, additionalServices, country, city);
                             }
                         }}
                     >
@@ -231,8 +259,20 @@ export default function Gallery() {
                                         value={searchQuery}
                                         placeholder="Поиск"
                                         onChange={(e) => setSearchQuery(e.target.value)}
+                                        onKeyDown={(e) => {
+                                            e.key === 'Enter' && fetchPlaces(1, categories, cuisines, additionalServices, country, city, searchQuery);
+                                            setCategories([]);
+                                            setCuisines([]);
+                                            setAdditionalServices([]);
+                                        }
+                                    }
                                     />        
-                                    <div className="searchbutton active-button" onClick={() => {console.log(searchQuery)}}>
+                                    <div className="searchbutton active-button" onClick={() => {
+                                        fetchPlaces(1, categories, cuisines, additionalServices, country, city, searchQuery)
+                                        setCategories([]);
+                                        setCuisines([]);
+                                        setAdditionalServices([]);
+                                    }}>
                                         <img src={SearchIcon} alt="Search icon" draggable="false" />
                                     </div>
                                 </div>
@@ -259,7 +299,7 @@ export default function Gallery() {
                                         <div className="gallery-card-photo">
                                             {place.main_photo ?
                                                 <img src={place.main_photo} alt={"A photo of " + place.title} draggable="false" />
-                                            :   <div className={"thumbnail-photo color" + Math.floor(Math.random() * Math.floor(7))}></div>
+                                            :   <div className={"thumbnail-photo color" + place.id%10}></div>
                                             }
                                         </div>
                                         <div className="gallery-card-title">

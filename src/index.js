@@ -23,7 +23,7 @@ ReactDOM.render(
 	<Router history={history}>
 		<Switch>
 			<Route exact path="/">
-				<Home />
+				<Gallery />
 			</Route>
 			<Route exact path="/login">
 				<Login />
@@ -36,9 +36,6 @@ ReactDOM.render(
 			</Route>
 			<Route exact path="/controlpanel">
 				<ControlPanel />
-			</Route>
-			<Route exact path="/gallery">
-				<Gallery />
 			</Route>
 			<Route exact path="/place/:city/:title">
 				<Place />

@@ -55,9 +55,14 @@ export default function Place() {
     const [messages, setMessages] = useState({});
     const [isLoading, setLoading] = useState(false);
     const [isReviewsLoading, setReviewsLoading] = useState(false);
+    const [isMenuActive, setMenuActive] = useState(false);
+    const [isMenuLoading, setMenuLoading] = useState(false);
+    const [dishes, setDishes] = useState([]);
+    const [menuCategory, setMenuCategory] = useState("csn");
 
     let day = new Date().getDay() - 1;
     if (day === -1) day = 6;
+
 
     useEffect(() => {
         getPlace();
@@ -178,10 +183,22 @@ export default function Place() {
         });
     }
 
+    const get_dishes = async (category) => {
+        setMenuLoading(true);
+        
+        await axios.get("/core/dishes/" + place.id + "/" + category + "/"
+        ).then((response) => {
+            setDishes(response.data);
+        }).finally(() => {
+            setMenuLoading(false);
+        });
+    }
+
     const firstNameValidator = (value) => {
         setFirstName(value);
         setFirstNameValid(isAlpha(value) && value.length > 0 && value.length <= 150);
     }
+
 
     return (
         <div>
@@ -211,6 +228,112 @@ export default function Place() {
                                         }
                                     }}
                                 >
+                                    {isMenuActive &&
+                                        <div className="leave-review-background">
+                                            <div className="leave-review-window menu-window">
+                                                <div
+                                                    className="filter-close"
+                                                    onClick={() => setMenuActive(false)}
+                                                >
+                                                    <img src={CloseIcon} alt="Close icon" draggable="false" />
+                                                </div>
+                                                <div className="auth-title">
+                                                    Меню
+                                                </div>
+                                                {dict.menu_categories &&
+                                                    <div className="filter-body menu-view">
+                                                        {dict.menu_categories.map((element, index) => 
+                                                            <div key={index} className={"button filter-element" + (menuCategory === element[0] ? " active-button" : "")}
+                                                                onClick={() => {
+                                                                    setMenuCategory(element[0]);
+                                                                    get_dishes(element[0]);
+                                                                }}>
+                                                                {element[1]}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                }
+                                                {isMenuLoading ?
+                                                    <div className="margin-top">
+                                                        <Spinner small={true} />
+                                                    </div>
+                                                :   <div className="gallery">
+                                                        {dishes && dishes.length > 0 ?
+                                                            dishes.map((dish, index) => (
+                                                                <div key={index} className="menu-card">
+                                                                    <div className="menu-card-photo">
+                                                                        {dish.image && <img src={dish.image} alt={"A photo of " + dish.title} draggable="false" />}
+                                                                    </div>
+                                                                    <div className="reservations-list-element-column">
+                                                                        <div className="reservations-list-element-row menu-card-main">
+                                                                            <div className="menu-card-title">
+                                                                                {dish.title}
+                                                                            </div>
+                                                                            <div className="menu-card-price">
+                                                                                {dish.weight &&
+                                                                                    <div className="menu-card-weight">
+                                                                                        {dish.weight}г
+                                                                                    </div>
+                                                                                }
+                                                                                {dish.price}
+                                                                            </div>
+                                                                        </div>
+                                                                        {dish.composition &&
+                                                                            <div className="reservations-list-element-row">
+                                                                                <div className="menu-card-composition">
+                                                                                    <ShowMoreText
+                                                                                        lines={2}
+                                                                                        anchorClass='show-more'
+                                                                                    >
+                                                                                        {dish.composition}
+                                                                                    </ShowMoreText>
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+                                                                        <div className="reservations-list-element-row nutrients">
+                                                                            <div className="reservations-list-element-column menu-card-nutrients">
+                                                                                <div className="menu-card-nutrients-header">
+                                                                                    калории
+                                                                                </div>
+                                                                                <div className="menu-card-nutrients-body">
+                                                                                    {dish.calories !== null ? dish.calories : "-"}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="reservations-list-element-column menu-card-nutrients">
+                                                                                <div className="menu-card-nutrients-header">
+                                                                                    жиры
+                                                                                </div>
+                                                                                <div className="menu-card-nutrients-body">
+                                                                                    {dish.fats !== null ? dish.fats : "-"}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="reservations-list-element-column menu-card-nutrients">
+                                                                                <div className="menu-card-nutrients-header">
+                                                                                    белки
+                                                                                </div>
+                                                                                <div className="menu-card-nutrients-body">
+                                                                                    {dish.proteins !== null ? dish.proteins : "-"}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="reservations-list-element-column menu-card-nutrients">
+                                                                                <div className="menu-card-nutrients-header">
+                                                                                    углеводы
+                                                                                </div>
+                                                                                <div className="menu-card-nutrients-body">
+                                                                                    {dish.carbohydrates !== null ? dish.carbohydrates : "-"}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            ))
+                                                        :   <div className="tip margin-bottom">Блюд нет</div>
+                                                        }
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
                                     {isAuthenticated && leaveReview &&
                                         <div className="leave-review-background">
                                             <div className="leave-review-window">
@@ -348,7 +471,10 @@ export default function Place() {
                                     <div className="place-photos">
                                         <div className="place-photo-container-1">
                                             <div className="color0" onClick={() => setSliderIndex(0)}>
-                                                {photos && photos[0] && <img src={photos[0].image} alt="Photo" draggable="false" className="place-photo" />}
+                                                {photos && photos[0] ?
+                                                    <img src={photos[0].image} alt="Photo" draggable="false" className="place-photo" />
+                                                :   <div id="min-photo-height"></div>
+                                                }
                                             </div>
                                             <div className="color1" onClick={() => setSliderIndex(1)}>
                                                 {photos && photos[1] && <img src={photos[1].image} alt="Photo" draggable="false" className="place-photo" />}
@@ -407,7 +533,7 @@ export default function Place() {
                                             ))}
                                         </div>
                                         <div className="place-dashboard">
-                                            <div className="button">Меню</div>
+                                            <div className="button" onClick={() => setMenuActive(true)}>Меню</div>
                                             {place.website &&
                                                 <div className="icon-link"><a href={place.website} target="_blank"><img className="website-icon" src={WebsiteIcon} alt="Website icon" /></a></div>
                                             }

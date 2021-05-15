@@ -15,10 +15,13 @@ import EditPhotos from '../components/EditForms/EditPhotos';
 import EditConfiguration from '../components/EditForms/EditConfiguration';
 import Reservations from '../components/Reservations/Reservations';
 import StaffManager from '../components/StaffManager/StaffManager';
+import EditMenu from '../components/EditForms/EditMenu';
+import Reservation from './Reservation';
 
 import '../editForms.css';
 import '../panel.css';
-import Reservation from './Reservation';
+
+import CloseIcon from '../icons/close_icon.svg';
 
 import dict from '../dict.json';
 
@@ -32,6 +35,7 @@ export default function ControlPanel({  }) {
     const [scopeMessages, setScopeMessages] = useState({});
     const [isLoading, setLoading] = useState(false);
     const [isScopeLoading, setScopeLoading] = useState(false);
+    const [isDeleting, setDeleting] = useState(false);
 
     const [place, setPlace] = useState({});
     const [places, setPlaces] = useState([]);
@@ -50,7 +54,6 @@ export default function ControlPanel({  }) {
     const [editSchedule, setEditSchedule] = useState(false);
     const [editPhotos, setEditPhotos] = useState(false);
     const [editConfiguration, setEditConfiguration] = useState(false);
-    
 
     useEffect(() => {
         fetchPlaces();
@@ -119,6 +122,24 @@ export default function ControlPanel({  }) {
         });
     }
     
+    const handleDelete = async () => {
+        setDeleting(true);
+
+        await jwt_axios.post("/core/places/delete/" + place.id + "/", {
+            withCredentials: true 
+        }).then((response) => {
+            setPlaces(places.filter(elem => elem.id !== place.id));
+            setPlace({});
+            setPerms([]);
+            setActivePlace("");
+            setActiveOption("");
+            setEditPlaceOption("");
+            setPanelScope("");
+        }).finally(() => {
+            setDeleting(false);
+        });
+    }
+
     const clearUseState = (except) => {
         setEditTitle(except === "title");
         setEditedDescription(except === "description");
@@ -147,6 +168,30 @@ export default function ControlPanel({  }) {
                             }
                         </div>
                     :   <div className="panel">
+                            {editPlaceOption === "delete" &&
+                                <div className="reservation-delete-background">
+                                    <div className="reservation-delete-window">
+                                        <div
+                                            className="filter-close"
+                                            onClick={() => setEditPlaceOption("")}
+                                        >
+                                            <img src={CloseIcon} alt="Close icon" draggable="false" />
+                                        </div>
+                                        {isDeleting ?
+                                            <Spinner small={true} />
+                                        :   <div className="delete-info">
+                                                Вы действительно хотите удалить {dict.categories_src_dict[place.main_category.name].toLowerCase()} {place.title}?
+                                                <div className="confirm-buttons">
+                                                    <div tabIndex="0" className="button cancel-button" onClick={() => handleDelete()}>Да</div>
+                                                    <div tabIndex="0" className="button" onClick={() => setEditPlaceOption("")}>
+                                                        Нет
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
                             <div className="panel-scope-1">
                                 {places.length > 0 && places.map((elem, index) => (
                                     <div
@@ -186,6 +231,21 @@ export default function ControlPanel({  }) {
                                             }}
                                         >
                                             Редактировать заведение
+                                        </div>
+                                    </div>
+                                }
+                                {activePlace && perms.includes('change_place') &&
+                                    <div>
+                                        <div
+                                            className={activeOption === "Edit menu" ? "panel-row selected" : "panel-row"}
+                                            onClick={() => {
+                                                fetchPlace(activePlace);
+                                                setActiveOption("Edit menu");
+                                                setPanelScope('6');
+                                                clearUseState(null);
+                                            }}
+                                        >
+                                            Редактировать меню
                                         </div>
                                     </div>
                                 }
@@ -305,6 +365,17 @@ export default function ControlPanel({  }) {
                                             >
                                                 Дополнительные услуги
                                             </div>
+                                            {activePlace && perms.includes('delete_place') &&
+                                                <div
+                                                    className={editPlaceOption === "delete" ? "panel-row selected" : "panel-row"}
+                                                    onClick={() => {
+                                                        setEditPlaceOption("delete");
+                                                        clearUseState("");
+                                                    }}
+                                                >
+                                                    Удалить заведение
+                                                </div>
+                                            }
                                         </div>
                                     }
                                 </div>
@@ -396,7 +467,12 @@ export default function ControlPanel({  }) {
                             }
                             {panelScope === '5' &&
                                 <div className="panel-scope-3-4">
-                                    <StaffManager id={place.id} setPlace={setPlace} />
+                                    <StaffManager id={activePlace} setPlace={setPlace} />
+                                </div>
+                            }
+                            {panelScope === '6' &&
+                                <div className="panel-scope-3-4">
+                                    <EditMenu place_id={activePlace} setPlace={setPlace} />
                                 </div>
                             }
                         </div>

@@ -17,6 +17,10 @@
     display: flex;
 }
 
+#min-photo-height {
+    height: 500px;
+}
+
 .place-photo-container-0 {
     width: 39%;
     padding: 0 1px;
@@ -538,8 +542,19 @@
     color: #8e8e8e;
 }
 
+.filter-body.menu-view {
+    margin: 10px 0 30px 0;
+}
 
+.menu-window {
+    padding: 20px 50px;
+    overflow-y: auto;
+}
 
+.menu-window::-webkit-scrollbar-thumb {
+    border: 12px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+}
 
 @media screen and (max-width: 1052px) {
 

@@ -301,7 +301,7 @@ export default function EditConfiguration({
                                         className="photo-unpin"
                                         onClick={() => setImage(null)}
                                     >
-                                        <img src={CloseIcon} alt="Close icon" draggable="false" />
+                                        {image && <img src={CloseIcon} alt="Close icon" draggable="false" />}
                                     </div>
                                 </div>
                             </div>
@@ -331,58 +331,61 @@ export default function EditConfiguration({
                             }
                         </div>
                         <div className="gallery">
-                            {tables && tables.map((table, index) => (
-                                <div 
-                                    key={index}
-                                    className="gallery-card table-card"
-                                    onClick={() => {
-                                        setID(table.id);
-                                        setNumber(table.number);
-                                        setNumberValid(true);
-                                        setMaxGuests(table.max_guests);
-                                        setMaxGuestsValid(true);
-                                        setMinGuests(table.min_guests);
-                                        setMinGuestsValid(true);
-                                        setFloor(table.floor);
-                                        setDeposit(table.deposit);
-                                        setVip(table.is_vip);
-                                        setImage(table.image);
-                                    }}
-                                >
-                                    <div className="gallery-card-photo">
-                                        {table.image ?
-                                            <img src={table.image} alt={"A photo of table №" + table.number} draggable="false" />
-                                            :   <div className={"thumbnail-photo color" + Math.floor(Math.random() * Math.floor(7))}></div>
+                            {tables && tables.length > 0 ?
+                                tables.map((table, index) => (
+                                    <div 
+                                        key={index}
+                                        className="gallery-card table-card"
+                                        onClick={() => {
+                                            setID(table.id);
+                                            setNumber(table.number);
+                                            setNumberValid(true);
+                                            setMaxGuests(table.max_guests);
+                                            setMaxGuestsValid(true);
+                                            setMinGuests(table.min_guests);
+                                            setMinGuestsValid(true);
+                                            setFloor(table.floor);
+                                            setDeposit(table.deposit);
+                                            setVip(table.is_vip);
+                                            setImage(table.image);
+                                        }}
+                                    >
+                                        <div className="gallery-card-photo">
+                                            {table.image ?
+                                                <img src={table.image} alt={"A photo of table №" + table.number} draggable="false" />
+                                                :   <div className={"thumbnail-photo color" + Math.floor(Math.random() * Math.floor(7))}></div>
+                                            }
+                                        </div>
+                                        {table.is_vip && 
+                                            <div className="vip-icon">
+                                                <img src={VipIcon} alt="Vip icon" draggable="false" />
+                                            </div>        
                                         }
-                                    </div>
-                                    {table.is_vip && 
-                                        <div className="vip-icon">
-                                            <img src={VipIcon} alt="Vip icon" draggable="false" />
-                                        </div>        
-                                    }
-                                    <div className="table-row">
-                                        <div className="gallery-card-number">
-                                            Стол №{table.number}
-                                        </div>
-                                        <div className="gallery-card-seats">
-                                            <img src={AccountIcon} alt="Account icon" draggable="false" />
-                                            {table.min_guests === 1 || !table.min_guests ? table.max_guests : table.min_guests + "-" + table.max_guests}
-                                        </div>
-                                    </div>
-                                    <div className="table-row last">
-                                        <div className="gallery-card-floor">
-                                            <img src={StairsIcon} alt="Stairs icon" draggable="false" />
-                                            {table.floor}
-                                        </div>
-                                        {table.deposit &&
-                                            <div className="gallery-card-deposit">
-                                                <img src={DepositIcon} alt="Deposit icon" draggable="false" />
-                                                {table.deposit}
+                                        <div className="table-row">
+                                            <div className="gallery-card-number">
+                                                Стол №{table.number}
                                             </div>
-                                        }
+                                            <div className="gallery-card-seats">
+                                                <img src={AccountIcon} alt="Account icon" draggable="false" />
+                                                {table.min_guests === 1 || !table.min_guests ? table.max_guests : table.min_guests + "-" + table.max_guests}
+                                            </div>
+                                        </div>
+                                        <div className="table-row last">
+                                            <div className="gallery-card-floor">
+                                                <img src={StairsIcon} alt="Stairs icon" draggable="false" />
+                                                {table.floor}
+                                            </div>
+                                            {table.deposit &&
+                                                <div className="gallery-card-deposit">
+                                                    <img src={DepositIcon} alt="Deposit icon" draggable="false" />
+                                                    {table.deposit}
+                                                </div>
+                                            }
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))
+                            :   <div className="tip margin-bottom">Столов нет</div>
+                            }
                         </div>
                     </div>
                 </div>
