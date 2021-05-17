@@ -84,6 +84,8 @@ export default function EditPhotos({
                 setLoading(false);
             });
         }
+        
+        setLoading(false);
     }
 
     const uploadImages = async (e) => {

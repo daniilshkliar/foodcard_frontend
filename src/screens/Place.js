@@ -183,10 +183,10 @@ export default function Place() {
         });
     }
 
-    const get_dishes = async (category) => {
+    const get_dishes = async (place_id, category) => {
         setMenuLoading(true);
         
-        await axios.get("/core/dishes/" + place.id + "/" + category + "/"
+        await axios.get("/core/dishes/" + place_id + "/" + category + "/"
         ).then((response) => {
             setDishes(response.data);
         }).finally(() => {
@@ -246,7 +246,7 @@ export default function Place() {
                                                             <div key={index} className={"button filter-element" + (menuCategory === element[0] ? " active-button" : "")}
                                                                 onClick={() => {
                                                                     setMenuCategory(element[0]);
-                                                                    get_dishes(element[0]);
+                                                                    get_dishes(place.id, element[0]);
                                                                 }}>
                                                                 {element[1]}
                                                             </div>
@@ -533,7 +533,13 @@ export default function Place() {
                                             ))}
                                         </div>
                                         <div className="place-dashboard">
-                                            <div className="button" onClick={() => setMenuActive(true)}>Меню</div>
+                                            <div className="button" onClick={() => {
+                                                    get_dishes(place.id, menuCategory);
+                                                    setMenuActive(true);
+                                                }}
+                                            >
+                                                Меню
+                                            </div>
                                             {place.website &&
                                                 <div className="icon-link"><a href={place.website} target="_blank"><img className="website-icon" src={WebsiteIcon} alt="Website icon" /></a></div>
                                             }

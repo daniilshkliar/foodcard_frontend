@@ -187,7 +187,7 @@ export default function AccountBar() {
                             <div className="account-row">{phone}</div>
                             <div className="account-row">{email}</div>
                             <div className="account-scope">
-                                <div className="button" onClick={() => editProfile()}>Редактировать</div>
+                                {/* <div className="button" onClick={() => editProfile()}>Редактировать</div> */}
                                 <div className="button" onClick={() => logout()}>Выйти</div>
                             </div>
                             <div className="account-scope">

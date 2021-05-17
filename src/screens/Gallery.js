@@ -72,7 +72,7 @@ export default function Gallery() {
         });
 
         fetchLocation(53.907058, 27.557018);
-        fetchPlaces(1, categories, cuisines, additionalServices, country, city);
+        fetchPlaces(1, categories, cuisines, additionalServices, country, city, "", 2);
     }, []);
 
     const fetchLocation = async (lat, long) => {

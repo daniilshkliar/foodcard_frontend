@@ -90,6 +90,7 @@ export default function EditConfiguration({
         }).then((response) => {
             setTables([...tables, response.data]);
             setPopup(true);
+            setID(response.data.id);
         }).catch((error) => {
             setMessages(
                 (error.response &&

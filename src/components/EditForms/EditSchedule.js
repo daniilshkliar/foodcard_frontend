@@ -15,7 +15,7 @@ export default function EditSchedule({
     const [openingHours, setOpeningHours] = useState(
         place.opening_hours && place.opening_hours.length === 7 ? 
             place.opening_hours 
-        :   [[,], [,], [,], [,], [,], [,], [,]]
+        :   [[null,null], [null,null], [null,null], [null,null], [null,null], [null,null], [null,null]]
     );
 
     const setSchedule = async () => {

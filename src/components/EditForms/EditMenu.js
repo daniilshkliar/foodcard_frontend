@@ -100,6 +100,7 @@ export default function EditMenu({
         }).then((response) => {
             setDishes([...dishes, response.data]);
             setPopup(true);
+            setID(response.data.id);
         }).catch((error) => {
             setMessages(
                 (error.response &&
