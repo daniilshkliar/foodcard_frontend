@@ -340,3 +340,20 @@ input:checked + .switch-slider:before {
 .staff-checkbox .label {
     font-size: 15px;
 }
+
+.button.center {
+    margin: 10px auto;
+}
+
+.place-creation-window {
+    z-index: 1000;
+    position: fixed;
+    top: calc(50% - 280px);
+    left: calc(50% - 380px);
+    width: 760px;
+    height: 560px;
+    padding: 30px 50px;
+    border-radius: 12px;
+    overflow: auto;
+    background-color: #ffffff;
+}

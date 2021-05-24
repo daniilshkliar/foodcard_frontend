@@ -17,6 +17,7 @@ import Reservations from '../components/Reservations/Reservations';
 import StaffManager from '../components/StaffManager/StaffManager';
 import EditMenu from '../components/EditForms/EditMenu';
 import Reservation from './Reservation';
+import PlaceCreation from '../components/PlaceCreation/PlaceCreation';
 
 import '../editForms.css';
 import '../panel.css';
@@ -36,6 +37,8 @@ export default function ControlPanel({  }) {
     const [isLoading, setLoading] = useState(false);
     const [isScopeLoading, setScopeLoading] = useState(false);
     const [isDeleting, setDeleting] = useState(false);
+    const [createOption, setCreateOption] = useState(false);
+    const [isCreating, setCreating] = useState(false);
 
     const [place, setPlace] = useState({});
     const [places, setPlaces] = useState([]);
@@ -168,6 +171,13 @@ export default function ControlPanel({  }) {
                             }
                         </div>
                     :   <div className="panel">
+                            {createOption &&
+                                <PlaceCreation
+                                    places={places}
+                                    setPlaces={setPlaces}
+                                    setCreateOption={setCreateOption}
+                                />
+                            }
                             {editPlaceOption === "delete" &&
                                 <div className="reservation-delete-background">
                                     <div className="reservation-delete-window">
@@ -193,6 +203,9 @@ export default function ControlPanel({  }) {
                                 </div>
                             }
                             <div className="panel-scope-1">
+                                <div className="button center" onClick={() => setCreateOption(true)}>
+                                    Создать заведение
+                                </div>
                                 {places.length > 0 && places.map((elem, index) => (
                                     <div
                                         key={index}

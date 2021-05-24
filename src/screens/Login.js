@@ -112,6 +112,9 @@ export default function Login() {
                                 value={password}
                                 onChange={(e) => passwordValidator(e.target.value)}
                             />
+                            {/* <div className="small-tip reset" onClick={}>
+                                Восстановить пароль
+                            </div> */}
                         </div>
                         <div className="form-buttons">
                             {isIdentifierValid && isPasswordValid ?

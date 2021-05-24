@@ -139,3 +139,19 @@ input[type="text"].invalid:hover,
 .center-align {
     margin: 30px auto;
 }
+
+.small-tip {
+    font-size: 12px;
+    color: #8e8e8e99;
+    text-align: left;
+    padding: 2px 0 0 10px;
+    user-select: none;
+}
+
+.reset {
+    cursor: pointer;
+}
+
+.reset:hover {
+    text-decoration: underline;
+}

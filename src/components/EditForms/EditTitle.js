@@ -47,7 +47,7 @@ export default function EditTitle({
 
     const titleValidator = (value) => {
         setNewTitle(value);
-        setTitleValid(isAlpha(value) && value.length > 0 && value.length <= 70);
+        setTitleValid(value.length > 0 && value.length <= 70);
     }
 
 	return (

@@ -667,7 +667,7 @@ export default function Place() {
                                                     activeColor="#ED6E2D"
                                                 />
                                                 <div className="place-general-review-overall-amount">
-                                                    ({generalReview && (generalReview.amount + (generalReview.amount === 1 ? " отзыв" : generalReview.amount <= 4 ? " отзыва" : " отзывов"))})
+                                                    ({generalReview && (generalReview.amount + (generalReview.amount === 1 ? " отзыв" : generalReview.amount > 4 ? " отзыва" : " отзывов"))})
                                                 </div>
                                             </div>
                                             {generalReview && generalReview.amount > 0 &&

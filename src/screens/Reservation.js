@@ -207,6 +207,8 @@ export default function Reservation() {
     }
 
     const dateTimeValidator = (value) => {
+        setDateTime(value);
+        if (!place.opening_hours) return;
         let chosen = moment.tz(value, place.timezone);
         let year = chosen.get('year');
         let month = chosen.get('month');
@@ -240,7 +242,6 @@ export default function Reservation() {
             (chosen >= today_min && chosen < today_max));
 
         setHoursTip(tip);
-        setDateTime(value);
         setChosenDateTime(chosen.format());
         setDateTimeValid(flag);
         flag && isTableSizeValid && filter_tables(tableSize, chosen.format(), floor);
